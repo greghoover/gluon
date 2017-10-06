@@ -6,7 +6,9 @@ namespace Gluon.Tester.Client.Conosle
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            Console.WriteLine("Gluon App Tester - Client");
+            Console.WriteLine("=========================");
+            Console.ReadLine();
         }
     }
 }
