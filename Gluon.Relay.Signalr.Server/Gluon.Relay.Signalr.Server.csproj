@@ -10,8 +10,4 @@
     <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="1.0.0-alpha1-final" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\Gluon.Relay.Contracts\Gluon.Relay.Contracts.csproj" />
-  </ItemGroup>
-
 </Project>

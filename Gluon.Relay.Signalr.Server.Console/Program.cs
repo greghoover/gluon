@@ -1,4 +1,5 @@
 ﻿using System;
+using Gluon.Relay.Signalr.Server;
 
 namespace Gluon.Relay.Signalr.Server.Console
 {
@@ -6,9 +7,8 @@ namespace Gluon.Relay.Signalr.Server.Console
     {
         static void Main(string[] args)
         {
-            System.Console.WriteLine("Gluon SignalR Relay Server");
-            System.Console.WriteLine("==========================");
-            System.Console.ReadLine();
+            System.Console.WriteLine("Starting Gluon SignalR Relay Server...");
+            Startup.BuildAndRunWebHost(args);
         }
     }
 }

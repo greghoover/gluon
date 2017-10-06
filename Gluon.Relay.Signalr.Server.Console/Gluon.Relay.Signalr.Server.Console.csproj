@@ -5,4 +5,8 @@
     <TargetFramework>netcoreapp2.0</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Gluon.Relay.Signalr.Server\Gluon.Relay.Signalr.Server.csproj" />
+  </ItemGroup>
+
 </Project>

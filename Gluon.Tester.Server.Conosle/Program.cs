@@ -6,8 +6,10 @@ namespace Gluon.Tester.Server.Conosle
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Gluon App Tester - Server");
-            Console.WriteLine("=========================");
+            Console.WriteLine("Starting Gluon Relay Tester Server...");
+
+
+            Console.WriteLine("Press Enter to stop Gluon Relay Tester Server: ");
             Console.ReadLine();
         }
     }
