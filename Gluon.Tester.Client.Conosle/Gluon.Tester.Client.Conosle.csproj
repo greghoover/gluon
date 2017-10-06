@@ -5,4 +5,8 @@
     <TargetFramework>netcoreapp2.0</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Gluon.Tester.Client.Library\Gluon.Tester.Client.Library.csproj" />
+  </ItemGroup>
+
 </Project>
