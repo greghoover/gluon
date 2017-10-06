@@ -25,24 +25,5 @@ namespace Gluon.Relay.Signalr.Client
             //return (TResponse)t.Result;
             return default(TResponse);
         }
-
-        public void HubClientInit()
-        {
-
-            //client.On<string>("Send", data =>
-            //{
-            //    Console.WriteLine($"Received: {data}");
-            //});
-            //client.On<string>("Fred2", data =>
-            //{
-            //    Console.WriteLine($"Received: {data}");
-            //});
-
-            //client.StartAsync().Wait();
-
-            //client.InvokeAsync("Send", "Hello").Wait();
-
-            //client.InvokeAsync("Fred1", "fred1");
-        }
     }
 }

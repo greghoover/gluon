@@ -4,8 +4,4 @@
     <TargetFramework>netcoreapp2.0</TargetFramework>
   </PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\Gluon.Relay.Contracts\Gluon.Relay.Contracts.csproj" />
-  </ItemGroup>
-
 </Project>

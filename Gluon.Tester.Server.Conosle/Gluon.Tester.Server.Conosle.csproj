@@ -6,6 +6,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Gluon.Relay.Contracts\Gluon.Relay.Contracts.csproj" />
+    <ProjectReference Include="..\Gluon.Relay.Signalr.Client\Gluon.Relay.Signalr.Client.csproj" />
     <ProjectReference Include="..\Gluon.Tester.Server.Library\Gluon.Tester.Server.Library.csproj" />
   </ItemGroup>
 

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 
 namespace Gluon.Relay.Contracts
@@ -20,24 +19,24 @@ namespace Gluon.Relay.Contracts
         Task InvokeAsync(string methodName, params object[] args);
     }
 
-    public interface IEmit<TEvent>
-    {
-        void Emit(TEvent msg);
-    }
-    public interface ISend<TSend>
-    {
-        void Send(TSend msg);
-    }
-    public interface IReceive<TRecv>
-    {
-        void Receive(TRecv msg);
-    }
-    public interface IRequest<TRequest, TResponse>
-    {
-        TResponse Request(TRequest request);
-    }
-    public interface IRespond<TRequest, TResponse>
-    {
-        TResponse Respond(TRequest request);
-    }
+    //public interface IEmit<TEvent>
+    //{
+    //    void Emit(TEvent msg);
+    //}
+    //public interface ISend<TSend>
+    //{
+    //    void Send(TSend msg);
+    //}
+    //public interface IReceive<TRecv>
+    //{
+    //    void Receive(TRecv msg);
+    //}
+    //public interface IRequest<TRequest, TResponse>
+    //{
+    //    TResponse Request(TRequest request);
+    //}
+    //public interface IRespond<TRequest, TResponse>
+    //{
+    //    TResponse Respond(TRequest request);
+    //}
 }

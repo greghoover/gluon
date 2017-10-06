@@ -1,15 +1,11 @@
 ﻿using System;
 //
 using Gluon.Relay.Contracts;
+//using Gluon.Tester.Contracts;
 
-namespace Gluon.Relay.Signalr.Client
+namespace Gluon.Tester.Server.Library
 {
-    public interface IWorker
-    {
-        string DoWork(string commandName, string commandData);
-    }
-
-    public class Worker : IWorker
+    public class Worker //: IWorker
     {
         ICommunicationClient _commClient = null;
 

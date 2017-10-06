@@ -9,7 +9,6 @@ namespace Gluon.Relay.Signalr.Server
     {
         //public override async Task OnConnectedAsync()
         //{
-        //    await Clients.All.InvokeAsync("Fred2", "fred2");
         //    await Clients.All.InvokeAsync("Send", $"{Context.ConnectionId} connected");
         //}
         //public override async Task OnDisconnectedAsync(Exception ex)
@@ -17,34 +16,26 @@ namespace Gluon.Relay.Signalr.Server
         //    await Clients.All.InvokeAsync("Send", $"{Context.ConnectionId} disconnected");
         //}
 
+        //public Task SendToGroup(string groupName, string message)
+        //{
+        //    return Clients.Group(groupName).InvokeAsync("Send", $"{Context.ConnectionId}@{groupName}: {message}");
+        //}
+        //public async Task JoinGroup(string groupName)
+        //{
+        //    await Groups.AddAsync(Context.ConnectionId, groupName);
+        //    await Clients.Group(groupName).InvokeAsync("Send", $"{Context.ConnectionId} joined {groupName}");
+        //}
+        //public async Task LeaveGroup(string groupName)
+        //{
+        //    await Groups.RemoveAsync(Context.ConnectionId, groupName);
+        //    await Clients.Group(groupName).InvokeAsync("Send", $"{Context.ConnectionId} left {groupName}");
+        //}
 
 
-        public Task SendToGroup(string groupName, string message)
-        {
-            return Clients.Group(groupName).InvokeAsync("Send", $"{Context.ConnectionId}@{groupName}: {message}");
-        }
-        public async Task JoinGroup(string groupName)
-        {
-            await Groups.AddAsync(Context.ConnectionId, groupName);
-            await Clients.Group(groupName).InvokeAsync("Send", $"{Context.ConnectionId} joined {groupName}");
-        }
-        public async Task LeaveGroup(string groupName)
-        {
-            await Groups.RemoveAsync(Context.ConnectionId, groupName);
-            await Clients.Group(groupName).InvokeAsync("Send", $"{Context.ConnectionId} left {groupName}");
-        }
-
-
-        public Task Echo(string message)
-        {
-            return Clients.Client(Context.ConnectionId).InvokeAsync("Send", $"{Context.ConnectionId}: {message}");
-        }
-
-        public Task Fred1(string input)
-        {
-            Console.WriteLine($"Fred1 {input}");
-            return Task.CompletedTask;
-        }
+        //public Task Echo(string message)
+        //{
+        //    return Clients.Client(Context.ConnectionId).InvokeAsync("Send", $"{Context.ConnectionId}: {message}");
+        //}
 
         public Task DoWork(string data = "(empty)")
         {
@@ -55,6 +46,7 @@ namespace Gluon.Relay.Signalr.Server
 
             return Clients.All.InvokeAsync("DoWork", data);
         }
+
         //public Task DoWork(string methodName = "DoWork", string data = "(empty)")
         //{
         //    var ids = new List<string>();
@@ -75,8 +67,6 @@ namespace Gluon.Relay.Signalr.Server
         //    ids.Add(Context.ConnectionId);
         //    var client = Clients.AllExcept(ids);
         //    return client.InvokeAsync("DoWork", message);
-        //    //client.InvokeAsync("Fred2", "fred2").Wait();
-        //    //return Clients.Client(Context.ConnectionId).InvokeAsync("Fred2", $"{Context.ConnectionId}: {message}");
         //    //return Clients.All.InvokeAsync("Send", $"{Context.ConnectionId} {message}");
         //}
     }
