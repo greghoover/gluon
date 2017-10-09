@@ -24,9 +24,6 @@ namespace Gluon.Tester.Client.Conosle
             var response = rpcClient.DoRequestResponse(request);
             Console.WriteLine(response.ToString());
 
-            //var rpcClient2 = new AppServiceClient("RpcClient2", HubChannelUri);
-            //rpcClient2.Hub.InvokeAsync("DoWork", "WorkData2").Wait();
-
             Console.WriteLine("Press Enter to stop Gluon Relay Tester Client: ");
             Console.ReadLine();
         }

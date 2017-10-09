@@ -2,7 +2,7 @@
 
 namespace Gluon.Relay.Signalr.Client
 {
-    public class AppServiceClient : IClientType
+    public abstract class AppServiceClient : IClientType
     {
         public ICommunicationClient Hub { get; private set; }
         public string InstanceId { get; private set; }
