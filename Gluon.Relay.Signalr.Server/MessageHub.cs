@@ -37,8 +37,10 @@ namespace Gluon.Relay.Signalr.Server
         //    return Clients.Client(Context.ConnectionId).InvokeAsync("Send", $"{Context.ConnectionId}: {message}");
         //}
 
-        public Task DoWork(string data = "(empty)")
+        public Task DoWork(object data)
         {
+            if (data == null)
+                data = "(null)";
             //var ids = new List<string>();
             //ids.Add(Context.ConnectionId);
             //var client = Clients.AllExcept(ids);

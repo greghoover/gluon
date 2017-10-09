@@ -30,7 +30,7 @@ namespace Gluon.Relay.Signalr.Client
                 .WithConsoleLogger()
                 .Build();
 
-                HubConnection.On<string>(DoWorkMethodName, commandData =>
+                HubConnection.On<object>(DoWorkMethodName, commandData =>
                 {
                     if (svcHost != null)
                     {

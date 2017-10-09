@@ -1,21 +1,25 @@
 ﻿using System;
 //
 using Gluon.Relay.Contracts;
+using Gluon.Tester.Contracts;
+using Newtonsoft.Json.Linq;
 
 namespace Gluon.Tester.Server.Library
 {
-    public class RpcService : IServiceType, IServiceType<string, string>
+    public class RpcService : IServiceType, IServiceType<RpcRequestMsg, RpcResponseMsg>
     {
-        public string Execute(string inputMsg)
+        public RpcResponseMsg Execute(RpcRequestMsg inputMsg)
         {
-            var outputMsg = $"Input message '{inputMsg.ToString()}' processed.";
+            var outputMsg = new RpcResponseMsg(inputMsg, "gitrdone");
             Console.WriteLine(outputMsg);
             return outputMsg;
         }
 
-        public object Execute(object inputMsg)
+        public object Execute(object msgIn)
         {
-            return Execute(inputMsg.ToString());
+            var json = msgIn as JObject;
+            var inputMsg = json.ToObject<RpcRequestMsg>();
+            return Execute(inputMsg);
         }
     }
 }
