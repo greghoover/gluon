@@ -3,6 +3,7 @@
 using Gluon.Relay.Signalr.Client;
 using Gluon.Tester.Server.Library;
 using Gluon.Tester.Client.Library;
+using Gluon.Tester.Contracts;
 
 namespace Gluon.Tester.Client.Conosle
 {
@@ -18,8 +19,13 @@ namespace Gluon.Tester.Client.Conosle
             //var proxy = new WorkerProxy(proxyHub);
             //proxy.Invoke<string, string>("DoWork", "WorkData");
 
-            var rpcClient = new AppServiceClient<RpcService>("RpcClient1", HubChannelUri);
-            rpcClient.Hub.InvokeAsync("DoWork", "WorkData").Wait();
+            var rpcClient = new RpcClient("RpcClient1", HubChannelUri);
+            var request = new RpcRequestMsg("mySpecialRequest");
+            var response = rpcClient.DoRequestResponse(request);
+            Console.WriteLine(response.ToString());
+
+            //var rpcClient2 = new AppServiceClient("RpcClient2", HubChannelUri);
+            //rpcClient2.Hub.InvokeAsync("DoWork", "WorkData2").Wait();
 
             Console.WriteLine("Press Enter to stop Gluon Relay Tester Client: ");
             Console.ReadLine();

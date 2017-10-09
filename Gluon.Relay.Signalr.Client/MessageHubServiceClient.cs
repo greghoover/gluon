@@ -7,19 +7,21 @@ using Gluon.Relay.Contracts;
 
 namespace Gluon.Relay.Signalr.Client
 {
-    public class MessageHubClient<TService> : ICommunicationClient where TService : class //, IServiceType
+    public class MessageHubServiceClient<TService> : ICommunicationClient where TService : class, IServiceType
     {
         //public static readonly string WorkerClassName = "Worker";
         public static readonly string DoWorkMethodName = "DoWork";
+
         public string InstanceId { get; private set; }
         public HubConnection HubConnection { get; private set; }
 
-        public MessageHubClient(string instanceId, string messageHubChannel, IServiceHost svcHost) : this(instanceId, new Uri(messageHubChannel), svcHost) { }
-        public MessageHubClient(string instanceId, Uri messageHubChannel, IServiceHost svcHost)
+        public MessageHubServiceClient(string instanceId, string messageHubChannel, IServiceHost svcHost) : this(instanceId, new Uri(messageHubChannel), svcHost) { }
+        public MessageHubServiceClient(string instanceId, Uri messageHubChannel, IServiceHost svcHost)
         {
             this.InstanceId = InstanceId;
             this.InitializeHubConnection(messageHubChannel, svcHost);
         }
+
 
         private HubConnection InitializeHubConnection(Uri messageHubChannel, IServiceHost svcHost)
         {
@@ -28,14 +30,14 @@ namespace Gluon.Relay.Signalr.Client
                 .WithConsoleLogger()
                 .Build();
 
-            HubConnection.On<string>(DoWorkMethodName, commandData =>
-            {
-                if (svcHost != null)
+                HubConnection.On<string>(DoWorkMethodName, commandData =>
                 {
-                    var serviceInstance = svcHost.CreateServiceInstance(typeof(TService));
-                    serviceInstance.Execute(commandData);
-                }
-            });
+                    if (svcHost != null)
+                    {
+                        var serviceInstance = svcHost.CreateServiceInstance(typeof(TService));
+                        serviceInstance.Execute(commandData);
+                    }
+                });
 
             HubConnection.StartAsync().Wait();
 

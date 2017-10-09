@@ -2,7 +2,7 @@
 
 namespace Gluon.Relay.Signalr.Client
 {
-    public class AppServiceClient<TService> : IClientType where TService : class, IServiceType
+    public class AppServiceClient : IClientType
     {
         public ICommunicationClient Hub { get; private set; }
         public string InstanceId { get; private set; }
@@ -22,11 +22,9 @@ namespace Gluon.Relay.Signalr.Client
         {
             if (!this.IsInitialized) // Can only initialize once.
             {
-                this.InstanceId = instanceId ?? typeof(TService).Name;
+                this.InstanceId = instanceId;
                 this.SubscriptionChannel = subscriptionChannel ?? "http://localhost:5000/messagehub";
-                var svcHost = new AppServiceHost<TService>(this.InstanceId, this.SubscriptionChannel);
-                //this.Hub = new MessageHubClient<TService>(this.InstanceId, this.SubscriptionChannel, svcHost);
-                this.Hub = svcHost.Hub;
+                this.Hub = new MessageHubClient(this.InstanceId, this.SubscriptionChannel);
                 this.IsInitialized = true;
             }
         }

@@ -25,7 +25,7 @@ namespace Gluon.Relay.Signalr.Client
             {
                 this.InstanceId = instanceId ?? typeof(TService).Name;
                 this.SubscriptionChannel = subscriptionChannel ?? "http://localhost:5000/messagehub";
-                this.Hub = new MessageHubClient<TService>(this.InstanceId, this.SubscriptionChannel, this);
+                this.Hub = new MessageHubServiceClient<TService>(this.InstanceId, this.SubscriptionChannel, this);
                 this.IsInitialized = true;
             }
         }
