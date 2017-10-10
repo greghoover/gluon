@@ -1,9 +1,4 @@
-﻿using Microsoft.AspNetCore.SignalR.Client;
-using System;
-using System.Threading;
-using System.Threading.Tasks;
-//
-using Gluon.Relay.Contracts;
+﻿using System;
 
 namespace Gluon.Relay.Signalr.Client
 {

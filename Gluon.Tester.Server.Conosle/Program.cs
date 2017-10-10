@@ -1,7 +1,6 @@
-﻿using System;
-//
-using Gluon.Relay.Signalr.Client;
+﻿using Gluon.Relay.Signalr.Client;
 using Gluon.Tester.Server.Library;
+using System;
 
 namespace Gluon.Tester.Server.Conosle
 {

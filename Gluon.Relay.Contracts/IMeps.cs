@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Gluon.Relay.Contracts
+﻿namespace Gluon.Relay.Contracts
 {
     public interface IMessageExchangePattern { }
     public interface IRequestResponse<TRequestMsg, TResponseMsg> : IMessageExchangePattern

@@ -1,9 +1,6 @@
-﻿using System;
-//
-using Gluon.Relay.Signalr.Client;
-using Gluon.Tester.Server.Library;
-using Gluon.Tester.Client.Library;
+﻿using Gluon.Tester.Client.Library;
 using Gluon.Tester.Contracts;
+using System;
 
 namespace Gluon.Tester.Client.Conosle
 {
@@ -13,11 +10,6 @@ namespace Gluon.Tester.Client.Conosle
         static void Main(string[] args)
         {
             Console.WriteLine("Starting Gluon Relay Tester Client...");
-
-            //var asm = typeof(Worker).Assembly;
-            //var proxyHub = new MessageHubClient("proxyHub", HubChannelUri, asm);
-            //var proxy = new WorkerProxy(proxyHub);
-            //proxy.Invoke<string, string>("DoWork", "WorkData");
 
             var rpcClient = new RpcClient("RpcClient1", HubChannelUri);
             var request = new RpcRequestMsg("mySpecialRequest");

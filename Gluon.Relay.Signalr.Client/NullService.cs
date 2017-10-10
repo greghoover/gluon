@@ -1,6 +1,5 @@
-﻿using System;
-//
-using Gluon.Relay.Contracts;
+﻿using Gluon.Relay.Contracts;
+using System;
 
 namespace Gluon.Relay.Signalr.Client
 {
