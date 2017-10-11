@@ -11,8 +11,7 @@ namespace Gluon.Tester.Client.Library
 
         public RpcResponseMsg DoRequestResponse(RpcRequestMsg request)
         {
-            //this.Hub.InvokeAsync("DoWork", request.RequestString).Wait();
-            this.Hub.InvokeAsync("DoWork", request).Wait();
+            this.Hub.InvokeAsync(CX.PushToClientMethodName, request, null).Wait();
 
             // Fudge the respone message for now b/c getting return message back not yet implemented.
             var response = new RpcResponseMsg(request, "gitrdone (fudged)");

@@ -8,8 +8,6 @@ namespace Gluon.Relay.Signalr.Client
 {
     public class MessageHubServiceClient<TService> : ICommunicationClient where TService : class, IServiceType
     {
-        public static readonly string DoWorkMethodName = "DoWork";
-
         public string InstanceId { get; private set; }
         public HubConnection HubConnection { get; private set; }
 
@@ -28,7 +26,7 @@ namespace Gluon.Relay.Signalr.Client
                 .WithConsoleLogger()
                 .Build();
 
-                HubConnection.On<object>(DoWorkMethodName, commandData =>
+                HubConnection.On<object>(CX.WorkerMethodName, commandData =>
                 {
                     if (svcHost != null)
                     {
@@ -40,16 +38,6 @@ namespace Gluon.Relay.Signalr.Client
             HubConnection.StartAsync().Wait();
 
             return HubConnection;
-        }
-        public Task Send(string input)
-        {
-            Console.WriteLine($"Send {input}");
-            return Task.CompletedTask;
-        }
-        public Task Send(string input, string input2)
-        {
-            Console.WriteLine($"Send {input}");
-            return Task.CompletedTask;
         }
 
         public Task SendAsync(string methodName, CancellationToken cancellationToken, params object[] args)
