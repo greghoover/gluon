@@ -3,7 +3,8 @@
     public class CX
     {
         public static string WorkerMethodName { get { return "DoWork"; } }
-        public static string PushToClientMethodName { get { return "PushToClient"; } }
-        //public static string PushToClientsMethodName { get { return "PushToClients"; } }
+
+        //public static string PushToClientMethodName { get { return "PushToClientAsync"; } }
+        public static string PushToClientsMethodName { get { return "PushToClientsAsync"; } }
     }
 }

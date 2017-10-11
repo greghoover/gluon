@@ -7,33 +7,44 @@ namespace Gluon.Relay.Signalr.Server
 {
     public class MessageHub : Hub, ICommunicationServer
     {
-        //public Task PushToClients(object request, params string[] clientIds)
-        //{
-        //    if (clientIds == null)
-        //        return Task.CompletedTask;
-
-        //    foreach (var clientId in clientIds)
-        //    {
-        //        //PushToClient(request, clientId);
-        //        PushToClient(request, null); // just results for now
-        //    }
-        //    return Task.CompletedTask;
-        //}
-        public Task PushToClient(object request, string clientId)
+        public Task PushToClientsAsync(object request, params string[] clientIds)
         {
-            IClientProxy client = null;
-            if (clientId != null)
-            {
-                // todo: do lookup on clientId
-                client = Clients.Client(clientId);
-            }
-            else
+            // The real null check implementation. Bypassed temporarily.
+            //if (clientIds == null)
+            //    return Task.CompletedTask;
+
+            // The temporary null check implementation. Fudge to make it send for now.
+            if (clientIds == null)
             {
                 var ids = new List<string>();
                 ids.Add(Context.ConnectionId);
-                client = Clients.AllExcept(ids);
+                var client = Clients.AllExcept(ids);
+                this.PushToClientAsync(request, client);
+                return Task.CompletedTask;
             }
+
+            foreach (var clientId in clientIds)
+            {
+                this.PushToClientAsync(request, clientId);
+            }
+            return Task.CompletedTask;
+        }
+
+        private Task PushToClientAsync(object request, IClientProxy client)
+        {
+            if (client == null)
+                return Task.CompletedTask;
+
             return client.InvokeAsync(CX.WorkerMethodName, request);
+        }
+        private Task PushToClientAsync(object request, string clientId)
+        {
+            if (clientId == null)
+                return Task.CompletedTask;
+
+            // todo: do lookup on clientId
+            var client = Clients.Client(clientId);
+            return this.PushToClientAsync(request, client);
         }
 
     }
