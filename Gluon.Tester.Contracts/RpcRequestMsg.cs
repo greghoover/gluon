@@ -1,8 +1,9 @@
-﻿using System;
+﻿using Gluon.Relay.Contracts;
+using System;
 
 namespace Gluon.Tester.Contracts
 {
-    public class RpcRequestMsg
+    public class RpcRequestMsg : RelayMessageBase
     {
         public string RequestString { get; set; }
         public DateTimeOffset RequestedOn { get; set; }

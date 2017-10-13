@@ -5,6 +5,7 @@ namespace Gluon.Relay.Signalr.Client
     public abstract class AppServiceClient : IClientType
     {
         public ICommunicationClient Hub { get; private set; }
+        public MessageHubClient HubClient { get { return Hub as MessageHubClient; } }
         public string InstanceId { get; private set; }
         public bool IsInitialized { get; private set; }
         public string SubscriptionChannel { get; private set; }

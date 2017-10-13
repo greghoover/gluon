@@ -1,5 +1,7 @@
 ﻿using Gluon.Relay.Contracts;
 using Microsoft.AspNetCore.SignalR;
+using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -7,6 +9,36 @@ namespace Gluon.Relay.Signalr.Server
 {
     public class MessageHub : Hub, ICommunicationServer
     {
+        public static ConcurrentDictionary<string, TaskCompletionSource<object>> RequestResponseCache { get; private set; }
+        static MessageHub()
+        {
+            RequestResponseCache = new ConcurrentDictionary<string, TaskCompletionSource<object>>();
+        }
+
+        public Task<object> RpcToClientAsync(string correlationId, object request, string clientId)
+        {
+            correlationId = "fred";
+
+            var tcs = new TaskCompletionSource<object>();
+            RequestResponseCache.TryAdd(correlationId, tcs);
+
+            var ids = new List<string>();
+            ids.Add(Context.ConnectionId);
+            var client = Clients.AllExcept(ids);
+            client.InvokeAsync(CX.WorkerMethodName, request);
+
+            return tcs.Task;
+        }
+        public Task RpcFromClientAsync(string correlationId, object response)
+        {
+            correlationId = "fred"; // temporary
+
+            TaskCompletionSource<object> tcs;
+            RequestResponseCache.TryRemove(correlationId, out tcs);
+            tcs.SetResult(response);
+            return Task.CompletedTask;
+        }
+
         public Task PushToClientsAsync(object request, params string[] clientIds)
         {
             // The real null check implementation. Bypassed temporarily.
@@ -30,13 +62,6 @@ namespace Gluon.Relay.Signalr.Server
             return Task.CompletedTask;
         }
 
-        private Task PushToClientAsync(object request, IClientProxy client)
-        {
-            if (client == null)
-                return Task.CompletedTask;
-
-            return client.InvokeAsync(CX.WorkerMethodName, request);
-        }
         private Task PushToClientAsync(object request, string clientId)
         {
             if (clientId == null)
@@ -46,6 +71,12 @@ namespace Gluon.Relay.Signalr.Server
             var client = Clients.Client(clientId);
             return this.PushToClientAsync(request, client);
         }
+        private Task PushToClientAsync(object request, IClientProxy client)
+        {
+            if (client == null)
+                return Task.CompletedTask;
 
+            return client.InvokeAsync(CX.WorkerMethodName, request);
+        }
     }
 }

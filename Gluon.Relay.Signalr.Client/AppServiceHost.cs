@@ -3,7 +3,7 @@ using System;
 
 namespace Gluon.Relay.Signalr.Client
 {
-    public class AppServiceHost<TService> : IServiceHost, IServiceHost<TService> where TService : class, IServiceType
+    public class AppServiceHost<TService> : IServiceHost /*, IServiceHost<TService>*/ where TService : class, IServiceType
     {
         public ICommunicationClient Hub { get; private set; }
         public string InstanceId { get; private set; }
@@ -29,13 +29,13 @@ namespace Gluon.Relay.Signalr.Client
                 this.IsInitialized = true;
             }
         }
-        public TService CreateServiceInstance()
-        {
-            if (this.IsInitialized)
-                return Activator.CreateInstance<TService>();
-            else
-                return default(TService);
-        }
+        //public TService CreateServiceInstance()
+        //{
+        //    if (this.IsInitialized)
+        //        return Activator.CreateInstance<TService>();
+        //    else
+        //        return default(TService);
+        //}
 
         IServiceType IServiceHost.CreateServiceInstance(Type serviceType)
         {

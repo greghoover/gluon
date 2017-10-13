@@ -1,6 +1,8 @@
-﻿namespace Gluon.Tester.Contracts
+﻿using Gluon.Relay.Contracts;
+
+namespace Gluon.Tester.Contracts
 {
-    public class RpcResponseMsg
+    public class RpcResponseMsg : RelayMessageBase
     {
         public RpcRequestMsg Request { get; set; }
         public string ResponseString { get; set; }
@@ -9,6 +11,7 @@
         public RpcResponseMsg(RpcRequestMsg request) : this(request, string.Empty) { }
         public RpcResponseMsg(RpcRequestMsg request, string responseString)
         {
+            //this.CorrelationId = request.CorrelationId;
             this.Request = request;
             this.ResponseString = responseString;
         }

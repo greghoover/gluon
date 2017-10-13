@@ -31,7 +31,7 @@ namespace Gluon.Relay.Signalr.Client
                     if (svcHost != null)
                     {
                         var serviceInstance = svcHost.CreateServiceInstance(typeof(TService));
-                        serviceInstance.Execute(commandData);
+                        serviceInstance.Execute(this, commandData);
                     }
                 });
 
@@ -47,8 +47,12 @@ namespace Gluon.Relay.Signalr.Client
 
         public Task InvokeAsync(string methodName, params object[] args)
         {
-            //return this.HubConnection.InvokeAsync(methodName, returnType, cancellationToken, args);
             return this.HubConnection.InvokeAsync(methodName, args);
+        }
+
+        public Task<TResult> InvokeAsync<TResult>(string methodName, params object[] args)
+        {
+            return this.HubConnection.InvokeAsync<TResult>(methodName, args);
         }
     }
 }

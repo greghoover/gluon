@@ -7,18 +7,20 @@ namespace Gluon.Tester.Server.Library
 {
     public class RpcService : IServiceType, IServiceType<RpcRequestMsg, RpcResponseMsg>
     {
-        public RpcResponseMsg Execute(RpcRequestMsg inputMsg)
+        public RpcResponseMsg Execute(ICommunicationClient hub, RpcRequestMsg request)
         {
-            var outputMsg = new RpcResponseMsg(inputMsg, "gitrdone");
-            Console.WriteLine(outputMsg);
-            return outputMsg;
+            var response = new RpcResponseMsg(request, "gitrdone");
+            Console.WriteLine(response);
+            hub.InvokeAsync(CX.RpcFromClientMethodName, request.CorrelationId, response).Wait();
+
+            return response;
         }
 
-        public object Execute(object msgIn)
+        public object Execute(ICommunicationClient hub, object msgIn)
         {
             var json = msgIn as JObject;
-            var inputMsg = json.ToObject<RpcRequestMsg>();
-            return Execute(inputMsg);
+            var request = json.ToObject<RpcRequestMsg>();
+            return Execute(hub, request);
         }
     }
 }
