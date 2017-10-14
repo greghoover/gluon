@@ -11,8 +11,11 @@ namespace Gluon.Tester.Contracts
         public RpcResponseMsg(RpcRequestMsg request) : this(request, string.Empty) { }
         public RpcResponseMsg(RpcRequestMsg request, string responseString)
         {
-            //this.CorrelationId = request.CorrelationId;
-            this.Request = request;
+            if (request != null)
+            {
+                this.CorrelationId = request.CorrelationId;
+                this.Request = request;
+            }
             this.ResponseString = responseString;
         }
 

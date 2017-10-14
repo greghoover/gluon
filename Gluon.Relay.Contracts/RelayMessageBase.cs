@@ -2,12 +2,17 @@
 
 namespace Gluon.Relay.Contracts
 {
-    public abstract class RelayMessageBase
+    public class RelayMessageBase : IRelayMessage
     {
-        public string CorrelationId { get; protected set; }
+        public string MessageId { get; set; }
+        public DateTimeOffset CreatedOn { get; set; }
+        public string CorrelationId { get; set; }
 
         public RelayMessageBase()
         {
+            this.MessageId = Guid.NewGuid().ToString();
+            this.CreatedOn = DateTimeOffset.UtcNow;
+            this.CorrelationId = Guid.NewGuid().ToString();
         }
     }
 }

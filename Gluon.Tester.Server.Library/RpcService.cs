@@ -11,7 +11,7 @@ namespace Gluon.Tester.Server.Library
         {
             var response = new RpcResponseMsg(request, "gitrdone");
             Console.WriteLine(response);
-            hub.InvokeAsync(CX.ResponseFromClientMethodName, request.CorrelationId, response).Wait();
+            hub.InvokeAsync(CX.ResponseFromClientMethodName, response.CorrelationId, response).Wait();
 
             return response;
         }
