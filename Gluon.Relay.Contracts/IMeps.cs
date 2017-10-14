@@ -1,14 +1,17 @@
 ﻿namespace Gluon.Relay.Contracts
 {
     public interface IMessageExchangePattern { }
+
     public interface IRequestResponse<TRequestMsg, TResponseMsg> : IMessageExchangePattern
     {
-        TResponseMsg DoRequestResponse(TRequestMsg request);
+        TResponseMsg RequestResponse(TRequestMsg request);
     }
-    public interface IFireAndForget<TEvent> : IMessageExchangePattern
+
+    public interface IEmit<TEvent> : IMessageExchangePattern
     {
         void Emit(TEvent msg);
     }
+
     //public interface ISend<TSend>
     //{
     //    void Send(TSend msg);

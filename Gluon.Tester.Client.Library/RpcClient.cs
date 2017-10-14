@@ -11,11 +11,9 @@ namespace Gluon.Tester.Client.Library
         public RpcClient() : base() { }
         public RpcClient(string instanceId, string subscriptionChannel) : base(instanceId, subscriptionChannel) { }
 
-        public RpcResponseMsg DoRequestResponse(RpcRequestMsg request)
+        public RpcResponseMsg RequestResponse(RpcRequestMsg request)
         {
-            //this.Hub.InvokeAsync(CX.PushToClientsMethodName, request, null).Wait();
-            //this.Hub.InvokeAsync(CX.RpcToClientMethodName, request.CorrelationId, request, null);
-            var result = this.Hub.InvokeAsync<object>(CX.RpcToClientMethodName, request.CorrelationId, request, null).Result;
+            var result = this.Hub.InvokeAsync<object>(CX.RequestToClientMethodName, request.CorrelationId, request, null).Result;
 
             var json = result as JObject;
             var response = json.ToObject<RpcResponseMsg>();

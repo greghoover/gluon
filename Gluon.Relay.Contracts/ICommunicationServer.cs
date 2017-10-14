@@ -4,8 +4,7 @@ namespace Gluon.Relay.Contracts
 {
     public interface ICommunicationServer
     {
-        Task<object> RpcToClientAsync(string correlationId, object request, string clientId);
-        Task PushToClientsAsync(object request, params string[] clientIds);
-        //Task PushToGroupsAsync(object request, string groupIds);
+        Task<object> RequestToClientAsync(string correlationId, object request, string clientId);
+        Task ResponseFromClientAsync(string correlationId, object response);
     }
 }

@@ -26,23 +26,18 @@ namespace Gluon.Relay.Signalr.Client
                 .WithConsoleLogger()
                 .Build();
 
-                HubConnection.On<object>(CX.WorkerMethodName, commandData =>
+            // todo: refactor the client invocation method signatures
+            HubConnection.On<object>(CX.WorkerMethodName, commandData =>
+            {
+                if (svcHost != null)
                 {
-                    if (svcHost != null)
-                    {
-                        var serviceInstance = svcHost.CreateServiceInstance(typeof(TService));
-                        serviceInstance.Execute(this, commandData);
-                    }
-                });
+                    var serviceInstance = svcHost.CreateServiceInstance(typeof(TService));
+                    serviceInstance.Execute(this, commandData);
+                }
+            });
 
             HubConnection.StartAsync().Wait();
-
             return HubConnection;
-        }
-
-        public Task SendAsync(string methodName, CancellationToken cancellationToken, params object[] args)
-        {
-            return this.HubConnection.SendAsync(methodName, cancellationToken, args);
         }
 
         public Task InvokeAsync(string methodName, params object[] args)

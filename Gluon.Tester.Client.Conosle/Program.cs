@@ -13,7 +13,7 @@ namespace Gluon.Tester.Client.Conosle
 
             var rpcClient = new RpcClient("RpcClient1", HubChannelUri);
             var request = new RpcRequestMsg("mySpecialRequest");
-            var response = rpcClient.DoRequestResponse(request);
+            var response = rpcClient.RequestResponse(request);
             Console.WriteLine(response.ToString());
 
             Console.WriteLine("Press Enter to stop Gluon Relay Tester Client: ");

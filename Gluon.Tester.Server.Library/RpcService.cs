@@ -11,16 +11,18 @@ namespace Gluon.Tester.Server.Library
         {
             var response = new RpcResponseMsg(request, "gitrdone");
             Console.WriteLine(response);
-            hub.InvokeAsync(CX.RpcFromClientMethodName, request.CorrelationId, response).Wait();
+            hub.InvokeAsync(CX.ResponseFromClientMethodName, request.CorrelationId, response).Wait();
 
             return response;
         }
 
-        public object Execute(ICommunicationClient hub, object msgIn)
+        // todo: Eliminate the untyped Execute method, or at least move it to
+        // a more centralized area. Don't want this noise in every service class.
+        public object Execute(ICommunicationClient hub, object request)
         {
-            var json = msgIn as JObject;
-            var request = json.ToObject<RpcRequestMsg>();
-            return Execute(hub, request);
+            var json = request as JObject;
+            var requestMsg = json.ToObject<RpcRequestMsg>();
+            return Execute(hub, requestMsg);
         }
     }
 }
