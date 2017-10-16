@@ -14,7 +14,7 @@ namespace Gluon.Relay.Signalr.Server
             RequestResponseCache = new ConcurrentDictionary<string, TaskCompletionSource<object>>();
         }
 
-        public Task<object> RequestToClientAsync(string correlationId, object request, string clientId)
+        public Task<object> RelayRequestAsync(string correlationId, object request, string clientId)
         {
             var tcs = new TaskCompletionSource<object>();
             RequestResponseCache.TryAdd(correlationId, tcs);
@@ -28,7 +28,7 @@ namespace Gluon.Relay.Signalr.Server
 
             return tcs.Task;
         }
-        public Task ResponseFromClientAsync(string correlationId, object response)
+        public Task RelayResponseAsync(string correlationId, object response)
         {
             TaskCompletionSource<object> tcs;
             RequestResponseCache.TryRemove(correlationId, out tcs);

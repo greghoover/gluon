@@ -2,8 +2,8 @@
 {
     public class CX
     {
-        public static string RequestToClientMethodName { get { return "RequestToClientAsync"; } }
-        public static string ResponseFromClientMethodName { get { return "ResponseFromClientAsync"; } }
+        public static string RelayRequestMethodName { get { return "RelayRequestAsync"; } }
+        public static string RelayResponseMethodName { get { return "RelayResponseAsync"; } }
 
         public static string WorkerMethodName { get { return "DoWork"; } }
     }
