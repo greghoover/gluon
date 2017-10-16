@@ -1,4 +1,5 @@
 ﻿using Gluon.Relay.Contracts;
+using Newtonsoft.Json.Linq;
 
 namespace Gluon.Relay.Signalr.Client
 {
@@ -29,5 +30,31 @@ namespace Gluon.Relay.Signalr.Client
                 this.IsInitialized = true;
             }
         }
+
+        public TResponse RelayCommand<TRequest, TResponse>(TRequest request)
+            where TRequest : RelayMessageBase
+            where TResponse : RelayMessageBase
+        {
+            var result = this.Hub.InvokeAsync<object>(CX.RequestToClientMethodName, request.CorrelationId, request, null).Result;
+
+            var json = result as JObject;
+            var response = json.ToObject<TResponse>();
+            return response;
+        }
+        public TResponse RelayQuery<TRequest, TResponse>(TRequest request)
+            where TRequest : RelayMessageBase
+            where TResponse : RelayMessageBase
+        {
+            var result = this.Hub.InvokeAsync<object>(CX.RequestToClientMethodName, request.CorrelationId, request, null).Result;
+
+            var json = result as JObject;
+            var response = json.ToObject<TResponse>();
+            return response;
+        }
+        public void RelayEvent<TEvent>(TEvent evt) where TEvent : RelayMessageBase
+        {
+            throw new System.NotImplementedException();
+        }
+
     }
 }
