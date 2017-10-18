@@ -25,7 +25,8 @@ namespace Gluon.Relay.Signalr.Client
             if (!this.IsInitialized) // Can only initialize once.
             {
                 this.InstanceId = instanceId;
-                this.SubscriptionChannel = subscriptionChannel ?? "http://localhost:5000/messagehub";
+                var qs = $"?{ClientSpecEnum.ClientId}={InstanceId}";
+                this.SubscriptionChannel = (subscriptionChannel ?? "http://localhost:5000/messagehub") + qs;
                 this.Hub = new MessageHubClient(this.InstanceId, this.SubscriptionChannel);
                 this.IsInitialized = true;
             }

@@ -6,5 +6,7 @@
         public static string RelayResponseMethodName { get { return "RelayResponseAsync"; } }
 
         public static string WorkerMethodName { get { return "DoWork"; } }
+
+        //public static string AuthorizationKey { get { return "Authorization"; } }
     }
 }

@@ -1,5 +1,7 @@
 ﻿using Gluon.Relay.Contracts;
 using Microsoft.AspNetCore.SignalR.Client;
+using Microsoft.AspNetCore.SignalR.Internal.Protocol;
+using Microsoft.AspNetCore.Sockets.Client;
 using System;
 using System.Threading.Tasks;
 
@@ -20,12 +22,21 @@ namespace Gluon.Relay.Signalr.Client
 
         private HubConnection InitializeHubConnection(Uri messageHubChannel, IServiceHost svcHost)
         {
-            HubConnection = new HubConnectionBuilder()
+            HubConnection = (new HubConnectionBuilder() as IHubConnectionBuilder)
+                //.WithUrl(messageHubChannel + @"?userid=fred&clientid=client1")
                 .WithUrl(messageHubChannel)
                 .WithConsoleLogger()
                 .Build();
 
             // todo: refactor the client invocation method signatures
+            HubConnection.On<object>(CX.WorkerMethodName, commandData =>
+            {
+                if (svcHost != null)
+                {
+                    var serviceInstance = svcHost.CreateServiceInstance(typeof(TService));
+                    serviceInstance.Execute(this, commandData);
+                }
+            });
             HubConnection.On<object>(CX.WorkerMethodName, commandData =>
             {
                 if (svcHost != null)
