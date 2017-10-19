@@ -13,22 +13,10 @@ namespace Gluon.Relay.Signalr.Client
         public AppServiceHost() { }
         public AppServiceHost(string instanceId, string subscriptionChannel)
         {
-            this.Initialize(instanceId, subscriptionChannel);
-        }
-
-        /// <summary>
-        /// Does nothing if already initialized.
-        /// </summary>
-        public void Initialize(string instanceId, string subscriptionChannel)
-        {
-            if (!this.IsInitialized) // Can only initialize once.
-            {
-                this.InstanceId = instanceId ?? typeof(TService).Name;
-                var qs = $"?{ClientSpecEnum.ClientId}={InstanceId}";
-                this.SubscriptionChannel = (subscriptionChannel ?? "http://localhost:5000/messagehub") + qs;
-                this.Hub = new MessageHubServiceClient<TService>(this.InstanceId, this.SubscriptionChannel, this);
-                this.IsInitialized = true;
-            }
+            this.InstanceId = instanceId ?? typeof(TService).Name;
+            var qs = $"?{ClientSpecEnum.ClientId}={InstanceId}";
+            this.SubscriptionChannel = (subscriptionChannel ?? "http://localhost:5000/messagehub") + qs;
+            this.Hub = new MessageHubServiceClient<TService>(this.InstanceId, this.SubscriptionChannel, this);
         }
         //public TService CreateServiceInstance()
         //{

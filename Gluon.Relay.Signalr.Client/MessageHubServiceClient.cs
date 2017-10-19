@@ -1,7 +1,5 @@
 ﻿using Gluon.Relay.Contracts;
 using Microsoft.AspNetCore.SignalR.Client;
-using Microsoft.AspNetCore.SignalR.Internal.Protocol;
-using Microsoft.AspNetCore.Sockets.Client;
 using System;
 using System.Threading.Tasks;
 
@@ -16,14 +14,8 @@ namespace Gluon.Relay.Signalr.Client
         public MessageHubServiceClient(string instanceId, Uri messageHubChannel, IServiceHost svcHost)
         {
             this.InstanceId = InstanceId;
-            this.InitializeHubConnection(messageHubChannel, svcHost);
-        }
 
-
-        private HubConnection InitializeHubConnection(Uri messageHubChannel, IServiceHost svcHost)
-        {
             HubConnection = (new HubConnectionBuilder() as IHubConnectionBuilder)
-                //.WithUrl(messageHubChannel + @"?userid=fred&clientid=client1")
                 .WithUrl(messageHubChannel)
                 .WithConsoleLogger()
                 .Build();
@@ -47,7 +39,6 @@ namespace Gluon.Relay.Signalr.Client
             });
 
             HubConnection.StartAsync().Wait();
-            return HubConnection;
         }
 
         public Task InvokeAsync(string methodName, params object[] args)

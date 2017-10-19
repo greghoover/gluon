@@ -76,7 +76,7 @@ namespace Gluon.Relay.Signalr.Server
                 return;
 
             var key = $"{clientIdType.ToString()}:{clientIdValue}";
-            ClientLookup.AddOrUpdate(key, msg, (dummy, old) => { return msg; });
+            ClientLookup.AddOrUpdate(key, msg, (k, old) => msg);
         }
 
         public Task Logoff(LogoffMsg msg)

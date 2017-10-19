@@ -11,25 +11,12 @@ namespace Gluon.Relay.Signalr.Client
         public bool IsInitialized { get; private set; }
         public string SubscriptionChannel { get; private set; }
 
-        public AppServiceClient() { }
         public AppServiceClient(string instanceId, string subscriptionChannel)
         {
-            this.Initialize(instanceId, subscriptionChannel);
-        }
-
-        /// <summary>
-        /// Does nothing if already initialized.
-        /// </summary>
-        public void Initialize(string instanceId, string subscriptionChannel)
-        {
-            if (!this.IsInitialized) // Can only initialize once.
-            {
-                this.InstanceId = instanceId;
-                var qs = $"?{ClientSpecEnum.ClientId}={InstanceId}";
-                this.SubscriptionChannel = (subscriptionChannel ?? "http://localhost:5000/messagehub") + qs;
-                this.Hub = new MessageHubClient(this.InstanceId, this.SubscriptionChannel);
-                this.IsInitialized = true;
-            }
+            this.InstanceId = instanceId;
+            var qs = $"?{ClientSpecEnum.ClientId}={InstanceId}";
+            this.SubscriptionChannel = (subscriptionChannel ?? "http://localhost:5000/messagehub") + qs;
+            this.Hub = new MessageHubClient(this.InstanceId, this.SubscriptionChannel);
         }
 
         public TResponse RelayRequestResponse<TRequest, TResponse>(TRequest request)

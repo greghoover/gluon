@@ -6,7 +6,6 @@ namespace Gluon.Tester.Client.Library
 {
     public class RpcClient : AppServiceClient, IRequestResponse<RpcRequestMsg, RpcResponseMsg>
     {
-        public RpcClient() : base() { }
         public RpcClient(string instanceId, string subscriptionChannel) : base(instanceId, subscriptionChannel) { }
 
         public RpcResponseMsg RequestResponse(RpcRequestMsg request)
