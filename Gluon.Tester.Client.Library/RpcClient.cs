@@ -10,7 +10,7 @@ namespace Gluon.Tester.Client.Library
 
         public RpcResponseMsg RequestResponse(RpcRequestMsg request)
         {
-            return RelayRequestResponse<RpcRequestMsg, RpcResponseMsg>(request);
+            return RelayRequestResponse<RpcRequestMsg, RpcResponseMsg>(request, null);
         }
     }
 }

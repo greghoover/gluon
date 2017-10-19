@@ -27,14 +27,7 @@ namespace Gluon.Relay.Signalr.Client
                 {
                     var serviceInstance = svcHost.CreateServiceInstance(typeof(TService));
                     serviceInstance.Execute(this, commandData);
-                }
-            });
-            HubConnection.On<object>(CX.WorkerMethodName, commandData =>
-            {
-                if (svcHost != null)
-                {
-                    var serviceInstance = svcHost.CreateServiceInstance(typeof(TService));
-                    serviceInstance.Execute(this, commandData);
+                    serviceInstance = null;
                 }
             });
 

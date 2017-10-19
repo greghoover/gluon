@@ -11,7 +11,6 @@ namespace Gluon.Relay.Contracts
     }
     //public interface IServiceHost<TServiceType> where TServiceType : class
     //{
-    //    void Initialize(string instanceId, string subscriptionId);
     //    TServiceType CreateServiceInstance();
     //}
 }

@@ -1,5 +1,4 @@
 ﻿using Gluon.Relay.Contracts;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.AspNetCore.Sockets.Http.Features;
 using System;
@@ -117,18 +116,47 @@ namespace Gluon.Relay.Signalr.Server
             else
                 return default(LogonMsg);
         }
+        private LogonMsg GetLookup(ClientSpecEnum? clientIdType, string clientIdValue)
+        {
+            if (clientIdType == null || clientIdValue == null)
+                return default(LogonMsg);
+
+            LogonMsg msg;
+            var key = $"{clientIdType.ToString()}:{clientIdValue}";
+            if (ClientLookup.TryGetValue(key, out msg))
+                return msg;
+            else
+                return default(LogonMsg);
+        }
 
         public Task<object> RelayRequestAsync(string correlationId, object request, string clientId)
         {
             var tcs = new TaskCompletionSource<object>();
-            RequestResponseCache.TryAdd(correlationId, tcs);
+            var tf = RequestResponseCache.TryAdd(correlationId, tcs);
 
-            var ids = new List<string>();
-            ids.Add(Context.ConnectionId);
-            var client = Clients.AllExcept(ids);
-            // (new System.Collections.Concurrent.IDictionaryDebugView<string, Microsoft.AspNetCore.SignalR.HubConnectionContext>(((Microsoft.AspNetCore.SignalR.DefaultHubLifetimeManager<Gluon.Relay.Signalr.Server.MessageHub>)((Microsoft.AspNetCore.SignalR.AllClientsExceptProxy<Gluon.Relay.Signalr.Server.MessageHub>)client)._lifetimeManager)._connections._connections).Items[1]).Key
+            IClientProxy client = null;
+            if (clientId == null)
+            {
+                var ids = new List<string>();
+                ids.Add(Context.ConnectionId);
+                client = Clients.AllExcept(ids);
+            }
+            else
+            {
+                var lookup = GetLookup(ClientSpecEnum.ClientId, clientId);
+                if (lookup != null)
+                {
+                    var connectionId = lookup.ConnectionId;
+                    if (connectionId != null)
+                    {
+                        client = Clients.Client(connectionId);
+                    }
+                }
+            }
+
             // todo: refactor the client invocation method signatures
-            client.InvokeAsync(CX.WorkerMethodName, request);
+            if (client != null)
+                client.InvokeAsync(CX.WorkerMethodName, request);
 
             return tcs.Task;
         }
@@ -138,6 +166,7 @@ namespace Gluon.Relay.Signalr.Server
             RequestResponseCache.TryRemove(correlationId, out tcs);
             tcs.SetResult(response);
             return Task.CompletedTask;
+            //return tcs.Task;
         }
     }
 }

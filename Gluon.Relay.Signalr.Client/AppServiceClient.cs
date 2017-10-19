@@ -3,12 +3,11 @@ using Newtonsoft.Json.Linq;
 
 namespace Gluon.Relay.Signalr.Client
 {
-    public abstract class AppServiceClient : IClientType
+    public class AppServiceClient : IClientType
     {
         public ICommunicationClient Hub { get; private set; }
         public MessageHubClient HubClient { get { return Hub as MessageHubClient; } }
         public string InstanceId { get; private set; }
-        public bool IsInitialized { get; private set; }
         public string SubscriptionChannel { get; private set; }
 
         public AppServiceClient(string instanceId, string subscriptionChannel)
@@ -19,11 +18,11 @@ namespace Gluon.Relay.Signalr.Client
             this.Hub = new MessageHubClient(this.InstanceId, this.SubscriptionChannel);
         }
 
-        public TResponse RelayRequestResponse<TRequest, TResponse>(TRequest request)
+        public TResponse RelayRequestResponse<TRequest, TResponse>(TRequest request, string clientId)
             where TRequest : RelayMessageBase
             where TResponse : RelayMessageBase
         {
-            var result = this.Hub.InvokeAsync<object>(CX.RelayRequestMethodName, request.CorrelationId, request, null).Result;
+            var result = this.Hub.InvokeAsync<object>(CX.RelayRequestMethodName, request.CorrelationId, request, clientId).Result;
 
             var json = result as JObject;
             var response = json.ToObject<TResponse>();
@@ -33,6 +32,5 @@ namespace Gluon.Relay.Signalr.Client
         {
             throw new System.NotImplementedException();
         }
-
     }
 }

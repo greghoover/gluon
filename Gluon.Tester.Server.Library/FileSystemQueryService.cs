@@ -1,0 +1,37 @@
+﻿using Gluon.Relay.Contracts;
+using Gluon.Tester.Contracts;
+using Newtonsoft.Json.Linq;
+using System;
+using System.IO;
+
+namespace Gluon.Tester.Server.Library
+{
+    public class FileSystemQueryService : IServiceType, IServiceType<FileSystemQueryRqst, FileSystemQueryRspn>
+    {
+        public FileSystemQueryRspn Execute(ICommunicationClient hub, FileSystemQueryRqst request)
+        {
+            string responseText = null;
+            switch (request.QueryType)
+            {
+                case FileSystemQueryTypeEnum.DirectoryExists:
+                    responseText = Directory.Exists(request.FolderPath).ToString();
+                    break;
+            }
+
+            var response = new FileSystemQueryRspn(request, responseText);
+            Console.WriteLine(response);
+            hub.InvokeAsync(CX.RelayResponseMethodName, response.CorrelationId, response).Wait();
+
+            return response;
+        }
+
+        // todo: Eliminate the untyped Execute method, or at least move it to
+        // a more centralized area. Don't want this noise in every service class.
+        public object Execute(ICommunicationClient hub, object request)
+        {
+            var json = request as JObject;
+            var rqst = json.ToObject<FileSystemQueryRqst>();
+            return Execute(hub, rqst);
+        }
+    }
+}

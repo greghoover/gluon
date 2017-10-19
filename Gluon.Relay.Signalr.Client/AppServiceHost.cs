@@ -7,7 +7,6 @@ namespace Gluon.Relay.Signalr.Client
     {
         public ICommunicationClient Hub { get; private set; }
         public string InstanceId { get; private set; }
-        public bool IsInitialized { get; private set; }
         public string SubscriptionChannel { get; private set; }
 
         public AppServiceHost() { }
@@ -20,18 +19,12 @@ namespace Gluon.Relay.Signalr.Client
         }
         //public TService CreateServiceInstance()
         //{
-        //    if (this.IsInitialized)
-        //        return Activator.CreateInstance<TService>();
-        //    else
-        //        return default(TService);
+        //    return Activator.CreateInstance<TService>();
         //}
 
         IServiceType IServiceHost.CreateServiceInstance(Type serviceType)
         {
-            if (this.IsInitialized)
-                return (IServiceType)Activator.CreateInstance(serviceType);
-            else
-                return default(IServiceType);
+            return (IServiceType)Activator.CreateInstance(serviceType);
         }
     }
 }
