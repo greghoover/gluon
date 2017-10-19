@@ -29,6 +29,7 @@ namespace Gluon.Tester.Client.Conosle
                 Console.WriteLine(response);
             }
 
+            appClient.HubClient.HubConnection.DisposeAsync().Wait();
             Console.WriteLine("Press Enter to stop Gluon Relay Tester Client: ");
             Console.ReadLine();
         }

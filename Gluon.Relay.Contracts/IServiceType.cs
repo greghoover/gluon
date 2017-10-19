@@ -2,11 +2,11 @@
 {
     public interface IServiceType
     {
-        object Execute(ICommunicationClient hub, object request);
+        void Execute(ICommunicationClient hub, object request);
     }
 
     public interface IServiceType<TRequest, TResponse> where TRequest : class where TResponse : class
     {
-        TResponse Execute(ICommunicationClient hub, TRequest request);
+        TResponse Execute(TRequest request);
     }
 }

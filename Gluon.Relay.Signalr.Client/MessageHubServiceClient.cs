@@ -27,7 +27,6 @@ namespace Gluon.Relay.Signalr.Client
                 {
                     var serviceInstance = svcHost.CreateServiceInstance(typeof(TService));
                     serviceInstance.Execute(this, commandData);
-                    serviceInstance = null;
                 }
             });
 
@@ -36,7 +35,12 @@ namespace Gluon.Relay.Signalr.Client
 
         public Task InvokeAsync(string methodName, params object[] args)
         {
-            return this.HubConnection.InvokeAsync(methodName, args);
+            // Passing InvokeAsync task back to the caller or
+            // waiting on the task here both cause a lockup issue
+            // on the 2nd execution attempt. So do the invoke without
+            // waiting and return a completed task to avoid lockup.
+            this.HubConnection.InvokeAsync(methodName, args);
+            return Task.CompletedTask;
         }
 
         public Task<TResult> InvokeAsync<TResult>(string methodName, params object[] args)

@@ -58,16 +58,16 @@ namespace Gluon.Relay.Signalr.Server
             return base.OnDisconnectedAsync(exception);
         }
 
-        public Task Logon(LogonMsg msg)
+        private void Logon(LogonMsg msg)
         {
             if (msg == null || msg.ConnectionId == null)
-                return Task.CompletedTask;
+                return; // Task.CompletedTask;
 
             UpdateLookup(ClientSpecEnum.ConnectionId, msg.ConnectionId, msg);
             UpdateLookup(ClientSpecEnum.ClientId, msg.ClientId, msg);
             UpdateLookup(ClientSpecEnum.UserId, msg.UserId, msg);
 
-            return Task.CompletedTask;
+            return; // Task.CompletedTask;
         }
         private void UpdateLookup(ClientSpecEnum? clientIdType, string clientIdValue, LogonMsg msg)
         {
@@ -78,21 +78,21 @@ namespace Gluon.Relay.Signalr.Server
             ClientLookup.AddOrUpdate(key, msg, (k, old) => msg);
         }
 
-        public Task Logoff(LogoffMsg msg)
+        private void Logoff(LogoffMsg msg)
         {
             if (msg == null)
-                return Task.CompletedTask;
+                return; // Task.CompletedTask;
 
             var client = msg.ClientIdentifier;
             if (client == null || client.ClientIdentifierType == null || client.ClientIdentifierValue == null)
-                return Task.CompletedTask;
+                return; // Task.CompletedTask;
 
             var lom = RemoveLookup(client);
             RemoveLookup(ClientSpecEnum.ClientId, lom.ClientId);
             RemoveLookup(ClientSpecEnum.ConnectionId, lom.ConnectionId);
             RemoveLookup(ClientSpecEnum.UserId, lom.UserId);
 
-            return Task.CompletedTask;
+            return; // Task.CompletedTask;
         }
         private LogonMsg RemoveLookup(ClientIdentifier client)
         {
@@ -166,7 +166,6 @@ namespace Gluon.Relay.Signalr.Server
             RequestResponseCache.TryRemove(correlationId, out tcs);
             tcs.SetResult(response);
             return Task.CompletedTask;
-            //return tcs.Task;
         }
     }
 }

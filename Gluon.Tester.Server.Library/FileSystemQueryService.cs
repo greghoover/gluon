@@ -8,7 +8,8 @@ namespace Gluon.Tester.Server.Library
 {
     public class FileSystemQueryService : IServiceType, IServiceType<FileSystemQueryRqst, FileSystemQueryRspn>
     {
-        public FileSystemQueryRspn Execute(ICommunicationClient hub, FileSystemQueryRqst request)
+        // todo: consider making this an async method.
+        public FileSystemQueryRspn Execute(FileSystemQueryRqst request)
         {
             string responseText = null;
             switch (request.QueryType)
@@ -19,19 +20,19 @@ namespace Gluon.Tester.Server.Library
             }
 
             var response = new FileSystemQueryRspn(request, responseText);
-            Console.WriteLine(response);
-            hub.InvokeAsync(CX.RelayResponseMethodName, response.CorrelationId, response).Wait();
-
             return response;
         }
 
         // todo: Eliminate the untyped Execute method, or at least move it to
         // a more centralized area. Don't want this noise in every service class.
-        public object Execute(ICommunicationClient hub, object request)
+        public void Execute(ICommunicationClient hub, object request)
         {
             var json = request as JObject;
             var rqst = json.ToObject<FileSystemQueryRqst>();
-            return Execute(hub, rqst);
+            //return Execute(hub, rqst);
+            var response = Execute(rqst);
+            Console.WriteLine(response);
+            hub.InvokeAsync(CX.RelayResponseMethodName, response.CorrelationId, response).Wait();
         }
     }
 }

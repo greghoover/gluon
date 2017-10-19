@@ -15,11 +15,11 @@ namespace Gluon.Tester.Server.Conosle
             //var svcHost = new AppServiceHost<RpcService>("RpcServiceHost1", HubChannelUri);
             var svcHost = new AppServiceHost<FileSystemQueryService>("FileSystemQueryServiceHost", HubChannelUri);
 
-            while (true)
-                Task.Delay(200);
+            //while (true)
+            //    Task.Delay(200);
 
-            //Console.WriteLine("Press Enter to stop Gluon Relay Tester Server: ");
-            //Console.ReadLine();
+            Console.WriteLine("Press Enter to stop Gluon Relay Tester Server: ");
+            Console.ReadLine();
         }
     }
 }
