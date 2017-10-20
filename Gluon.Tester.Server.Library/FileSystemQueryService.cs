@@ -4,9 +4,8 @@ using System.IO;
 
 namespace Gluon.Tester.Server.Library
 {
-    public class FileSystemQueryService : RequestResponseServiceBase<FileSystemQueryRqst, FileSystemQueryRspn>, IServiceType<FileSystemQueryRqst, FileSystemQueryRspn>
+    public class FileSystemQueryService : RequestResponseServiceBase<FileSystemQueryRqst, FileSystemQueryRspn>
     {
-        
         // todo: consider making this an async method.
         public override FileSystemQueryRspn Execute(FileSystemQueryRqst request)
         {

@@ -1,10 +1,9 @@
-﻿using Gluon.Relay.Contracts;
-using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json.Linq;
 using System;
 
-namespace Gluon.Tester.Server.Library
+namespace Gluon.Relay.Contracts
 {
-    public abstract class RequestResponseServiceBase<TRequest, TResponse> : IServiceType
+    public abstract class RequestResponseServiceBase<TRequest, TResponse> : IServiceType, IServiceType<TRequest, TResponse>
         where TRequest : RelayMessageBase
         where TResponse : RelayResponseBase<TRequest>
     {
@@ -12,9 +11,11 @@ namespace Gluon.Tester.Server.Library
         {
             var json = request as JObject;
             var rqst = json.ToObject<TRequest>();
-            //return Execute(hub, rqst);
             var response = Execute(rqst);
+
+#if DEBUG
             Console.WriteLine(response);
+#endif
             hub.InvokeAsync(CX.RelayResponseMethodName, response.CorrelationId, response).Wait();
         }
 
