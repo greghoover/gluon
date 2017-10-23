@@ -11,11 +11,6 @@ namespace Gluon.Tester.Client.Conosle
         {
             Console.WriteLine("Starting Gluon Relay Tester Client...");
 
-            //var rpcClient = new RpcClient("RpcClient1", HubChannelUri);
-            //var request = new RpcRequestMsg("mySpecialRequest");
-            //var response = rpcClient.RequestResponse(request);
-            //Console.WriteLine(response.ToString());
-
             var appClient = new AppServiceClient("FileSystemQueryClient", HubChannelUri);
             while (true)
             {
