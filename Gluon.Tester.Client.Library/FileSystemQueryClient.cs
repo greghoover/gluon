@@ -1,16 +1,27 @@
-﻿//using Gluon.Relay.Contracts;
-//using Gluon.Relay.Signalr.Client;
-//using Gluon.Tester.Contracts;
+﻿using Gluon.Relay.Contracts;
+using Gluon.Relay.Signalr.Client;
+using Gluon.Tester.Contracts;
+using System.Threading.Tasks;
 
-//namespace Gluon.Tester.Client.Library
-//{
-//    public class FileSystemQueryClient : AppServiceClient, IRequestResponse<FileSystemQueryRqst, FileSystemQueryRspn>
-//    {
-//        public FileSystemQueryClient(string instanceId, string subscriptionChannel) : base(instanceId, subscriptionChannel) { }
+namespace Gluon.Tester.Client.Library
+{
+    public class FileSystemQueryClient : IRequestResponse<FileSystemQueryRqst, FileSystemQueryRspn>
+    {
+        AppServiceClient _appServiceClient;
 
-//        public FileSystemQueryRspn RequestResponse(FileSystemQueryRqst request)
-//        {
-//            return RelayRequestResponse<FileSystemQueryRqst, FileSystemQueryRspn>(request);
-//        }
-//    }
-//}
+        public FileSystemQueryClient(string instanceId, string subscriptionChannel)
+        {
+            _appServiceClient = new AppServiceClient(instanceId, subscriptionChannel);
+        }
+
+        public FileSystemQueryRspn RequestResponse(FileSystemQueryRqst request, string clientId)
+        {
+            return _appServiceClient.RelayRequestResponse<FileSystemQueryRqst, FileSystemQueryRspn>(request, clientId);
+        }
+
+        public Task DisposeAsync()
+        {
+            return _appServiceClient.HubClient.HubConnection.DisposeAsync();
+        }
+    }
+}

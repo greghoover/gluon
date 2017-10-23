@@ -4,7 +4,7 @@
 
     public interface IRequestResponse<TRequestMsg, TResponseMsg> : IMessageExchangePattern
     {
-        TResponseMsg RequestResponse(TRequestMsg request);
+        TResponseMsg RequestResponse(TRequestMsg request, string clientId);
     }
 
     public interface IEmit<TEvent> : IMessageExchangePattern

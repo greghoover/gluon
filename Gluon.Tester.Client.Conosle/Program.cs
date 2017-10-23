@@ -1,4 +1,4 @@
-﻿using Gluon.Relay.Signalr.Client;
+﻿using Gluon.Tester.Client.Library;
 using Gluon.Tester.Contracts;
 using System;
 
@@ -11,7 +11,7 @@ namespace Gluon.Tester.Client.Conosle
         {
             Console.WriteLine("Starting Gluon Relay Tester Client...");
 
-            var appClient = new AppServiceClient("FileSystemQueryClient", HubChannelUri);
+            var fsQueryClient = new FileSystemQueryClient("FileSystemQueryClient", HubChannelUri);
             while (true)
             {
                 Console.Write("Input file system path to check if exists: ");
@@ -20,11 +20,11 @@ namespace Gluon.Tester.Client.Conosle
                     break;
 
                 var request = new FileSystemQueryRqst(FileSystemQueryTypeEnum.DirectoryExists, path);
-                var response = appClient.RelayRequestResponse<FileSystemQueryRqst, FileSystemQueryRspn>(request, "FileSystemQueryServiceHost");
+                var response = fsQueryClient.RequestResponse(request, "FileSystemQueryServiceHost");
                 Console.WriteLine(response);
             }
 
-            appClient.HubClient.HubConnection.DisposeAsync().Wait();
+            fsQueryClient.DisposeAsync().Wait();
             Console.WriteLine("Press Enter to stop Gluon Relay Tester Client: ");
             Console.ReadLine();
         }
