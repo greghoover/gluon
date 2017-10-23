@@ -1,11 +1,11 @@
 ﻿using Gluon.Relay.Contracts;
 using Gluon.Relay.Signalr.Client;
 using Gluon.Tester.Contracts;
-using System.Threading.Tasks;
+using System;
 
 namespace Gluon.Tester.Client.Library
 {
-    public class FileSystemQueryClient : IRequestResponse<FileSystemQueryRqst, FileSystemQueryRspn>
+    public class FileSystemQueryClient : IRequestResponse<FileSystemQueryRqst, FileSystemQueryRspn>, IDisposable
     {
         AppServiceClient _appServiceClient;
 
@@ -19,9 +19,9 @@ namespace Gluon.Tester.Client.Library
             return _appServiceClient.RelayRequestResponse<FileSystemQueryRqst, FileSystemQueryRspn>(request, clientId);
         }
 
-        public Task DisposeAsync()
+        public void Dispose()
         {
-            return _appServiceClient.HubClient.HubConnection.DisposeAsync();
+            _appServiceClient.HubClient.HubConnection.DisposeAsync().Wait();
         }
     }
 }

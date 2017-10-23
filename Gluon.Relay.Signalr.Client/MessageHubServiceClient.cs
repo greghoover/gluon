@@ -47,5 +47,10 @@ namespace Gluon.Relay.Signalr.Client
         {
             return this.HubConnection.InvokeAsync<TResult>(methodName, args);
         }
+
+        public void Dispose()
+        {
+            this.HubConnection.DisposeAsync().Wait();
+        }
     }
 }

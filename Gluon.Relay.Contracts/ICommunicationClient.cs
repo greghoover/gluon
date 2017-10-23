@@ -1,8 +1,9 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 
 namespace Gluon.Relay.Contracts
 {
-    public interface ICommunicationClient : IInvoker { }
+    public interface ICommunicationClient : IInvoker, IDisposable { }
 
     public interface IInvoker
     {

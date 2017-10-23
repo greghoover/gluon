@@ -3,7 +3,7 @@ using System;
 
 namespace Gluon.Relay.Signalr.Client
 {
-    public class AppServiceHost<TService> : IServiceHost /*, IServiceHost<TService>*/ where TService : class, IServiceType
+    public class AppServiceHost<TService> : IDisposable, IServiceHost where TService : class, IServiceType
     {
         public ICommunicationClient Hub { get; private set; }
         public string InstanceId { get; private set; }
@@ -17,14 +17,15 @@ namespace Gluon.Relay.Signalr.Client
             this.SubscriptionChannel = (subscriptionChannel ?? "http://localhost:5000/messagehub") + qs;
             this.Hub = new MessageHubServiceClient<TService>(this.InstanceId, this.SubscriptionChannel, this);
         }
-        //public TService CreateServiceInstance()
-        //{
-        //    return Activator.CreateInstance<TService>();
-        //}
 
         IServiceType IServiceHost.CreateServiceInstance(Type serviceType)
         {
             return (IServiceType)Activator.CreateInstance(serviceType);
+        }
+
+        public void Dispose()
+        {
+            this.Hub.Dispose();
         }
     }
 }

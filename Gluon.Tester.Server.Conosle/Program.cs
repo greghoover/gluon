@@ -15,6 +15,8 @@ namespace Gluon.Tester.Server.Conosle
 
             Console.WriteLine("Press Enter to stop Gluon Relay Tester Server: ");
             Console.ReadLine();
+
+            svcHost.Dispose();
         }
     }
 }

@@ -11,20 +11,21 @@ namespace Gluon.Tester.Client.Conosle
         {
             Console.WriteLine("Starting Gluon Relay Tester Client...");
 
-            var fsQueryClient = new FileSystemQueryClient("FileSystemQueryClient", HubChannelUri);
-            while (true)
+            using (var fsqClient = new FileSystemQueryClient("FileSystemQueryClient", HubChannelUri))
             {
-                Console.Write("Input file system path to check if exists: ");
-                var path = Console.ReadLine();
-                if (string.IsNullOrWhiteSpace(path))
-                    break;
+                while (true)
+                {
+                    Console.Write("Input file system path to check if exists: ");
+                    var path = Console.ReadLine();
+                    if (string.IsNullOrWhiteSpace(path))
+                        break;
 
-                var request = new FileSystemQueryRqst(FileSystemQueryTypeEnum.DirectoryExists, path);
-                var response = fsQueryClient.RequestResponse(request, "FileSystemQueryServiceHost");
-                Console.WriteLine(response);
+                    var request = new FileSystemQueryRqst(FileSystemQueryTypeEnum.DirectoryExists, path);
+                    var response = fsqClient.RequestResponse(request, "FileSystemQueryServiceHost");
+                    Console.WriteLine(response);
+                }
             }
 
-            fsQueryClient.DisposeAsync().Wait();
             Console.WriteLine("Press Enter to stop Gluon Relay Tester Client: ");
             Console.ReadLine();
         }
