@@ -13,16 +13,16 @@ namespace Gluon.Relay.Signalr.Client
         public AppServiceClient(string instanceId, string subscriptionChannel)
         {
             this.InstanceId = instanceId;
-            var qs = $"?{ClientSpecEnum.ClientId}={InstanceId}";
+            var qs = $"?{ClientIdTypeEnum.ClientId}={InstanceId}";
             this.SubscriptionChannel = (subscriptionChannel ?? "http://localhost:5000/messagehub") + qs;
             this.Hub = new MessageHubClient(this.InstanceId, this.SubscriptionChannel);
         }
 
-        public TResponse RelayRequestResponse<TRequest, TResponse>(TRequest request, string clientId)
+        public TResponse RelayRequestResponse<TRequest, TResponse>(TRequest request, string clientId, ClientIdTypeEnum clientIdType)
             where TRequest : RelayMessageBase
             where TResponse : RelayMessageBase
         {
-            var result = this.Hub.InvokeAsync<object>(CX.RelayRequestMethodName, request.CorrelationId, request, clientId).Result;
+            var result = this.Hub.InvokeAsync<object>(CX.RelayRequestMethodName, request.CorrelationId, request, clientId, clientIdType).Result;
 
             var json = result as JObject;
             var response = json.ToObject<TResponse>();

@@ -6,7 +6,7 @@
         string InstanceId { get; }
         string SubscriptionChannel { get; }
 
-        TResponse RelayRequestResponse<TRequest, TResponse>(TRequest request, string clientId) where TRequest : RelayMessageBase where TResponse : RelayMessageBase;
+        TResponse RelayRequestResponse<TRequest, TResponse>(TRequest request, string clientId, ClientIdTypeEnum clientIdType) where TRequest : RelayMessageBase where TResponse : RelayMessageBase;
         void RelayEvent<TEvent>(TEvent evt) where TEvent : RelayMessageBase;
     }
 }

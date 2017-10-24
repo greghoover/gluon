@@ -16,28 +16,19 @@ namespace Gluon.Relay.Signalr.Server
         }
 
 
-        public Task<object> RelayRequestAsync(string correlationId, object request, string clientId)
+        public Task<object> RelayRequestAsync(string correlationId, object request, string clientId, ClientIdTypeEnum clientIdType)
         {
             var tcs = new TaskCompletionSource<object>();
             var tf = RequestResponseCache.TryAdd(correlationId, tcs);
 
             IClientProxy client = null;
-            if (clientId == null)
+            var lookup = GetLookup(ClientIdTypeEnum.ClientId, clientId);
+            if (lookup != null)
             {
-                var ids = new List<string>();
-                ids.Add(Context.ConnectionId);
-                client = Clients.AllExcept(ids);
-            }
-            else
-            {
-                var lookup = GetLookup(ClientSpecEnum.ClientId, clientId);
-                if (lookup != null)
+                var connectionId = lookup.ConnectionId;
+                if (connectionId != null)
                 {
-                    var connectionId = lookup.ConnectionId;
-                    if (connectionId != null)
-                    {
-                        client = Clients.Client(connectionId);
-                    }
+                    client = Clients.Client(connectionId);
                 }
             }
 

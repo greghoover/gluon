@@ -4,7 +4,7 @@ namespace Gluon.Relay.Contracts
 {
     public interface ICommunicationServer
     {
-        Task<object> RelayRequestAsync(string correlationId, object request, string clientId);
+        Task<object> RelayRequestAsync(string correlationId, object request, string clientId, ClientIdTypeEnum clientIdType);
         Task RelayResponseAsync(string correlationId, object response);
     }
 }

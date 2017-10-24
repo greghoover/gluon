@@ -20,8 +20,8 @@ namespace Gluon.Relay.Signalr.Server
             var msg = new LogonMsg
             {
                 ConnectionId = this.Context.ConnectionId,
-                ClientId = this.GetHttpContextItem<string>(ClientSpecEnum.ClientId.ToString()),
-                UserId = this.GetHttpContextItem<string>(ClientSpecEnum.UserId.ToString()),
+                ClientId = this.GetHttpContextItem<string>(ClientIdTypeEnum.ClientId.ToString()),
+                UserId = this.GetHttpContextItem<string>(ClientIdTypeEnum.UserId.ToString()),
             };
 
             this.Logon(msg);
@@ -43,8 +43,8 @@ namespace Gluon.Relay.Signalr.Server
             {
                 ClientIdentifier = new ClientIdentifier
                 {
-                    ClientIdentifierType = ClientSpecEnum.ConnectionId,
-                    ClientIdentifierValue = Context.ConnectionId,
+                    ClientIdType = ClientIdTypeEnum.ConnectionId,
+                    ClientIdValue = Context.ConnectionId,
                 }
             };
 

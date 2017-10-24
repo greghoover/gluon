@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Gluon.Relay.Contracts
+﻿namespace Gluon.Relay.Contracts
 {
     public class ClientIdentifier
     {
-        public ClientSpecEnum? ClientIdentifierType { get; set; }
-        public string ClientIdentifierValue { get; set; }
+        public ClientIdTypeEnum? ClientIdType { get; set; }
+        public string ClientIdValue { get; set; }
     }
 }

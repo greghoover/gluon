@@ -17,13 +17,13 @@ namespace Gluon.Relay.Signalr.Server
             if (msg == null || msg.ConnectionId == null)
                 return; // Task.CompletedTask;
 
-            UpdateLookup(ClientSpecEnum.ConnectionId, msg.ConnectionId, msg);
-            UpdateLookup(ClientSpecEnum.ClientId, msg.ClientId, msg);
-            UpdateLookup(ClientSpecEnum.UserId, msg.UserId, msg);
+            UpdateLookup(ClientIdTypeEnum.ConnectionId, msg.ConnectionId, msg);
+            UpdateLookup(ClientIdTypeEnum.ClientId, msg.ClientId, msg);
+            UpdateLookup(ClientIdTypeEnum.UserId, msg.UserId, msg);
 
             return; // Task.CompletedTask;
         }
-        private void UpdateLookup(ClientSpecEnum? clientIdType, string clientIdValue, LogonMsg msg)
+        private void UpdateLookup(ClientIdTypeEnum? clientIdType, string clientIdValue, LogonMsg msg)
         {
             if (clientIdType == null || clientIdValue == null || msg == null)
                 return;
@@ -38,13 +38,13 @@ namespace Gluon.Relay.Signalr.Server
                 return; // Task.CompletedTask;
 
             var client = msg.ClientIdentifier;
-            if (client == null || client.ClientIdentifierType == null || client.ClientIdentifierValue == null)
+            if (client == null || client.ClientIdType == null || client.ClientIdValue == null)
                 return; // Task.CompletedTask;
 
             var lom = RemoveLookup(client);
-            RemoveLookup(ClientSpecEnum.ClientId, lom.ClientId);
-            RemoveLookup(ClientSpecEnum.ConnectionId, lom.ConnectionId);
-            RemoveLookup(ClientSpecEnum.UserId, lom.UserId);
+            RemoveLookup(ClientIdTypeEnum.ClientId, lom.ClientId);
+            RemoveLookup(ClientIdTypeEnum.ConnectionId, lom.ConnectionId);
+            RemoveLookup(ClientIdTypeEnum.UserId, lom.UserId);
 
             return; // Task.CompletedTask;
         }
@@ -53,12 +53,12 @@ namespace Gluon.Relay.Signalr.Server
             if (client == null)
                 return default(LogonMsg);
 
-            var clientIdType = client.ClientIdentifierType;
-            var clientIdValue = client.ClientIdentifierValue;
+            var clientIdType = client.ClientIdType;
+            var clientIdValue = client.ClientIdValue;
 
             return this.RemoveLookup(clientIdType, clientIdValue);
         }
-        private LogonMsg RemoveLookup(ClientSpecEnum? clientIdType, string clientIdValue)
+        private LogonMsg RemoveLookup(ClientIdTypeEnum? clientIdType, string clientIdValue)
         {
             if (clientIdType == null || clientIdValue == null)
                 return default(LogonMsg);
@@ -70,7 +70,7 @@ namespace Gluon.Relay.Signalr.Server
             else
                 return default(LogonMsg);
         }
-        private LogonMsg GetLookup(ClientSpecEnum? clientIdType, string clientIdValue)
+        private LogonMsg GetLookup(ClientIdTypeEnum? clientIdType, string clientIdValue)
         {
             if (clientIdType == null || clientIdValue == null)
                 return default(LogonMsg);

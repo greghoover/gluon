@@ -14,9 +14,9 @@ namespace Gluon.Tester.Client.Library
             _appServiceClient = new AppServiceClient(instanceId, subscriptionChannel);
         }
 
-        public FileSystemQueryRspn RequestResponse(FileSystemQueryRqst request, string clientId)
+        public FileSystemQueryRspn RequestResponse(FileSystemQueryRqst request, string clientId, ClientIdTypeEnum clientIdType)
         {
-            return _appServiceClient.RelayRequestResponse<FileSystemQueryRqst, FileSystemQueryRspn>(request, clientId);
+            return _appServiceClient.RelayRequestResponse<FileSystemQueryRqst, FileSystemQueryRspn>(request, clientId, clientIdType);
         }
 
         public void Dispose()

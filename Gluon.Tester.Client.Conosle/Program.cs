@@ -1,4 +1,5 @@
-﻿using Gluon.Tester.Client.Library;
+﻿using Gluon.Relay.Contracts;
+using Gluon.Tester.Client.Library;
 using Gluon.Tester.Contracts;
 using System;
 
@@ -21,7 +22,7 @@ namespace Gluon.Tester.Client.Conosle
                         break;
 
                     var request = new FileSystemQueryRqst(FileSystemQueryTypeEnum.DirectoryExists, path);
-                    var response = fsqClient.RequestResponse(request, "FileSystemQueryServiceHost");
+                    var response = fsqClient.RequestResponse(request, "FileSystemQueryServiceHost", ClientIdTypeEnum.ClientId);
                     Console.WriteLine(response);
                 }
             }
