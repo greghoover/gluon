@@ -18,25 +18,31 @@ namespace Gluon.Relay.Signalr.Server
 
         public Task<object> RelayRequestAsync(string correlationId, object request, string clientId, ClientIdTypeEnum clientIdType)
         {
-            var tcs = new TaskCompletionSource<object>();
-            var tf = RequestResponseCache.TryAdd(correlationId, tcs);
-
-            IClientProxy client = null;
             var lookup = GetLookup(ClientIdTypeEnum.ClientId, clientId);
             if (lookup != null)
             {
                 var connectionId = lookup.ConnectionId;
                 if (connectionId != null)
                 {
-                    client = Clients.Client(connectionId);
+                    var client = Clients.Client(connectionId);
+
+                    if (client != null)
+                    {
+                        var tcs = new TaskCompletionSource<object>();
+                        if (RequestResponseCache.TryAdd(correlationId, tcs))
+                        {
+                            // todo: refactor the client invocation method signatures
+                            client.InvokeAsync(CX.WorkerMethodName, request);
+                            return tcs.Task;
+                        }
+                    }
                 }
             }
 
-            // todo: refactor the client invocation method signatures
-            if (client != null)
-                client.InvokeAsync(CX.WorkerMethodName, request);
-
-            return tcs.Task;
+            // fallthrough
+            var canceled = new TaskCompletionSource<object>();
+            canceled.SetCanceled();
+            return canceled.Task;
         }
         public Task RelayResponseAsync(string correlationId, object response)
         {
