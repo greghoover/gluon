@@ -18,7 +18,7 @@ namespace Gluon.Relay.Signalr.Server
 
         public Task<object> RelayRequestAsync(string correlationId, object request, string clientId, ClientIdTypeEnum clientIdType)
         {
-            var lookup = GetLookup(ClientIdTypeEnum.ClientId, clientId);
+            var lookup = GetLookup(clientIdType, clientId);
             if (lookup != null)
             {
                 var connectionId = lookup.ConnectionId;
