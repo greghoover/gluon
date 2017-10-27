@@ -23,7 +23,15 @@ namespace Gluon.Tester.Client.Conosle
 
                     var request = new FileSystemQueryRqst(FileSystemQueryTypeEnum.DirectoryExists, path);
                     var response = fsqClient.RequestResponse(request, "FileSystemQueryServiceHost", ClientIdTypeEnum.ClientId);
+                    Console.WriteLine("Single Request Response ========");
                     Console.WriteLine(response);
+
+                    var gResponse = fsqClient.RequestGroupResponse(request, "FileSystemQueryServiceHost");
+                    Console.WriteLine("Group Request Response ========");
+                    foreach (var gRspn in gResponse)
+                    {
+                        Console.WriteLine(gRspn.Value);
+                    }
                 }
             }
 

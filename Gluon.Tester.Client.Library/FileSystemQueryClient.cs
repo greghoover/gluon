@@ -2,6 +2,7 @@
 using Gluon.Relay.Signalr.Client;
 using Gluon.Tester.Contracts;
 using System;
+using System.Collections.Generic;
 
 namespace Gluon.Tester.Client.Library
 {
@@ -14,6 +15,10 @@ namespace Gluon.Tester.Client.Library
             _appServiceClient = new AppServiceClient(instanceId, subscriptionChannel);
         }
 
+        public Dictionary<string, FileSystemQueryRspn> RequestGroupResponse(FileSystemQueryRqst request, string groupId)
+        {
+            return _appServiceClient.RelayRequestGroupResponse<FileSystemQueryRqst, FileSystemQueryRspn>(request, groupId);
+        }
         public FileSystemQueryRspn RequestResponse(FileSystemQueryRqst request, string clientId, ClientIdTypeEnum clientIdType)
         {
             return _appServiceClient.RelayRequestResponse<FileSystemQueryRqst, FileSystemQueryRspn>(request, clientId, clientIdType);

@@ -1,5 +1,6 @@
 ﻿using Gluon.Relay.Contracts;
 using Newtonsoft.Json.Linq;
+using System.Collections.Generic;
 
 namespace Gluon.Relay.Signalr.Client
 {
@@ -18,6 +19,16 @@ namespace Gluon.Relay.Signalr.Client
             this.Hub = new MessageHubClient(this.InstanceId, this.SubscriptionChannel);
         }
 
+        public Dictionary<string, TResponse> RelayRequestGroupResponse<TRequest, TResponse>(TRequest request, string groupId)
+            where TRequest : RelayMessageBase
+            where TResponse : RelayMessageBase
+        {
+            var result = this.Hub.InvokeAsync<object>(CX.RelayRequestGroupMethodName, request.CorrelationId, request, groupId).Result;
+
+            var json = result as JObject;
+            var response = json.ToObject<Dictionary<string, TResponse>>();
+            return response;
+        }
         public TResponse RelayRequestResponse<TRequest, TResponse>(TRequest request, string clientId, ClientIdTypeEnum clientIdType)
             where TRequest : RelayMessageBase
             where TResponse : RelayMessageBase

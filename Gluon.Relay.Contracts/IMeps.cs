@@ -1,10 +1,13 @@
-﻿namespace Gluon.Relay.Contracts
+﻿using System.Collections.Generic;
+
+namespace Gluon.Relay.Contracts
 {
     public interface IMessageExchangePattern { }
 
     public interface IRequestResponse<TRequestMsg, TResponseMsg> : IMessageExchangePattern
     {
         TResponseMsg RequestResponse(TRequestMsg request, string clientId, ClientIdTypeEnum clientIdType);
+        Dictionary<string, TResponseMsg> RequestGroupResponse(TRequestMsg request, string groupId);
     }
 
     public interface IEmit<TEvent> : IMessageExchangePattern
