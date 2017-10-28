@@ -37,7 +37,7 @@ namespace Gluon.Relay.Signalr.Server
             app.UseQueryStringParameters();
             app.UseSignalR(routes =>
             {
-                routes.MapHub<MessageHub>("messagehub");
+                routes.MapHub<RelayServer>("messagehub");
             });
         }
     }

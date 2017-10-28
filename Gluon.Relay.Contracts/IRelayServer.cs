@@ -2,7 +2,7 @@
 
 namespace Gluon.Relay.Contracts
 {
-    public interface ICommunicationServer
+    public interface IRelayServer
     {
         Task<object> RelayRequestGroupAsync(string groupCorrId, object request, string groupId);
 

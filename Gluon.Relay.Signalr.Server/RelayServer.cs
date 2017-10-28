@@ -3,12 +3,11 @@ using Microsoft.AspNetCore.SignalR;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Gluon.Relay.Signalr.Server
 {
-    public partial class MessageHub : ICommunicationServer
+    public partial class RelayServer : Hub, IRelayServer
     {
         public static ConcurrentDictionary<string, TaskCompletionSource<object>> RequestResponseCache { get; private set; }
 

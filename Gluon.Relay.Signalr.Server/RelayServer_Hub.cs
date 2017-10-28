@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 namespace Gluon.Relay.Signalr.Server
 {
     //[Authorize]
-    public partial class MessageHub : Hub
+    public partial class RelayServer : Hub, IRelayServer
     {
-        static MessageHub()
+        static RelayServer()
         {
             InitRequestResponseCache();
             InitClientLookup();

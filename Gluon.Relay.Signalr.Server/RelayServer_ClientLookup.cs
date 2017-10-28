@@ -3,7 +3,7 @@ using System.Collections.Concurrent;
 
 namespace Gluon.Relay.Signalr.Server
 {
-    public partial class MessageHub
+    public partial class RelayServer
     {
         public static ConcurrentDictionary<string, LogonMsg> ClientLookup { get; private set; }
 
