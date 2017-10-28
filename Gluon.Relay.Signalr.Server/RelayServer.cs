@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Gluon.Relay.Signalr.Server
 {
-    public partial class RelayServer : Hub, IRelayServer
+    public partial class RelayServer : IRelayServer
     {
         public static ConcurrentDictionary<string, TaskCompletionSource<object>> RequestResponseCache { get; private set; }
 

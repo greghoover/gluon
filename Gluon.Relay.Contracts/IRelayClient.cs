@@ -2,6 +2,6 @@
 
 namespace Gluon.Relay.Contracts
 {
-    public interface IRelayClient : IHubClient, IRelayRequestResponse, IRelayEvent, IDisposable
+    public interface IRelayClient : IHubProxy, IRelayRequestResponse, IRelayEvent, IDisposable
     { }
 }

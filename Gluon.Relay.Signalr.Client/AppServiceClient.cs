@@ -6,7 +6,7 @@ namespace Gluon.Relay.Signalr.Client
 {
     public class AppServiceClient : IRelayClient
     {
-        public IRemoteMethodInvoker Hub { get; private set; }
+        public IRemoteMethodInvoker Proxy { get; private set; }
         public string InstanceId { get; private set; }
         public string SubscriptionChannel { get; private set; }
 
@@ -15,14 +15,14 @@ namespace Gluon.Relay.Signalr.Client
             this.InstanceId = instanceId;
             var qs = $"?{ClientIdTypeEnum.ClientId}={InstanceId}";
             this.SubscriptionChannel = (subscriptionChannel ?? "http://localhost:5000/messagehub") + qs;
-            this.Hub = new MessageHubClient(this.InstanceId, this.SubscriptionChannel);
+            this.Proxy = new ServiceClientRelayProxy(this.InstanceId, this.SubscriptionChannel);
         }
 
         public IDictionary<string, TResponse> RelayRequestGroupResponse<TRequest, TResponse>(TRequest request, string groupId)
             where TRequest : RelayMessageBase
             where TResponse : RelayMessageBase
         {
-            var result = this.Hub.InvokeAsync<object>(CX.RelayRequestGroupMethodName, request.CorrelationId, request, groupId).Result;
+            var result = this.Proxy.InvokeAsync<object>(CX.RelayRequestGroupMethodName, request.CorrelationId, request, groupId).Result;
 
             var json = result as JObject;
             var response = json.ToObject<Dictionary<string, TResponse>>();
@@ -32,20 +32,20 @@ namespace Gluon.Relay.Signalr.Client
             where TRequest : RelayMessageBase
             where TResponse : RelayMessageBase
         {
-            var result = this.Hub.InvokeAsync<object>(CX.RelayRequestMethodName, request.CorrelationId, request, clientId, clientIdType).Result;
+            var result = this.Proxy.InvokeAsync<object>(CX.RelayRequestMethodName, request.CorrelationId, request, clientId, clientIdType).Result;
 
             var json = result as JObject;
             var response = json.ToObject<TResponse>();
             return response;
         }
-        public void RelayEvent<TEvent>(TEvent evt) where TEvent : RelayMessageBase
+        public void RelayEmit<TEvent>(TEvent evt) where TEvent : RelayMessageBase
         {
             throw new System.NotImplementedException();
         }
 
         public void Dispose()
         {
-            var hubClient = this.Hub as MessageHubClient;
+            var hubClient = this.Proxy as ServiceClientRelayProxy;
             hubClient.HubConnection.DisposeAsync().Wait();
         }
     }

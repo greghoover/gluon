@@ -1,4 +1,4 @@
-﻿using Gluon.Relay.Contracts;
+﻿using Gluon.Relay.Signalr.Client;
 using Gluon.Tester.Contracts;
 using System.IO;
 

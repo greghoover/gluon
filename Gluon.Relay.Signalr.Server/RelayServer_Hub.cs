@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace Gluon.Relay.Signalr.Server
 {
     //[Authorize]
-    public partial class RelayServer : Hub, IRelayServer
+    public partial class RelayServer : Hub
     {
         static RelayServer()
         {

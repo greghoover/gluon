@@ -5,13 +5,13 @@ using System.Threading.Tasks;
 
 namespace Gluon.Relay.Signalr.Client
 {
-    public class MessageHubServiceClient<TService> : IRemoteMethodInvoker where TService : class, IServiceType
+    internal class ServiceHostRelayProxy<TService> : IDisposable, IRemoteMethodInvoker where TService : class, IServiceType
     {
         public string InstanceId { get; private set; }
         public HubConnection HubConnection { get; private set; }
 
-        public MessageHubServiceClient(string instanceId, string messageHubChannel, IServiceHost svcHost) : this(instanceId, new Uri(messageHubChannel), svcHost) { }
-        public MessageHubServiceClient(string instanceId, Uri messageHubChannel, IServiceHost svcHost)
+        public ServiceHostRelayProxy(string instanceId, string messageHubChannel, IServiceHost svcHost) : this(instanceId, new Uri(messageHubChannel), svcHost) { }
+        public ServiceHostRelayProxy(string instanceId, Uri messageHubChannel, IServiceHost svcHost)
         {
             this.InstanceId = InstanceId;
 

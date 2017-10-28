@@ -2,6 +2,6 @@
 {
     public interface IRelayEvent : IMessageExchangePattern
     {
-        void RelayEvent<TEvent>(TEvent evt) where TEvent : RelayMessageBase;
+        void RelayEmit<TEvent>(TEvent evt) where TEvent : RelayMessageBase;
     }
 }

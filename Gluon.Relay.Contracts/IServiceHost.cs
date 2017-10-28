@@ -2,7 +2,7 @@
 
 namespace Gluon.Relay.Contracts
 {
-    public interface IServiceHost : IHubClient
+    public interface IServiceHost : IHubProxy
     {
         IServiceType CreateServiceInstance(Type serviceType);
     }

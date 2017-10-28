@@ -1,8 +1,8 @@
 ﻿namespace Gluon.Relay.Contracts
 {
-    public interface IHubClient
+    public interface IHubProxy
     {
-        IRemoteMethodInvoker Hub { get; }
+        IRemoteMethodInvoker Proxy { get; }
         string InstanceId { get; }
         string SubscriptionChannel { get; }
     }

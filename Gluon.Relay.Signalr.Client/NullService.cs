@@ -5,7 +5,7 @@ namespace Gluon.Relay.Signalr.Client
 {
     public class NullService : IServiceType
     {
-        public void Execute(IRemoteMethodInvoker hub, object request)
+        public void Execute(IRemoteMethodInvoker proxy, object request)
         {
             throw new NotImplementedException();
         }

@@ -5,7 +5,7 @@ namespace Gluon.Relay.Signalr.Client
 {
     public class AppServiceHost<TService> : IDisposable, IServiceHost where TService : class, IServiceType
     {
-        public IRemoteMethodInvoker Hub { get; private set; }
+        public IRemoteMethodInvoker Proxy { get; private set; }
         public string InstanceId { get; private set; }
         public string SubscriptionChannel { get; private set; }
 
@@ -15,7 +15,7 @@ namespace Gluon.Relay.Signalr.Client
             this.InstanceId = instanceId ?? typeof(TService).Name;
             var qs = $"?{ClientIdTypeEnum.ClientId}={InstanceId}";
             this.SubscriptionChannel = (subscriptionChannel ?? "http://localhost:5000/messagehub") + qs;
-            this.Hub = new MessageHubServiceClient<TService>(this.InstanceId, this.SubscriptionChannel, this);
+            this.Proxy = new ServiceHostRelayProxy<TService>(this.InstanceId, this.SubscriptionChannel, this);
         }
 
         IServiceType IServiceHost.CreateServiceInstance(Type serviceType)
@@ -25,7 +25,7 @@ namespace Gluon.Relay.Signalr.Client
 
         public void Dispose()
         {
-            this.Hub.Dispose();
+            this.Proxy.Dispose();
         }
     }
 }
