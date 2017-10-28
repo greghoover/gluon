@@ -7,7 +7,7 @@ namespace Gluon.Relay.Contracts
         where TRequest : RelayMessageBase
         where TResponse : RelayResponseBase<TRequest>
     {
-        public void Execute(ICommunicationClient hub, object request)
+        public void Execute(IRemoteMethodInvoker hub, object request)
         {
             var json = request as JObject;
             var rqst = json.ToObject<TRequest>();

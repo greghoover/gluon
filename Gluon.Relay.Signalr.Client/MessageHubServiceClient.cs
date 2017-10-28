@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Gluon.Relay.Signalr.Client
 {
-    public class MessageHubServiceClient<TService> : ICommunicationClient where TService : class, IServiceType
+    public class MessageHubServiceClient<TService> : IRemoteMethodInvoker where TService : class, IServiceType
     {
         public string InstanceId { get; private set; }
         public HubConnection HubConnection { get; private set; }

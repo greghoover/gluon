@@ -15,7 +15,7 @@ namespace Gluon.Tester.Client.Library
             _appServiceClient = new AppServiceClient(instanceId, subscriptionChannel);
         }
 
-        public Dictionary<string, FileSystemQueryRspn> RequestGroupResponse(FileSystemQueryRqst request, string groupId)
+        public IDictionary<string, FileSystemQueryRspn> RequestGroupResponse(FileSystemQueryRqst request, string groupId)
         {
             return _appServiceClient.RelayRequestGroupResponse<FileSystemQueryRqst, FileSystemQueryRspn>(request, groupId);
         }
@@ -26,7 +26,7 @@ namespace Gluon.Tester.Client.Library
 
         public void Dispose()
         {
-            _appServiceClient.HubClient.HubConnection.DisposeAsync().Wait();
+            _appServiceClient.Dispose();
         }
     }
 }

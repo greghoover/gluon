@@ -5,7 +5,7 @@ namespace Gluon.Relay.Signalr.Client
 {
     public class AppServiceHost<TService> : IDisposable, IServiceHost where TService : class, IServiceType
     {
-        public ICommunicationClient Hub { get; private set; }
+        public IRemoteMethodInvoker Hub { get; private set; }
         public string InstanceId { get; private set; }
         public string SubscriptionChannel { get; private set; }
 

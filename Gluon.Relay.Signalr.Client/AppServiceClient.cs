@@ -4,10 +4,9 @@ using System.Collections.Generic;
 
 namespace Gluon.Relay.Signalr.Client
 {
-    public class AppServiceClient : IClientType
+    public class AppServiceClient : IRelayClient
     {
-        public ICommunicationClient Hub { get; private set; }
-        public MessageHubClient HubClient { get { return Hub as MessageHubClient; } }
+        public IRemoteMethodInvoker Hub { get; private set; }
         public string InstanceId { get; private set; }
         public string SubscriptionChannel { get; private set; }
 
@@ -19,7 +18,7 @@ namespace Gluon.Relay.Signalr.Client
             this.Hub = new MessageHubClient(this.InstanceId, this.SubscriptionChannel);
         }
 
-        public Dictionary<string, TResponse> RelayRequestGroupResponse<TRequest, TResponse>(TRequest request, string groupId)
+        public IDictionary<string, TResponse> RelayRequestGroupResponse<TRequest, TResponse>(TRequest request, string groupId)
             where TRequest : RelayMessageBase
             where TResponse : RelayMessageBase
         {
@@ -42,6 +41,12 @@ namespace Gluon.Relay.Signalr.Client
         public void RelayEvent<TEvent>(TEvent evt) where TEvent : RelayMessageBase
         {
             throw new System.NotImplementedException();
+        }
+
+        public void Dispose()
+        {
+            var hubClient = this.Hub as MessageHubClient;
+            hubClient.HubConnection.DisposeAsync().Wait();
         }
     }
 }
