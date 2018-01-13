@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\hbar.Contract\hbar.Contract.csproj" />
+    <ProjectReference Include="..\hbar.Proxy\hbar.Proxy.csproj" />
+  </ItemGroup>
+
+</Project>
