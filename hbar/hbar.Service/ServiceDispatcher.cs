@@ -2,15 +2,13 @@
 using hbar.Service.FileSystemQuery;
 using ProtoBuf;
 using System;
-using System.Collections.Generic;
 using System.IO.Pipes;
-using System.Text;
 
 namespace hbar.Service
 {
     public class ServiceDispatcher
     {
-        private const string pipeName = nameof(FileSystemQueryService);
+        private static readonly string pipeName = nameof(FileSystemQueryService);
         private NamedPipeClientStream pipe = new NamedPipeClientStream(".", pipeName, PipeDirection.InOut, PipeOptions.None);
 
         public void Run()

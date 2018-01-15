@@ -3,23 +3,27 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27130.2010
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "hbar.Service", "hbar.Service\hbar.Service.csproj", "{347E1653-79F2-40A7-A320-5D08F1A175B3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "hbar.Service", "hbar.Service\hbar.Service.csproj", "{347E1653-79F2-40A7-A320-5D08F1A175B3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "hbar.Proxy", "hbar.Proxy\hbar.Proxy.csproj", "{51BA15F1-653A-4480-BCE7-C7DE129B8C41}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "hbar.Proxy", "hbar.Proxy\hbar.Proxy.csproj", "{51BA15F1-653A-4480-BCE7-C7DE129B8C41}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "hbar.Contract", "hbar.Contract\hbar.Contract.csproj", "{B023D35B-B6FA-4BA6-ABA9-9D547D47B065}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "hbar.Contract", "hbar.Contract\hbar.Contract.csproj", "{B023D35B-B6FA-4BA6-ABA9-9D547D47B065}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "hosts", "hosts", "{43FE1259-0116-455A-9A94-0ECF8D8387A8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "hbar.Service.ConsoleHost", "hbar.Service.ConsoleHost\hbar.Service.ConsoleHost.csproj", "{8F59E3D2-5C14-4853-B438-7D7831D76857}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "hbar.Service.ConsoleHost", "hbar.Service.ConsoleHost\hbar.Service.ConsoleHost.csproj", "{8F59E3D2-5C14-4853-B438-7D7831D76857}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "hbar.Client", "hbar.Client\hbar.Client.csproj", "{79087B42-8105-4B14-863B-34B1522C607F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "hbar.Client", "hbar.Client\hbar.Client.csproj", "{79087B42-8105-4B14-863B-34B1522C607F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "hbar.Client.ConsoleHost", "hbar.Client.ConsoleHost\hbar.Client.ConsoleHost.csproj", "{806CDA6D-DDE5-4A7C-A110-121700A17668}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "hbar.Client.ConsoleHost", "hbar.Client.ConsoleHost\hbar.Client.ConsoleHost.csproj", "{806CDA6D-DDE5-4A7C-A110-121700A17668}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "hbar.Relay", "hbar.Relay\hbar.Relay.csproj", "{26731470-CFE6-4C15-9C37-6749BB774931}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "hbar.Relay", "hbar.Relay\hbar.Relay.csproj", "{26731470-CFE6-4C15-9C37-6749BB774931}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "hbar.Relay.ConsoleHost", "hbar.Relay.ConsoleHost\hbar.Relay.ConsoleHost.csproj", "{BCB4D1E0-1988-4BFA-99F5-6AFC8593621B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "hbar.Relay.ConsoleHost", "hbar.Relay.ConsoleHost\hbar.Relay.ConsoleHost.csproj", "{BCB4D1E0-1988-4BFA-99F5-6AFC8593621B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "app", "app", "{D2D0A1C8-A7A7-4949-B392-7E2D7CB256E6}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "relay", "relay", "{D951F409-977C-4FB2-BE18-103AD24FBF94}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -64,8 +68,13 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
+		{347E1653-79F2-40A7-A320-5D08F1A175B3} = {D2D0A1C8-A7A7-4949-B392-7E2D7CB256E6}
+		{51BA15F1-653A-4480-BCE7-C7DE129B8C41} = {D2D0A1C8-A7A7-4949-B392-7E2D7CB256E6}
+		{B023D35B-B6FA-4BA6-ABA9-9D547D47B065} = {D2D0A1C8-A7A7-4949-B392-7E2D7CB256E6}
 		{8F59E3D2-5C14-4853-B438-7D7831D76857} = {43FE1259-0116-455A-9A94-0ECF8D8387A8}
+		{79087B42-8105-4B14-863B-34B1522C607F} = {D2D0A1C8-A7A7-4949-B392-7E2D7CB256E6}
 		{806CDA6D-DDE5-4A7C-A110-121700A17668} = {43FE1259-0116-455A-9A94-0ECF8D8387A8}
+		{26731470-CFE6-4C15-9C37-6749BB774931} = {D951F409-977C-4FB2-BE18-103AD24FBF94}
 		{BCB4D1E0-1988-4BFA-99F5-6AFC8593621B} = {43FE1259-0116-455A-9A94-0ECF8D8387A8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution

@@ -1,19 +1,14 @@
 ﻿using hbar.Contract.FileSystemQuery;
 using ProtoBuf;
 using System;
-using System.IO;
 using System.IO.Pipes;
-using System.Threading;
 
 namespace hbar.Relay
 {
     public class NamedPipeRelay
     {
-        private const string _proxyPipeName = "FileSystemQueryProxy";
-        private const string _servicePipeName = "FileSystemQueryService";
-
-        //private CancellationToken proxyToken;
-        //private CancellationToken serviceToken;
+        private static readonly string _proxyPipeName = "FileSystemQueryProxy";
+        private static readonly string _servicePipeName = "FileSystemQueryService";
 
         private NamedPipeServerStream _proxyPipe;
         private NamedPipeServerStream _servicePipe;
