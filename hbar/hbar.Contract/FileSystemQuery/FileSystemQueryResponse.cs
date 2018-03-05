@@ -18,6 +18,6 @@ namespace hbar.Contract.FileSystemQuery
         }
 
         public override string ToString() =>
-            $"Request : {this.Request}{Environment.NewLine}Response: {this.ResponseString}.";
+            $"Request: [{this.Request}] Response: [{this.ResponseString}]";
     }
 }

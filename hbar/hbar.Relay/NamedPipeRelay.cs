@@ -33,9 +33,9 @@ namespace hbar.Relay
 
         private void ListenForServiceConnection()
         {
-            Console.WriteLine($"Listening for {_servicePipeName} connection.");
+            Console.WriteLine($"nprs:Listening for {_servicePipeName} connection.");
             _servicePipe.WaitForConnection();
-            Console.WriteLine($"{_servicePipeName} connected.");
+            Console.WriteLine($"nprs:{_servicePipeName} connected.");
         }
 
         private void ProcessProxyRequest()
@@ -44,31 +44,31 @@ namespace hbar.Relay
             {
                 if (!_proxyPipe.IsConnected)
                 {
-                    Console.WriteLine($"Listening for {_proxyPipeName} connection.");
+                    Console.WriteLine($"nprs:Listening for {_proxyPipeName} connection.");
                     _proxyPipe.WaitForConnection();
-                    Console.WriteLine($"{_proxyPipeName} connected.");
+                    Console.WriteLine($"nprs:{_proxyPipeName} connected.");
                 }
 
-                //Console.WriteLine($"Waiting to receive {_proxyPipeName} request.");
+                //Console.WriteLine($"nprs:Waiting to receive {_proxyPipeName} request.");
                 var request = Serializer.DeserializeWithLengthPrefix<FileSystemQueryRequest>(_proxyPipe, PrefixStyle.Base128);
-                Console.WriteLine($"Received {_proxyPipeName} request: {request}.");
+                Console.WriteLine($"nprs:Received {_proxyPipeName} request: {request}.");
 
                 FileSystemQueryResponse response = null;
                 if (_servicePipe != null && _servicePipe.IsConnected)
                 {
-                    Console.WriteLine($"Forwarding {_servicePipeName} request: {request}.");
+                    Console.WriteLine($"nprs:Forwarding {_servicePipeName} request: {request}.");
                     Serializer.SerializeWithLengthPrefix(_servicePipe, request, PrefixStyle.Base128);
-                    //Console.WriteLine($"Forwared {_servicePipeName} request.");
+                    //Console.WriteLine($"nprs:Forwared {_servicePipeName} request.");
 
-                    //Console.WriteLine($"Waiting to receive {_servicePipeName} response.");
+                    //Console.WriteLine($"nprs:Waiting to receive {_servicePipeName} response.");
                     response = Serializer.DeserializeWithLengthPrefix<FileSystemQueryResponse>(_servicePipe, PrefixStyle.Base128);
-                    Console.WriteLine($"Received {_servicePipeName} response: {response}.");
+                    Console.WriteLine($"nprs:Received {_servicePipeName} response: {response}.");
                 }
 
 
-                //Console.WriteLine($"Forwarding {_proxyPipeName} response.");
+                //Console.WriteLine($"nprs:Returning {_proxyPipeName} response.");
                 Serializer.SerializeWithLengthPrefix(_proxyPipe, response, PrefixStyle.Base128);
-                Console.WriteLine($"Forwarded {_proxyPipeName} response.");
+                Console.WriteLine($"nprs:Returned {_proxyPipeName} response.");
 
                 _proxyPipe.Disconnect();
             }

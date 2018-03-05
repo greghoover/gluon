@@ -14,6 +14,6 @@ namespace Gluon.Tester.Contracts
         }
 
         public override string ToString() =>
-             $"QueryType[{this.QueryType}] Path[{this.FolderPath}].";
+             $"QueryType[{this.QueryType}] Path[{this.FolderPath}]";
     }
 }

@@ -43,7 +43,7 @@ namespace hbar.Client.ConsoleHost
                 return;
 
             var result = client.DoFileSystemQuery(folderPath);
-            Console.WriteLine($"Was folder path {folderPath} found? {result}.");
+            Console.WriteLine($"Was folder path [{folderPath}] found? [{result}].");
         }
     }
 }

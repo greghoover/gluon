@@ -13,17 +13,17 @@ namespace hbar.Proxy.FileSystemQuery
             var pipeName = nameof(FileSystemQueryProxy);
 
             var pipe = new NamedPipeClientStream(".", pipeName, PipeDirection.InOut, PipeOptions.None);
-            Console.WriteLine($"{pipeName} connecting to relay.");
+            Console.WriteLine($"nprc:{pipeName} connecting to relay.");
             pipe.ConnectAsync(5000).Wait();
-            Console.WriteLine($"{pipeName} connected.");
+            Console.WriteLine($"nprc:{pipeName} connected.");
 
-            Console.WriteLine($"Sending {pipeName} request: {request}.");
+            Console.WriteLine($"nprc:Sending {pipeName} request: {request}.");
             Serializer.SerializeWithLengthPrefix(pipe, request, PrefixStyle.Base128);
-            //Console.WriteLine($"Sent {pipeName} request.");
+            //Console.WriteLine($"nprc:Sent {pipeName} request.");
 
-            //Console.WriteLine($"Receiving {pipeName} response.");
+            //Console.WriteLine($"nprc:Receiving {pipeName} response.");
             response = Serializer.DeserializeWithLengthPrefix<FileSystemQueryResponse>(pipe, PrefixStyle.Base128);
-            Console.WriteLine($"Received {pipeName} response: {response}.");
+            Console.WriteLine($"nprc:Received {pipeName} response: {response}.");
 
             return response;
         }

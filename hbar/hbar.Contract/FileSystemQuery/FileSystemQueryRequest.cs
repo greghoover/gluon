@@ -18,6 +18,6 @@ namespace hbar.Contract.FileSystemQuery
         }
 
         public override string ToString() =>
-             $"QueryType[{this.QueryType}] Path[{this.FolderPath}].";
+             $"QueryType[{this.QueryType}] Path[{this.FolderPath}]";
     }
 }
