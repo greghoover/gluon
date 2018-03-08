@@ -1,5 +1,5 @@
 ﻿using System;
-using hase.DevLib.Client;
+using hase.DevLib.Contract;
 using hase.DevLib.Client.FileSystemQuery;
 
 namespace hase.ClientUI.ConsoleApp
@@ -13,7 +13,7 @@ namespace hase.ClientUI.ConsoleApp
             while (true)
             {
                 {
-                    foreach (var item in ClientUtil.GetServices())
+                    foreach (var item in ServiceTypesUtil.GetServices())
                     {
                         Console.WriteLine($"{item.Id}. {item.Desc}");
                     }

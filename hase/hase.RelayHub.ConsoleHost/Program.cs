@@ -1,5 +1,5 @@
 ﻿using System;
-using hase.DevLib.Relay;
+using hase.DevLib.Relay.NamedPipe;
 
 namespace hase.RelayHub.ConsoleHost
 {
@@ -8,7 +8,7 @@ namespace hase.RelayHub.ConsoleHost
         static void Main(string[] args)
         {
             Console.WriteLine("Starting Named Pipe Relay.");
-            var relay = new NamedPipeRelay();
+            var relay = new NamedPipeRelayHub();
             relay.Start();
             Console.WriteLine("Named Pipe Relay started.");
         }

@@ -1,10 +1,9 @@
-﻿using hase.DevLib.Contract;
-using System;
+﻿using System;
 using System.Collections.Generic;
 
-namespace hase.DevLib.Client
+namespace hase.DevLib.Contract
 {
-    public static class ClientUtil
+    public static class ServiceTypesUtil
     {
         public static IEnumerable<(int Id, string Desc)> GetServices()
         {

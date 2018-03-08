@@ -1,9 +1,10 @@
 ﻿using System.IO;
+using hase.DevLib.Contract;
 using hase.DevLib.Contract.FileSystemQuery;
 
 namespace hase.DevLib.Service.FileSystemQuery
 {
-    public class FileSystemQueryService : IFileSystemQueryService
+    public class FileSystemQueryService : IService<FileSystemQueryRequest, FileSystemQueryResponse>
     {
         // todo: consider making this an async method.
         public FileSystemQueryResponse Execute(FileSystemQueryRequest request)

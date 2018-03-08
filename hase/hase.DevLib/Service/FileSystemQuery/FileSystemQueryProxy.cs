@@ -1,31 +1,14 @@
-﻿using hase.DevLib.Contract.FileSystemQuery;
-using ProtoBuf;
-using System;
-using System.IO.Pipes;
+﻿using hase.DevLib.Contract;
+using hase.DevLib.Contract.FileSystemQuery;
+using hase.DevLib.Relay.NamedPipe;
 
 namespace hase.DevLib.Service.FileSystemQuery
 {
-    public class FileSystemQueryProxy : IFileSystemQueryService
+    public class FileSystemQueryProxy : IServiceProxy<FileSystemQueryService, FileSystemQueryRequest, FileSystemQueryResponse>
     {
         public FileSystemQueryResponse Execute(FileSystemQueryRequest request)
         {
-            FileSystemQueryResponse response = null;
-            var pipeName = nameof(FileSystemQueryProxy);
-
-            var pipe = new NamedPipeClientStream(".", pipeName, PipeDirection.InOut, PipeOptions.None);
-            Console.WriteLine($"nprc:{pipeName} connecting to relay.");
-            pipe.ConnectAsync(5000).Wait();
-            Console.WriteLine($"nprc:{pipeName} connected.");
-
-            Console.WriteLine($"nprc:Sending {pipeName} request: {request}.");
-            Serializer.SerializeWithLengthPrefix(pipe, request, PrefixStyle.Base128);
-            //Console.WriteLine($"nprc:Sent {pipeName} request.");
-
-            //Console.WriteLine($"nprc:Receiving {pipeName} response.");
-            response = Serializer.DeserializeWithLengthPrefix<FileSystemQueryResponse>(pipe, PrefixStyle.Base128);
-            Console.WriteLine($"nprc:Received {pipeName} response: {response}.");
-
-            return response;
+            return new NamedPipeRelayProxyClient<FileSystemQueryService, FileSystemQueryProxy, FileSystemQueryRequest, FileSystemQueryResponse>().Execute(request);
         }
     }
 }

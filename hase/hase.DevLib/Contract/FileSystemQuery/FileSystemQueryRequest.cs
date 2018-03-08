@@ -10,7 +10,7 @@ namespace hase.DevLib.Contract.FileSystemQuery
         [ProtoMember(2)]
         public string FolderPath { get; set; }
 
-        private FileSystemQueryRequest() { }
+        public FileSystemQueryRequest() { }
         public FileSystemQueryRequest(FileSystemQueryTypeEnum queryType, string folderPath)
         {
             QueryType = queryType;

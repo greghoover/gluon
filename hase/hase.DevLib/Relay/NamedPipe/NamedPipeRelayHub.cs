@@ -3,9 +3,9 @@ using ProtoBuf;
 using System;
 using System.IO.Pipes;
 
-namespace hase.DevLib.Relay
+namespace hase.DevLib.Relay.NamedPipe
 {
-    public class NamedPipeRelay
+    public class NamedPipeRelayHub
     {
         private static readonly string _proxyPipeName = "FileSystemQueryProxy";
         private static readonly string _servicePipeName = "FileSystemQueryService";
@@ -13,7 +13,7 @@ namespace hase.DevLib.Relay
         private NamedPipeServerStream _proxyPipe;
         private NamedPipeServerStream _servicePipe;
 
-        public NamedPipeRelay()
+        public NamedPipeRelayHub()
         {
             _proxyPipe = new NamedPipeServerStream(_proxyPipeName, PipeDirection.InOut);
             _servicePipe = new NamedPipeServerStream(_servicePipeName, PipeDirection.InOut);

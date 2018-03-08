@@ -3,20 +3,21 @@ using hase.DevLib.Service.FileSystemQuery;
 
 namespace hase.DevLib.Client.FileSystemQuery
 {
-    public class FileSystemQueryClient
+    public class FileSystemQueryClient : ServiceClient<FileSystemQueryService, FileSystemQueryProxy, FileSystemQueryRequest, FileSystemQueryResponse>
     {
-        public bool IsRemote { get; private set; }
-
-        public FileSystemQueryClient(bool isRemote = false)
+        public FileSystemQueryClient() : this(isRemote: false)
         {
-            this.IsRemote = isRemote;
+        }
+        public FileSystemQueryClient(bool isRemote = false) : base(isRemote)
+        {
         }
 
         public string DoFileSystemQuery(string folderPath)
         {
-            var service = FileSystemQueryFactory.CreateInstance(this.IsRemote);
-            var request = new FileSystemQueryRequest(FileSystemQueryTypeEnum.DirectoryExists, folderPath);
-            var response = service.Execute(request);
+            var response = this.Execute(x => {
+                x.QueryType = FileSystemQueryTypeEnum.DirectoryExists;
+                x.FolderPath = folderPath;
+            });
             return response.ResponseString;
         }
     }
