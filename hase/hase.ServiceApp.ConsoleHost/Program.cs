@@ -1,4 +1,5 @@
-﻿using System;
+﻿using hase.DevLib.Service;
+using System;
 
 namespace hase.ServiceApp.ConsoleHost
 {
@@ -6,7 +7,9 @@ namespace hase.ServiceApp.ConsoleHost
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            Console.WriteLine("Starting Service Dispatcher");
+            var dispatcher = new ServiceDispatcher();
+            dispatcher.Run();
         }
     }
 }

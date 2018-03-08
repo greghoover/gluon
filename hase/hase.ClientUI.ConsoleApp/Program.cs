@@ -42,7 +42,7 @@ namespace hase.ClientUI.ConsoleApp
             if (folderPath == string.Empty)
                 return;
 
-            var client = new FileSystemQueryClient(isRemote: false);
+            var client = new FileSystemQueryClient(isRemote: true);
             var result = client.DoFileSystemQuery(folderPath);
             Console.WriteLine($"Was folder path [{folderPath}] found? [{result}].");
         }
