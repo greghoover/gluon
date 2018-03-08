@@ -13,9 +13,9 @@ namespace hase.DevLib.Service
 
         public void Run()
         {
-            Console.WriteLine($"{pipeName} connecting to relay.");
+            Console.WriteLine($"nprc:{pipeName} connecting to relay.");
             pipe.ConnectAsync(5000).Wait();
-            Console.WriteLine($"{pipeName} connected to relay.");
+            Console.WriteLine($"nprc:{pipeName} connected to relay.");
 
             while (true)
             {
@@ -26,9 +26,9 @@ namespace hase.DevLib.Service
 
         private void ProcessRequest()
         {
-            //Console.WriteLine($"Waiting to receive {pipeName} request.");
+            //Console.WriteLine($"nprc:Waiting to receive {pipeName} request.");
             var request = Serializer.DeserializeWithLengthPrefix<FileSystemQueryRequest>(pipe, PrefixStyle.Base128);
-            Console.WriteLine($"Received {pipeName} request: {request}.");
+            Console.WriteLine($"nprc:Received {pipeName} request: {request}.");
 
             var service = new FileSystemQueryService();
             FileSystemQueryResponse response = null;
@@ -39,9 +39,9 @@ namespace hase.DevLib.Service
             }
             catch (Exception ex) { }
 
-            Console.WriteLine($"Sending {pipeName} response: {response}.");
+            Console.WriteLine($"nprc:Sending {pipeName} response: {response}.");
             Serializer.SerializeWithLengthPrefix(pipe, response, PrefixStyle.Base128);
-            //Console.WriteLine($"Sent {pipeName} response.");
+            //Console.WriteLine($"nprc:Sent {pipeName} response.");
         }
     }
 }
