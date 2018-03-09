@@ -1,14 +1,17 @@
-﻿using hase.DevLib.Contract.FileSystemQuery;
-using hase.DevLib.Service.FileSystemQuery;
+﻿using hase.DevLib.Contract;
 using ProtoBuf;
 using System;
 using System.IO.Pipes;
 
-namespace hase.DevLib.Service
+namespace hase.DevLib.Relay.NamedPipe
 {
-    public class ServiceDispatcher
+    public class NamedPipeRelayDispatcherClient<TService, TServiceProxy, TRequest, TResponse> : IRelayClient<TService, TServiceProxy, TRequest, TResponse>
+        where TServiceProxy : IServiceProxy<TService, TRequest, TResponse>
+        where TService : IService<TRequest, TResponse>
+        where TRequest : class
+        where TResponse : class
     {
-        private static readonly string pipeName = nameof(FileSystemQueryService);
+        private static readonly string pipeName = typeof(TService).Name;
         private NamedPipeClientStream pipe = new NamedPipeClientStream(".", pipeName, PipeDirection.InOut, PipeOptions.None);
 
         public void Run()
@@ -27,12 +30,11 @@ namespace hase.DevLib.Service
         private void ProcessRequest()
         {
             //Console.WriteLine($"nprc:Waiting to receive {pipeName} request.");
-            var request = Serializer.DeserializeWithLengthPrefix<FileSystemQueryRequest>(pipe, PrefixStyle.Base128);
+            var request = Serializer.DeserializeWithLengthPrefix<TRequest>(pipe, PrefixStyle.Base128);
             Console.WriteLine($"nprc:Received {pipeName} request: {request}.");
 
-            var service = new FileSystemQueryService();
-            FileSystemQueryResponse response = null;
-
+            var service = ServiceFactory<TService, TServiceProxy, TRequest, TResponse>.CreateInstance();
+            TResponse response = null;
             try
             {
                 response = service.Execute(request);
@@ -45,4 +47,3 @@ namespace hase.DevLib.Service
         }
     }
 }
-

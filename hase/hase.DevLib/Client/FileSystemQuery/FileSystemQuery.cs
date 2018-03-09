@@ -3,16 +3,16 @@ using hase.DevLib.Service.FileSystemQuery;
 
 namespace hase.DevLib.Client.FileSystemQuery
 {
-    public class FileSystemQueryClient : ServiceClient<FileSystemQueryService, FileSystemQueryProxy, FileSystemQueryRequest, FileSystemQueryResponse>
+    public class FileSystemQuery : ServiceClient<FileSystemQueryService, FileSystemQueryProxy, FileSystemQueryRequest, FileSystemQueryResponse>, IFileSystemQuery
     {
-        public FileSystemQueryClient() : this(isRemote: false)
+        public FileSystemQuery() : this(isRemote: false)
         {
         }
-        public FileSystemQueryClient(bool isRemote = false) : base(isRemote)
+        public FileSystemQuery(bool isRemote = false) : base(isRemote)
         {
         }
 
-        public string DoFileSystemQuery(string folderPath)
+        public string DoesDirectoryExist(string folderPath)
         {
             var response = this.Execute(x => {
                 x.QueryType = FileSystemQueryTypeEnum.DirectoryExists;

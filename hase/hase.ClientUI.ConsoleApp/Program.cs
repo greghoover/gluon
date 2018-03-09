@@ -37,13 +37,13 @@ namespace hase.ClientUI.ConsoleApp
 
         static void DoFileSystemQuery()
         {
-            Console.Write("Enter folder path to check: ");
+            Console.Write("Enter folder path to check if exists: ");
             var folderPath = Console.ReadLine().Trim();
             if (folderPath == string.Empty)
                 return;
 
-            var client = new FileSystemQueryClient(isRemote: true);
-            var result = client.DoFileSystemQuery(folderPath);
+            var fsQuery = new FileSystemQuery(isRemote: true);
+            var result = fsQuery.DoesDirectoryExist(folderPath);
             Console.WriteLine($"Was folder path [{folderPath}] found? [{result}].");
         }
     }

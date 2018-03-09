@@ -1,5 +1,4 @@
 ﻿using hase.DevLib.Contract;
-using hase.DevLib.Service;
 using System;
 
 namespace hase.DevLib.Client
@@ -22,9 +21,10 @@ namespace hase.DevLib.Client
 
         public TResponse Execute(Action<TRequest> init)
         {
-            var service = ServiceFactory<TService, TServiceProxy, TRequest, TResponse>.CreateInstance(this.IsRemote);
             var request = Activator.CreateInstance<TRequest>();
             init.Invoke(request);
+
+            var service = ServiceFactory<TService, TServiceProxy, TRequest, TResponse>.CreateInstance(this.IsRemote);
             var response = service.Execute(request);
             return response;
         }

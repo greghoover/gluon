@@ -5,7 +5,7 @@ using System.IO.Pipes;
 
 namespace hase.DevLib.Relay.NamedPipe
 {
-    public class NamedPipeRelayProxyClient<TService, TServiceProxy, TRequest, TResponse> : IRelayProxyClient<TService, TServiceProxy, TRequest, TResponse>
+    public class NamedPipeRelayProxyClient<TService, TServiceProxy, TRequest, TResponse> : IRelayClient<TService, TServiceProxy, TRequest, TResponse>
         where TServiceProxy : IServiceProxy<TService, TRequest, TResponse>
         where TService : IService<TRequest, TResponse>
         where TRequest : class
