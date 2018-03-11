@@ -4,7 +4,7 @@ using hase.DevLib.Services.FileSystemQuery.Contract;
 
 namespace hase.DevLib.Services.FileSystemQuery.Service
 {
-    public class FileSystemQueryService : IService<FileSystemQueryRequest, FileSystemQueryResponse>, IFileSystemQuery
+    public class FileSystemQueryService : IService<FileSystemQueryRequest, FileSystemQueryResponse>//, IFileSystemQuery
     {
         // todo: consider making this an async method.
         public FileSystemQueryResponse Execute(FileSystemQueryRequest request)

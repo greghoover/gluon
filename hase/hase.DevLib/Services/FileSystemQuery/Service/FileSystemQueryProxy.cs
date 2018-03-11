@@ -4,7 +4,7 @@ using hase.DevLib.Framework.Relay.NamedPipe;
 
 namespace hase.DevLib.Services.FileSystemQuery.Service
 {
-    public class FileSystemQueryProxy : IServiceProxy<FileSystemQueryService, FileSystemQueryRequest, FileSystemQueryResponse>, IFileSystemQuery
+    public class FileSystemQueryProxy : IServiceProxy<FileSystemQueryService, FileSystemQueryRequest, FileSystemQueryResponse>//, IFileSystemQuery
     {
         public FileSystemQueryResponse Execute(FileSystemQueryRequest request)
         {
