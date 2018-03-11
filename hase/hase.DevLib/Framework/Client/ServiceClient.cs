@@ -19,11 +19,8 @@ namespace hase.DevLib.Framework.Client
             this.IsRemote = isRemote;
         }
 
-        public TResponse Execute(Action<TRequest> init)
+        public TResponse Execute(TRequest request)
         {
-            var request = Activator.CreateInstance<TRequest>();
-            init.Invoke(request);
-
             var service = ServiceFactory<TService, TServiceProxy, TRequest, TResponse>.CreateInstance(this.IsRemote);
             var response = service.Execute(request);
             return response;

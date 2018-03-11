@@ -12,14 +12,5 @@ namespace hase.DevLib.Services.FileSystemQuery.Client
         public FileSystemQuery(bool isRemote = false) : base(isRemote)
         {
         }
-
-        public string DoesDirectoryExist(string folderPath)
-        {
-            var response = this.Execute(x => {
-                x.QueryType = FileSystemQueryTypeEnum.DirectoryExists;
-                x.FolderPath = folderPath;
-            });
-            return response.ResponseString;
-        }
     }
 }

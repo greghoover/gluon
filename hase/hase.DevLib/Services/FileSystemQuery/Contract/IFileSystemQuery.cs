@@ -1,7 +1,9 @@
-﻿namespace hase.DevLib.Services.FileSystemQuery.Contract
+﻿using hase.DevLib.Framework.Contract;
+
+namespace hase.DevLib.Services.FileSystemQuery.Contract
 {
-    public interface IFileSystemQuery
+    public interface IFileSystemQuery : IService<FileSystemQueryRequest, FileSystemQueryResponse>
     {
-        string DoesDirectoryExist(string folderPath);
+        //string DoesDirectoryExist(string folderPath);
     }
 }
