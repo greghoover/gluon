@@ -1,6 +1,6 @@
-﻿using hase.DevLib.Contract.FileSystemQuery;
-using hase.DevLib.Relay.NamedPipe;
-using hase.DevLib.Service.FileSystemQuery;
+﻿using hase.DevLib.Services.FileSystemQuery.Contract;
+using hase.DevLib.Services.FileSystemQuery.Service;
+using hase.DevLib.Framework.Relay.NamedPipe;
 using System;
 
 namespace hase.ServiceApp.ConsoleHost

@@ -1,5 +1,5 @@
-﻿using System;
-using hase.DevLib.Relay.NamedPipe;
+﻿using hase.DevLib.Framework.Relay.NamedPipe;
+using System;
 
 namespace hase.RelayHub.ConsoleHost
 {

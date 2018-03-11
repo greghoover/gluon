@@ -1,6 +1,6 @@
 ﻿using System;
-using hase.DevLib.Contract;
-using hase.DevLib.Client.FileSystemQuery;
+using hase.DevLib.Framework.Contract;
+using hase.DevLib.Services.FileSystemQuery.Client;
 
 namespace hase.ClientUI.ConsoleApp
 {

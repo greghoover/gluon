@@ -1,9 +1,9 @@
-﻿using hase.DevLib.Contract.FileSystemQuery;
+﻿using hase.DevLib.Services.FileSystemQuery.Contract;
 using ProtoBuf;
 using System;
 using System.IO.Pipes;
 
-namespace hase.DevLib.Relay.NamedPipe
+namespace hase.DevLib.Framework.Relay.NamedPipe
 {
     public class NamedPipeRelayHub
     {

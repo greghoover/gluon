@@ -1,7 +1,7 @@
-﻿using hase.DevLib.Contract;
+﻿using hase.DevLib.Framework.Contract;
 using System;
 
-namespace hase.DevLib.Client
+namespace hase.DevLib.Framework.Client
 {
     public class ServiceClient<TService, TServiceProxy, TRequest, TResponse>
         where TServiceProxy : IServiceProxy<TService, TRequest, TResponse>

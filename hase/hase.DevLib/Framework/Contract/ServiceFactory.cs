@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace hase.DevLib.Contract
+namespace hase.DevLib.Framework.Contract
 {
     public static class ServiceFactory<TService, TServiceProxy, TRequest, TResponse>
         where TServiceProxy : IServiceProxy<TService, TRequest, TResponse>

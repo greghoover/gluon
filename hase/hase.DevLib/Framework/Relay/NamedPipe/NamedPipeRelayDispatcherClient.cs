@@ -1,9 +1,9 @@
-﻿using hase.DevLib.Contract;
+﻿using hase.DevLib.Framework.Contract;
 using ProtoBuf;
 using System;
 using System.IO.Pipes;
 
-namespace hase.DevLib.Relay.NamedPipe
+namespace hase.DevLib.Framework.Relay.NamedPipe
 {
     public class NamedPipeRelayDispatcherClient<TService, TServiceProxy, TRequest, TResponse> : IRelayClient<TService, TServiceProxy, TRequest, TResponse>
         where TServiceProxy : IServiceProxy<TService, TRequest, TResponse>

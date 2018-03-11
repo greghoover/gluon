@@ -1,7 +1,8 @@
-﻿using hase.DevLib.Contract.FileSystemQuery;
-using hase.DevLib.Service.FileSystemQuery;
+﻿using hase.DevLib.Framework.Client;
+using hase.DevLib.Services.FileSystemQuery.Contract;
+using hase.DevLib.Services.FileSystemQuery.Service;
 
-namespace hase.DevLib.Client.FileSystemQuery
+namespace hase.DevLib.Services.FileSystemQuery.Client
 {
     public class FileSystemQuery : ServiceClient<FileSystemQueryService, FileSystemQueryProxy, FileSystemQueryRequest, FileSystemQueryResponse>, IFileSystemQuery
     {

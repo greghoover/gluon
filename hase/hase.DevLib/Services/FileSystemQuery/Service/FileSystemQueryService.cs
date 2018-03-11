@@ -1,8 +1,8 @@
 ﻿using System.IO;
-using hase.DevLib.Contract;
-using hase.DevLib.Contract.FileSystemQuery;
+using hase.DevLib.Framework.Contract;
+using hase.DevLib.Services.FileSystemQuery.Contract;
 
-namespace hase.DevLib.Service.FileSystemQuery
+namespace hase.DevLib.Services.FileSystemQuery.Service
 {
     public class FileSystemQueryService : IService<FileSystemQueryRequest, FileSystemQueryResponse>
     {

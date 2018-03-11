@@ -1,8 +1,8 @@
-﻿using hase.DevLib.Contract;
-using hase.DevLib.Contract.FileSystemQuery;
-using hase.DevLib.Relay.NamedPipe;
+﻿using hase.DevLib.Framework.Contract;
+using hase.DevLib.Services.FileSystemQuery.Contract;
+using hase.DevLib.Framework.Relay.NamedPipe;
 
-namespace hase.DevLib.Service.FileSystemQuery
+namespace hase.DevLib.Services.FileSystemQuery.Service
 {
     public class FileSystemQueryProxy : IServiceProxy<FileSystemQueryService, FileSystemQueryRequest, FileSystemQueryResponse>
     {

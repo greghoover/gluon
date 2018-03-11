@@ -1,6 +1,6 @@
-﻿using hase.DevLib.Contract;
+﻿using hase.DevLib.Framework.Contract;
 
-namespace hase.DevLib.Relay
+namespace hase.DevLib.Framework.Relay
 {
     public interface IRelayClient<TService, TServiceProxy, TRequest, TResponse>
         where TServiceProxy : IServiceProxy<TService, TRequest, TResponse>

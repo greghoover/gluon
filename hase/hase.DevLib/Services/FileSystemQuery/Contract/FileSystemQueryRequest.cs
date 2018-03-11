@@ -1,6 +1,6 @@
 ﻿using ProtoBuf;
 
-namespace hase.DevLib.Contract.FileSystemQuery
+namespace hase.DevLib.Services.FileSystemQuery.Contract
 {
     [ProtoContract]
     public class FileSystemQueryRequest
