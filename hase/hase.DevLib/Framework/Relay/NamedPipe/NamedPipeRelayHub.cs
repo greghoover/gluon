@@ -1,22 +1,32 @@
-﻿using hase.DevLib.Services.FileSystemQuery.Contract;
-using ProtoBuf;
+﻿using ProtoBuf;
 using System;
 using System.IO.Pipes;
 
 namespace hase.DevLib.Framework.Relay.NamedPipe
 {
-    public class NamedPipeRelayHub
+    public class NamedPipeRelayHub<TRequest, TResponse>
+        where TRequest : class
+        where TResponse : class
     {
-        private static readonly string _proxyPipeName = "FileSystemQueryProxy";
-        private static readonly string _servicePipeName = "FileSystemQueryService";
+        /// <summary>
+        /// e.g. FileSystemQueryProxy
+        /// </summary>
+        public string ProxyPipeName { get; private set; }
+        /// <summary>
+        /// e.g. FileSystemQueryService
+        /// </summary>
+        public string ServicePipeName { get; private set; }
 
         private NamedPipeServerStream _proxyPipe;
         private NamedPipeServerStream _servicePipe;
 
-        public NamedPipeRelayHub()
+        public NamedPipeRelayHub(string servicePipeName, string proxyPipeName)
         {
-            _proxyPipe = new NamedPipeServerStream(_proxyPipeName, PipeDirection.InOut);
-            _servicePipe = new NamedPipeServerStream(_servicePipeName, PipeDirection.InOut);
+            this.ProxyPipeName = proxyPipeName;
+            this.ServicePipeName = servicePipeName;
+
+            _proxyPipe = new NamedPipeServerStream(this.ProxyPipeName, PipeDirection.InOut);
+            _servicePipe = new NamedPipeServerStream(this.ServicePipeName, PipeDirection.InOut);
         }
 
         public void Start()
@@ -33,9 +43,9 @@ namespace hase.DevLib.Framework.Relay.NamedPipe
 
         private void ListenForServiceConnection()
         {
-            Console.WriteLine($"nprs:Listening for {_servicePipeName} connection.");
+            Console.WriteLine($"nprs:Listening for {this.ServicePipeName} connection.");
             _servicePipe.WaitForConnection();
-            Console.WriteLine($"nprs:{_servicePipeName} connected.");
+            Console.WriteLine($"nprs:{this.ServicePipeName} connected.");
         }
 
         private void ProcessProxyRequest()
@@ -44,31 +54,31 @@ namespace hase.DevLib.Framework.Relay.NamedPipe
             {
                 if (!_proxyPipe.IsConnected)
                 {
-                    Console.WriteLine($"nprs:Listening for {_proxyPipeName} connection.");
+                    Console.WriteLine($"nprs:Listening for {this.ProxyPipeName} connection.");
                     _proxyPipe.WaitForConnection();
-                    Console.WriteLine($"nprs:{_proxyPipeName} connected.");
+                    Console.WriteLine($"nprs:{this.ProxyPipeName} connected.");
                 }
 
                 //Console.WriteLine($"nprs:Waiting to receive {_proxyPipeName} request.");
-                var request = Serializer.DeserializeWithLengthPrefix<FileSystemQueryRequest>(_proxyPipe, PrefixStyle.Base128);
-                Console.WriteLine($"nprs:Received {_proxyPipeName} request: {request}.");
+                var request = Serializer.DeserializeWithLengthPrefix<TRequest>(_proxyPipe, PrefixStyle.Base128);
+                Console.WriteLine($"nprs:Received {this.ProxyPipeName} request: {request}.");
 
-                FileSystemQueryResponse response = null;
+                TResponse response = null;
                 if (_servicePipe != null && _servicePipe.IsConnected)
                 {
-                    Console.WriteLine($"nprs:Forwarding {_servicePipeName} request: {request}.");
+                    Console.WriteLine($"nprs:Forwarding {this.ServicePipeName} request: {request}.");
                     Serializer.SerializeWithLengthPrefix(_servicePipe, request, PrefixStyle.Base128);
                     //Console.WriteLine($"nprs:Forwared {_servicePipeName} request.");
 
                     //Console.WriteLine($"nprs:Waiting to receive {_servicePipeName} response.");
-                    response = Serializer.DeserializeWithLengthPrefix<FileSystemQueryResponse>(_servicePipe, PrefixStyle.Base128);
-                    Console.WriteLine($"nprs:Received {_servicePipeName} response: {response}.");
+                    response = Serializer.DeserializeWithLengthPrefix<TResponse>(_servicePipe, PrefixStyle.Base128);
+                    Console.WriteLine($"nprs:Received {this.ServicePipeName} response: {response}.");
                 }
 
 
                 //Console.WriteLine($"nprs:Returning {_proxyPipeName} response.");
                 Serializer.SerializeWithLengthPrefix(_proxyPipe, response, PrefixStyle.Base128);
-                Console.WriteLine($"nprs:Returned {_proxyPipeName} response.");
+                Console.WriteLine($"nprs:Returned {this.ProxyPipeName} response.");
 
                 _proxyPipe.Disconnect();
             }

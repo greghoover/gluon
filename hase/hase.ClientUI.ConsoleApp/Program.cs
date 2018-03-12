@@ -43,7 +43,7 @@ namespace hase.ClientUI.ConsoleApp
             if (folderPath == string.Empty)
                 return;
 
-            var fsq = ServiceFactory<FileSystemQueryService, FileSystemQueryProxy, FileSystemQueryRequest, FileSystemQueryResponse>.CreateInstance(isRemote: true);
+            var fsq = ServiceFactory<FileSystemQueryService, FileSystemQueryRequest, FileSystemQueryResponse>.CreateConfiguredInstance();
 
             var request = new FileSystemQueryRequest
             {

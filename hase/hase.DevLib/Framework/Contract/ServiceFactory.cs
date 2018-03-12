@@ -1,19 +1,21 @@
-﻿using System;
+﻿using hase.DevLib.Framework.Relay.NamedPipe;
+using System;
 
 namespace hase.DevLib.Framework.Contract
 {
-    public static class ServiceFactory<TService, TServiceProxy, TRequest, TResponse>
-        where TServiceProxy : IServiceProxy<TService, TRequest, TResponse>
+    public static class ServiceFactory<TService, TRequest, TResponse>
         where TService : IService<TRequest, TResponse>
         where TRequest : class
         where TResponse : class
     {
-        public static IService<TRequest, TResponse> CreateInstance(bool isRemote = false)
+        public static IService<TRequest, TResponse> CreateConfiguredInstance()
         {
-            if (isRemote)
-                return Activator.CreateInstance<TServiceProxy>();
-            else
-                return Activator.CreateInstance<TService>();
+            var proxy = Activator.CreateInstance<NamedPipeRelayProxyClient<TService, TRequest, TResponse>>();
+            return (IService<TRequest, TResponse>)proxy;
+        }
+        public static IService<TRequest, TResponse> CreateLocalInstance()
+        {
+            return Activator.CreateInstance<TService>();
         }
     }
 }

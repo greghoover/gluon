@@ -5,8 +5,7 @@ using System.IO.Pipes;
 
 namespace hase.DevLib.Framework.Relay.NamedPipe
 {
-    public class NamedPipeRelayProxyClient<TService, TServiceProxy, TRequest, TResponse> : IRelayClient<TService, TServiceProxy, TRequest, TResponse>
-        where TServiceProxy : IServiceProxy<TService, TRequest, TResponse>
+    public class NamedPipeRelayProxyClient<TService, TRequest, TResponse> : IRelayProxyClient<TService, TRequest, TResponse>
         where TService : IService<TRequest, TResponse>
         where TRequest : class
         where TResponse : class
@@ -14,7 +13,10 @@ namespace hase.DevLib.Framework.Relay.NamedPipe
         public TResponse Execute(TRequest request)
         {
             TResponse response = null;
-            var pipeName = typeof(TServiceProxy).Name;
+            //var pipeName = typeof(TServiceProxy).Name;
+            var pipeName = typeof(TService).Name;
+            if (pipeName.EndsWith("Service"))
+                pipeName = pipeName.Replace("Service", "Proxy");
 
             var pipe = new NamedPipeClientStream(".", pipeName, PipeDirection.InOut, PipeOptions.None);
             Console.WriteLine($"nprc:{pipeName} connecting to relay.");

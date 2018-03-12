@@ -2,6 +2,7 @@
 using hase.DevLib.Services.FileSystemQuery.Service;
 using hase.DevLib.Framework.Relay.NamedPipe;
 using System;
+using hase.DevLib.Framework.Contract;
 
 namespace hase.ServiceApp.ConsoleHost
 {
@@ -10,7 +11,9 @@ namespace hase.ServiceApp.ConsoleHost
         static void Main(string[] args)
         {
             Console.WriteLine("Starting Service Dispatcher");
-            var dispatcher = new NamedPipeRelayDispatcherClient<FileSystemQueryService, FileSystemQueryProxy, FileSystemQueryRequest, FileSystemQueryResponse>();
+
+            var dispatcher = RelayDispatcherClientFactory<NamedPipeRelayDispatcherClient<FileSystemQueryService, FileSystemQueryRequest, FileSystemQueryResponse>, FileSystemQueryService, FileSystemQueryRequest, FileSystemQueryResponse>.CreateInstance();
+
             dispatcher.Run();
         }
     }

@@ -5,8 +5,7 @@ using System.IO.Pipes;
 
 namespace hase.DevLib.Framework.Relay.NamedPipe
 {
-    public class NamedPipeRelayDispatcherClient<TService, TServiceProxy, TRequest, TResponse> : IRelayClient<TService, TServiceProxy, TRequest, TResponse>
-        where TServiceProxy : IServiceProxy<TService, TRequest, TResponse>
+    public class NamedPipeRelayDispatcherClient<TService, TRequest, TResponse> : IRelayDispatcherClient<TService, TRequest, TResponse>
         where TService : IService<TRequest, TResponse>
         where TRequest : class
         where TResponse : class
@@ -33,7 +32,7 @@ namespace hase.DevLib.Framework.Relay.NamedPipe
             var request = Serializer.DeserializeWithLengthPrefix<TRequest>(pipe, PrefixStyle.Base128);
             Console.WriteLine($"nprc:Received {pipeName} request: {request}.");
 
-            var service = ServiceFactory<TService, TServiceProxy, TRequest, TResponse>.CreateInstance();
+            var service = ServiceFactory<TService, TRequest, TResponse>.CreateLocalInstance();
             TResponse response = null;
             try
             {
