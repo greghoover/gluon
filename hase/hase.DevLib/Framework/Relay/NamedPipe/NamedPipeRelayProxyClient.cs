@@ -13,24 +13,23 @@ namespace hase.DevLib.Framework.Relay.NamedPipe
         public TResponse Execute(TRequest request)
         {
             TResponse response = null;
-            //var pipeName = typeof(TServiceProxy).Name;
-            var pipeName = typeof(TService).Name;
-            if (pipeName.EndsWith("Service"))
-                pipeName = pipeName.Replace("Service", "Proxy");
+            var pipeName = ServiceTypesUtil.GetServiceProxyName<TService>();
 
-            var pipe = new NamedPipeClientStream(".", pipeName, PipeDirection.InOut, PipeOptions.None);
-            Console.WriteLine($"nprc:{pipeName} connecting to relay.");
-            pipe.ConnectAsync(5000).Wait();
-            Console.WriteLine($"nprc:{pipeName} connected.");
+            using (var pipe = new NamedPipeClientStream(".", pipeName, PipeDirection.InOut, PipeOptions.None))
+            {
+                Console.WriteLine($"nprc:{pipeName} connecting to relay.");
+                pipe.ConnectAsync(5000).Wait();
+                Console.WriteLine($"nprc:{pipeName} connected.");
 
-            Console.WriteLine($"nprc:Sending {pipeName} request: {request}.");
-            Serializer.SerializeWithLengthPrefix(pipe, request, PrefixStyle.Base128);
-            //Console.WriteLine($"nprc:Sent {pipeName} request.");
+                Console.WriteLine($"nprc:Sending {pipeName} request: {request}.");
+                Serializer.SerializeWithLengthPrefix(pipe, request, PrefixStyle.Base128);
+                //Console.WriteLine($"nprc:Sent {pipeName} request.");
 
-            //Console.WriteLine($"nprc:Receiving {pipeName} response.");
-            response = Serializer.DeserializeWithLengthPrefix<TResponse>(pipe, PrefixStyle.Base128);
+                //Console.WriteLine($"nprc:Receiving {pipeName} response.");
+                response = Serializer.DeserializeWithLengthPrefix<TResponse>(pipe, PrefixStyle.Base128);
+            }
+                
             Console.WriteLine($"nprc:Received {pipeName} response: {response}.");
-
             return response;
         }
     }
