@@ -10,12 +10,12 @@ namespace hase.DevLib.Framework.Relay.NamedPipe
         where TRequest : class
         where TResponse : class
     {
-        private NamedPipeClientStream pipe = new NamedPipeClientStream(".", ChannelName, PipeDirection.InOut, PipeOptions.None);
-
         public override string Abbr => "nprdc";
+        private NamedPipeClientStream pipe = null;
 
         public override void Connect(int timeoutMs)
         {
+            pipe = new NamedPipeClientStream(".", ChannelName, PipeDirection.InOut, PipeOptions.None);
             pipe.ConnectAsync(5000).Wait();
         }
         public override TRequest DeserializeRequest()

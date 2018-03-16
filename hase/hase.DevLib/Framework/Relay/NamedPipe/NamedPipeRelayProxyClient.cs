@@ -1,36 +1,36 @@
 ﻿using hase.DevLib.Framework.Contract;
 using ProtoBuf;
-using System;
 using System.IO.Pipes;
 
 namespace hase.DevLib.Framework.Relay.NamedPipe
 {
-    public class NamedPipeRelayProxyClient<TService, TRequest, TResponse> : IRelayProxyClient<TService, TRequest, TResponse>
+    public class NamedPipeRelayProxyClient<TService, TRequest, TResponse> : RelayProxyClientBase<TService, TRequest, TResponse>
         where TService : IService<TRequest, TResponse>
         where TRequest : class
         where TResponse : class
     {
-        public TResponse Execute(TRequest request)
+        public override string Abbr => "nprpc";
+        private NamedPipeClientStream pipe = null;
+
+        public override void Connect(int timeoutMs)
         {
-            TResponse response = null;
-            var pipeName = ServiceTypesUtil.GetServiceProxyName<TService>();
+            pipe = new NamedPipeClientStream(".", ChannelName, PipeDirection.InOut, PipeOptions.None);
+            pipe.ConnectAsync(5000).Wait();
+        }
 
-            using (var pipe = new NamedPipeClientStream(".", pipeName, PipeDirection.InOut, PipeOptions.None))
-            {
-                Console.WriteLine($"nprc:{pipeName} connecting to relay.");
-                pipe.ConnectAsync(5000).Wait();
-                Console.WriteLine($"nprc:{pipeName} connected.");
+        public override void SerializeRequest(TRequest request)
+        {
+            Serializer.SerializeWithLengthPrefix(pipe, request, PrefixStyle.Base128);
+        }
 
-                Console.WriteLine($"nprc:Sending {pipeName} request: {request}.");
-                Serializer.SerializeWithLengthPrefix(pipe, request, PrefixStyle.Base128);
-                //Console.WriteLine($"nprc:Sent {pipeName} request.");
+        public override TResponse DeserializeResponse()
+        {
+            return Serializer.DeserializeWithLengthPrefix<TResponse>(pipe, PrefixStyle.Base128);
+        }
 
-                //Console.WriteLine($"nprc:Receiving {pipeName} response.");
-                response = Serializer.DeserializeWithLengthPrefix<TResponse>(pipe, PrefixStyle.Base128);
-            }
-                
-            Console.WriteLine($"nprc:Received {pipeName} response: {response}.");
-            return response;
+        public override void Disconnect()
+        {
+            pipe.Dispose();
         }
     }
 }
