@@ -8,5 +8,9 @@ namespace hase.DevLib.Framework.Relay
         where TResponse : class
     {
         void Run();
+        string Abbr { get; }
+        //void Connect(int timeoutMs);
+        //TRequest DeserializeRequest();
+        //void SerializeResponse(TResponse response);
     }
 }
