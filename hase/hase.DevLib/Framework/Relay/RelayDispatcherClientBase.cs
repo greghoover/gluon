@@ -11,6 +11,10 @@ namespace hase.DevLib.Framework.Relay
         public static readonly string ChannelName = typeof(TService).Name;
         public abstract string Abbr { get; }
 
+        public abstract void Connect(int timeoutMs);
+        public abstract TRequest DeserializeRequest();
+        public abstract void SerializeResponse(TResponse response);
+
         public virtual void Run()
         {
             Console.WriteLine($"{this.Abbr}:{ChannelName} connecting... to relay.");
@@ -23,9 +27,6 @@ namespace hase.DevLib.Framework.Relay
             }
 
         }
-        public abstract void Connect(int timeoutMs);
-        public abstract TRequest DeserializeRequest();
-        public abstract void SerializeResponse(TResponse response);
 
         protected virtual void ProcessRequest()
         {
