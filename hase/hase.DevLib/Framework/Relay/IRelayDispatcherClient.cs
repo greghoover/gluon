@@ -9,8 +9,5 @@ namespace hase.DevLib.Framework.Relay
     {
         void Run();
         string Abbr { get; }
-        //void Connect(int timeoutMs);
-        //TRequest DeserializeRequest();
-        //void SerializeResponse(TResponse response);
     }
 }

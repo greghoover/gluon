@@ -7,5 +7,7 @@ namespace hase.DevLib.Framework.Relay
         where TRequest : class
         where TResponse : class
     {
+        TResponse Execute(TRequest request);
+        string Abbr { get; }
     }
 }
