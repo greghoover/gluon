@@ -1,7 +1,7 @@
-﻿using System;
-using hase.DevLib.Framework.Contract;
+﻿using hase.DevLib.Framework.Core;
 using hase.DevLib.Services.FileSystemQuery.Contract;
 using hase.DevLib.Services.FileSystemQuery.Service;
+using System;
 
 namespace hase.ClientUI.ConsoleApp
 {
@@ -43,7 +43,7 @@ namespace hase.ClientUI.ConsoleApp
             if (folderPath == string.Empty)
                 return;
 
-            var fsq = ServiceFactory<FileSystemQueryService, FileSystemQueryRequest, FileSystemQueryResponse>.CreateConfiguredInstance();
+            var fsq = Service<FileSystemQueryService, FileSystemQueryRequest, FileSystemQueryResponse>.CreateConfiguredInstance();
 
             var request = new FileSystemQueryRequest
             {

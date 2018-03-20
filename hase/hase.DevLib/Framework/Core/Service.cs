@@ -1,9 +1,10 @@
-﻿using hase.DevLib.Framework.Relay.NamedPipe;
+﻿using hase.DevLib.Framework.Contract;
+using hase.DevLib.Framework.Relay.NamedPipe;
 using System;
 
-namespace hase.DevLib.Framework.Contract
+namespace hase.DevLib.Framework.Core
 {
-    public static class ServiceFactory<TService, TRequest, TResponse>
+    public static class Service<TService, TRequest, TResponse>
         where TService : IService<TRequest, TResponse>
         where TRequest : class
         where TResponse : class

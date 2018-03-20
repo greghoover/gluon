@@ -1,4 +1,5 @@
 ﻿using hase.DevLib.Framework.Contract;
+using hase.DevLib.Framework.Core;
 using System;
 
 namespace hase.DevLib.Framework.Relay

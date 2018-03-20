@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace hase.DevLib.Framework.Contract
+namespace hase.DevLib.Framework.Core
 {
     public static class ServiceTypesUtil
     {

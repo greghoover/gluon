@@ -1,4 +1,5 @@
 ﻿using hase.DevLib.Framework.Contract;
+using hase.DevLib.Framework.Core;
 using System;
 
 namespace hase.DevLib.Framework.Relay
@@ -42,7 +43,7 @@ namespace hase.DevLib.Framework.Relay
         }
         protected virtual TResponse DispatchRequest(TRequest request)
         {
-            var service = ServiceFactory<TService, TRequest, TResponse>.CreateLocalInstance();
+            var service = Service<TService, TRequest, TResponse>.CreateLocalInstance();
             TResponse response = default(TResponse);
             try
             {

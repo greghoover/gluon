@@ -1,4 +1,4 @@
-﻿namespace hase.DevLib.Framework.Contract
+﻿namespace hase.DevLib.Framework.Core
 {
     public enum ServiceTypesEnum
     {
