@@ -42,7 +42,7 @@ namespace hase.ClientUI.ConsoleApp
             if (folderPath == string.Empty)
                 return;
 
-            var result = new FileSystemQuery().DoesDirectoryExist(folderPath);
+            var result = new FileSystemQuery().DoesDirectoryExist(folderPath, useLocalServiceInstance: false);
             Console.WriteLine($"Was folder path [{folderPath}] found? [{result}].");
         }
     }

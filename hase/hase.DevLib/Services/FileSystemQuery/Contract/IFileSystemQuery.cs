@@ -4,6 +4,6 @@ namespace hase.DevLib.Services.FileSystemQuery.Contract
 {
     public interface IFileSystemQuery //: IService<FileSystemQueryRequest, FileSystemQueryResponse>
     {
-        string DoesDirectoryExist(string folderPath);
+        bool DoesDirectoryExist(string folderPath, bool useLocalServiceInstance);
     }
 }
