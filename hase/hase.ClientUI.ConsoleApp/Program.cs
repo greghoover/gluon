@@ -1,6 +1,5 @@
 ﻿using hase.DevLib.Framework.Core;
-using hase.DevLib.Services.FileSystemQuery.Contract;
-using hase.DevLib.Services.FileSystemQuery.Service;
+using hase.DevLib.Services.FileSystemQuery.Client;
 using System;
 
 namespace hase.ClientUI.ConsoleApp
@@ -43,14 +42,7 @@ namespace hase.ClientUI.ConsoleApp
             if (folderPath == string.Empty)
                 return;
 
-            var fsq = Service<FileSystemQueryService, FileSystemQueryRequest, FileSystemQueryResponse>.CreateConfiguredInstance();
-
-            var request = new FileSystemQueryRequest
-            {
-                FolderPath = folderPath,
-                QueryType = FileSystemQueryTypeEnum.DirectoryExists
-            };
-            var result = fsq.Execute(request).ResponseString;
+            var result = new FileSystemQuery().DoesDirectoryExist(folderPath);
             Console.WriteLine($"Was folder path [{folderPath}] found? [{result}].");
         }
     }
