@@ -3,6 +3,7 @@ using hase.DevLib.Framework.Core;
 using hase.DevLib.Framework.Relay.NamedPipe;
 using hase.DevLib.Services.FileSystemQuery.Contract;
 using hase.DevLib.Services.FileSystemQuery.Service;
+using System;
 
 namespace hase.DevLib.Services.FileSystemQuery.Client
 {
@@ -24,10 +25,15 @@ namespace hase.DevLib.Services.FileSystemQuery.Client
             var service = Service<FileSystemQueryService, FileSystemQueryRequest, FileSystemQueryResponse>.NewLocal();
             return new FileSystemQuery(service);
         }
+        public static FileSystemQuery NewWithConfigurableProxy<TProxy>(Action<TProxy> cfg)
+        {
+            var service = Service<FileSystemQueryService, FileSystemQueryRequest, FileSystemQueryResponse>.NewProxied<TProxy>();
+            return new FileSystemQuery(service);
+        }
         public static FileSystemQuery NewWithNamedPipeProxy()
         {
-            var service = Service<FileSystemQueryService, FileSystemQueryRequest, FileSystemQueryResponse>.NewProxied<NamedPipeRelayProxyClient<FileSystemQueryService, FileSystemQueryRequest, FileSystemQueryResponse>>();
-            return new FileSystemQuery(service);
+            var service = NewWithConfigurableProxy<NamedPipeRelayProxyClient<FileSystemQueryService, FileSystemQueryRequest, FileSystemQueryResponse>>(p => { });
+            return service;
         }
 
         public bool DoesDirectoryExist(string folderPath)

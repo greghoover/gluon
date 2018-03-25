@@ -13,18 +13,9 @@ namespace hase.DevLib.Framework.Core
         {
             return Activator.CreateInstance<TService>();
         }
-        //public static IService<TRequest, TResponse> CreateNamedPipeRelayInstance()
-        //{
-        //    var proxy = Activator.CreateInstance<NamedPipeRelayProxyClient<TService, TRequest, TResponse>>();
-        //    return (IService<TRequest, TResponse>)proxy;
-        //}
         public static IService<TRequest, TResponse> NewProxied<TProxy>()
         {
-            IService<TRequest, TResponse> proxy = null;
-            if (typeof(TProxy) == typeof(NamedPipeRelayProxyClient<TService, TRequest, TResponse>))
-                proxy = Activator.CreateInstance<NamedPipeRelayProxyClient<TService, TRequest, TResponse>>();
-
-            return proxy;
+            return (IService<TRequest, TResponse>)Activator.CreateInstance<TProxy>();
         }
     }
 }
