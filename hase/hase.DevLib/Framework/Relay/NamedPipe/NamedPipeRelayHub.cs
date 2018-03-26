@@ -1,6 +1,8 @@
 ﻿using ProtoBuf;
 using System;
 using System.IO.Pipes;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace hase.DevLib.Framework.Relay.NamedPipe
 {
@@ -19,6 +21,7 @@ namespace hase.DevLib.Framework.Relay.NamedPipe
 
         private NamedPipeServerStream _proxyPipe;
         private NamedPipeServerStream _servicePipe;
+        private readonly CancellationTokenSource _cts = new CancellationTokenSource();
 
         public NamedPipeRelayHub(string servicePipeName, string proxyPipeName)
         {
@@ -29,36 +32,43 @@ namespace hase.DevLib.Framework.Relay.NamedPipe
             _servicePipe = new NamedPipeServerStream(this.ServicePipeName, PipeDirection.InOut);
         }
 
-        public void Start()
+        public async Task Start()
         {
-            ListenForServiceConnection();
-            while (true)
+            var ct = _cts.Token;
+
+            await ListenForServiceConnection(ct);
+            while (!ct.IsCancellationRequested)
             {
-                ProcessProxyRequest();
+                await ProcessProxyRequest(ct);
             }
         }
-        public void Stop()
+        public async Task Stop()
         {
+            _cts.Cancel();
+            await Task.Delay(1000); // time to clean up
+            _cts.Dispose();
         }
 
-        private void ListenForServiceConnection()
+        private async Task ListenForServiceConnection(CancellationToken ct)
         {
             Console.WriteLine($"nprs:Listening for {this.ServicePipeName} connection.");
-            _servicePipe.WaitForConnection();
+            await _servicePipe.WaitForConnectionAsync(ct);
             Console.WriteLine($"nprs:{this.ServicePipeName} connected.");
         }
 
-        private void ProcessProxyRequest()
+        private async Task ProcessProxyRequest(CancellationToken ct)
         {
             try
             {
-                if (!_proxyPipe.IsConnected)
+                if (_proxyPipe != null && !_proxyPipe.IsConnected)
                 {
+                    if (ct.IsCancellationRequested) return;
                     Console.WriteLine($"nprs:Listening for {this.ProxyPipeName} connection.");
-                    _proxyPipe.WaitForConnection();
+                    await _proxyPipe.WaitForConnectionAsync(ct);
                     Console.WriteLine($"nprs:{this.ProxyPipeName} connected.");
                 }
 
+                if (ct.IsCancellationRequested) return;
                 //Console.WriteLine($"nprs:Waiting to receive {_proxyPipeName} request.");
                 var request = Serializer.DeserializeWithLengthPrefix<TRequest>(_proxyPipe, PrefixStyle.Base128);
                 Console.WriteLine($"nprs:Received {this.ProxyPipeName} request: {request}.");
@@ -66,25 +76,31 @@ namespace hase.DevLib.Framework.Relay.NamedPipe
                 TResponse response = null;
                 if (_servicePipe != null && _servicePipe.IsConnected)
                 {
+                    if (ct.IsCancellationRequested) return;
                     Console.WriteLine($"nprs:Forwarding {this.ServicePipeName} request: {request}.");
                     Serializer.SerializeWithLengthPrefix(_servicePipe, request, PrefixStyle.Base128);
                     //Console.WriteLine($"nprs:Forwared {_servicePipeName} request.");
 
+                    if (ct.IsCancellationRequested) return;
                     //Console.WriteLine($"nprs:Waiting to receive {_servicePipeName} response.");
                     response = Serializer.DeserializeWithLengthPrefix<TResponse>(_servicePipe, PrefixStyle.Base128);
                     Console.WriteLine($"nprs:Received {this.ServicePipeName} response: {response}.");
                 }
 
 
+                if (ct.IsCancellationRequested) return;
                 //Console.WriteLine($"nprs:Returning {_proxyPipeName} response.");
                 Serializer.SerializeWithLengthPrefix(_proxyPipe, response, PrefixStyle.Base128);
                 Console.WriteLine($"nprs:Returned {this.ProxyPipeName} response.");
-
-                _proxyPipe.Disconnect();
             }
             catch (Exception ex)
             {
 
+            }
+            finally
+            {
+                if (_proxyPipe != null && _proxyPipe.IsConnected)
+                    _proxyPipe.Disconnect();
             }
         }
     }
