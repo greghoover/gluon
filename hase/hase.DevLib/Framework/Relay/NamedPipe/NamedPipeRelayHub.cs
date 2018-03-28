@@ -32,31 +32,31 @@ namespace hase.DevLib.Framework.Relay.NamedPipe
             _servicePipe = new NamedPipeServerStream(this.ServicePipeName, PipeDirection.InOut);
         }
 
-        public async Task Start()
+        public async Task StartAsync()
         {
             var ct = _cts.Token;
 
-            await ListenForServiceConnection(ct);
+            await ListenForServiceConnectionAsync(ct);
             while (!ct.IsCancellationRequested)
             {
-                await ProcessProxyRequest(ct);
+                await ProcessProxyRequestAsync(ct);
             }
         }
-        public async Task Stop()
+        public async Task StopAsync()
         {
             _cts.Cancel();
             await Task.Delay(1000); // time to clean up
             _cts.Dispose();
         }
 
-        private async Task ListenForServiceConnection(CancellationToken ct)
+        private async Task ListenForServiceConnectionAsync(CancellationToken ct)
         {
             Console.WriteLine($"nprs:Listening for {this.ServicePipeName} connection.");
             await _servicePipe.WaitForConnectionAsync(ct);
             Console.WriteLine($"nprs:{this.ServicePipeName} connected.");
         }
 
-        private async Task ProcessProxyRequest(CancellationToken ct)
+        private async Task ProcessProxyRequestAsync(CancellationToken ct)
         {
             try
             {

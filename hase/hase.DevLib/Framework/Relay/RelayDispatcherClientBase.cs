@@ -1,6 +1,8 @@
 ﻿using hase.DevLib.Framework.Contract;
 using hase.DevLib.Framework.Core;
 using System;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace hase.DevLib.Framework.Relay
 {
@@ -9,34 +11,45 @@ namespace hase.DevLib.Framework.Relay
         where TRequest : class
         where TResponse : class
     {
+        protected readonly CancellationTokenSource _cts = new CancellationTokenSource();
         public static readonly string ChannelName = typeof(TService).Name;
         public abstract string Abbr { get; }
 
-        public abstract void Connect(int timeoutMs);
+        public abstract Task ConnectAsync(int timeoutMs, CancellationToken ct);
         public abstract TRequest DeserializeRequest();
         public abstract void SerializeResponse(TResponse response);
 
-        public virtual void Run()
+        public async Task StartAsync()
         {
+            var ct = _cts.Token;
+
             Console.WriteLine($"{this.Abbr}:{ChannelName} connecting... to relay.");
-            this.Connect(timeoutMs: 5000);
+            await this.ConnectAsync(timeoutMs: 5000, ct: ct);
             Console.WriteLine($"{this.Abbr}:{ChannelName} connected to relay.");
 
-            while (true)
+            while (!ct.IsCancellationRequested)
             {
-                ProcessRequest();
+                await ProcessRequest(ct);
             }
-
+        }
+        public async Task StopAsync()
+        {
+            _cts.Cancel();
+            await Task.Delay(1000); // time to clean up
+            _cts.Dispose();
         }
 
-        protected virtual void ProcessRequest()
+        protected async virtual Task ProcessRequest(CancellationToken ct)
         {
+            if (ct.IsCancellationRequested) return;
             //Console.WriteLine($"{this.Abbr}:Waiting to receive {ChannelName} request.");
             var request = this.DeserializeRequest();
             Console.WriteLine($"{this.Abbr}:Received {ChannelName} request: {request}.");
 
+            if (ct.IsCancellationRequested) return;
             var response = DispatchRequest(request);
 
+            if (ct.IsCancellationRequested) return;
             Console.WriteLine($"{this.Abbr}:Sending {ChannelName} response: {response}.");
             this.SerializeResponse(response);
             //Console.WriteLine($"{this.Abbr}:Sent {ChannelName} response.");

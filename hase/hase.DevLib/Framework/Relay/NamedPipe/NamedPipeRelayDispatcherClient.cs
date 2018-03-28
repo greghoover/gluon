@@ -1,7 +1,8 @@
 ﻿using hase.DevLib.Framework.Contract;
 using ProtoBuf;
-using System;
 using System.IO.Pipes;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace hase.DevLib.Framework.Relay.NamedPipe
 {
@@ -13,10 +14,10 @@ namespace hase.DevLib.Framework.Relay.NamedPipe
         public override string Abbr => "nprdc";
         private NamedPipeClientStream pipe = null;
 
-        public override void Connect(int timeoutMs)
+        public async override Task ConnectAsync(int timeoutMs, CancellationToken ct)
         {
             pipe = new NamedPipeClientStream(".", ChannelName, PipeDirection.InOut, PipeOptions.None);
-            pipe.ConnectAsync(5000).Wait();
+            await pipe.ConnectAsync(timeoutMs, ct);
         }
         public override TRequest DeserializeRequest()
         {

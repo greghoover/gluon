@@ -1,6 +1,8 @@
 ﻿using hase.DevLib.Framework.Contract;
 using hase.DevLib.Framework.Core;
 using System;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace hase.DevLib.Framework.Relay
 {
@@ -12,7 +14,7 @@ namespace hase.DevLib.Framework.Relay
         public static readonly string ChannelName = ServiceTypesUtil.GetServiceProxyName<TService>();
         public abstract string Abbr { get; }
 
-        public abstract void Connect(int timeoutMs);
+        public abstract Task ConnectAsync(int timeoutMs, CancellationToken ct);
         public abstract void Disconnect();
         public abstract void SerializeRequest(TRequest request);
         public abstract TResponse DeserializeResponse();
@@ -22,7 +24,7 @@ namespace hase.DevLib.Framework.Relay
             TResponse response = null;
 
             Console.WriteLine($"{this.Abbr}:{ChannelName} connecting... to relay.");
-            this.Connect(5000);
+            this.ConnectAsync(timeoutMs: 5000, ct: CancellationToken.None).Wait();
             Console.WriteLine($"{this.Abbr}:{ChannelName} connected.");
 
             Console.WriteLine($"{this.Abbr}:Sending {ChannelName} request: {request}.");

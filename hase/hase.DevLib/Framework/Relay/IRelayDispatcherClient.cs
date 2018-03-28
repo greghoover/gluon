@@ -1,4 +1,5 @@
 ﻿using hase.DevLib.Framework.Contract;
+using System.Threading.Tasks;
 
 namespace hase.DevLib.Framework.Relay
 {
@@ -7,7 +8,8 @@ namespace hase.DevLib.Framework.Relay
         where TRequest : class
         where TResponse : class
     {
-        void Run();
         string Abbr { get; }
+        Task StartAsync();
+        Task StopAsync();
     }
 }

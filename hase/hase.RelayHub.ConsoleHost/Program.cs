@@ -10,19 +10,17 @@ namespace hase.RelayHub.ConsoleHost
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Starting Named Pipe Relay.");
-
             var servicePipeName = typeof(FileSystemQueryService).Name;
             var proxyPipeName = ServiceTypesUtil.GetServiceProxyName(servicePipeName);
 
-
+            Console.WriteLine("Starting Named Pipe Relay.");
             var relay = new NamedPipeRelayHub<FileSystemQueryRequest, FileSystemQueryResponse>(servicePipeName, proxyPipeName);
-            relay.Start();
+            relay.StartAsync();
             Console.WriteLine("Named Pipe Relay started.");
 
             Console.WriteLine("Press <Enter> to stop relay.");
             Console.ReadLine();
-            relay.Stop().Wait();
+            relay.StopAsync().Wait();
             Console.WriteLine("Relay stopped.");
 
             Console.Write("Press <Enter> to close window.");

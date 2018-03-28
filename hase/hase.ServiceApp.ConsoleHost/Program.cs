@@ -10,11 +10,19 @@ namespace hase.ServiceApp.ConsoleHost
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Starting Service Dispatcher");
-
             var dispatcher = RelayDispatcherClient<NamedPipeRelayDispatcherClient<FileSystemQueryService, FileSystemQueryRequest, FileSystemQueryResponse>, FileSystemQueryService, FileSystemQueryRequest, FileSystemQueryResponse>.CreateInstance();
 
-            dispatcher.Run();
+            Console.WriteLine("Starting Service Dispatcher");
+            dispatcher.StartAsync();
+            Console.WriteLine("Service Dispatcher started.");
+
+            Console.WriteLine("Press <Enter> to stop dispatcher.");
+            Console.ReadLine();
+            dispatcher.StopAsync().Wait();
+            Console.WriteLine("Dispatcher stopped.");
+
+            Console.Write("Press <Enter> to close window.");
+            Console.ReadLine();
         }
     }
 }
