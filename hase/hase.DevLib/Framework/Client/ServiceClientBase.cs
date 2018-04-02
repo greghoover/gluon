@@ -19,5 +19,9 @@ namespace hase.DevLib.Framework.Client
         {
             this.Service = (IService<TRequest, TResponse>)Activator.CreateInstance(proxyType, proxyChannelName);
         }
+        public ServiceClientBase(IService<TRequest, TResponse> service)
+        {
+            this.Service = service;
+        }
     }
 }

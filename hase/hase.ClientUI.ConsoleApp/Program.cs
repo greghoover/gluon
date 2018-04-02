@@ -1,5 +1,7 @@
 ﻿using hase.DevLib.Framework.Core;
+using hase.DevLib.Framework.Relay.NamedPipe;
 using hase.DevLib.Services.FileSystemQuery.Client;
+using hase.DevLib.Services.FileSystemQuery.Contract;
 using System;
 
 namespace hase.ClientUI.ConsoleApp
@@ -42,7 +44,7 @@ namespace hase.ClientUI.ConsoleApp
             if (folderPath == string.Empty)
                 return;
 
-            var fsq = FileSystemQuery.NewWithNamedPipeProxy();
+            var fsq = new FileSystemQuery(typeof(NamedPipeRelayProxyClient<FileSystemQueryRequest, FileSystemQueryResponse>));
             var result = fsq.DoesDirectoryExist(folderPath);
             Console.WriteLine($"Was folder path [{folderPath}] found? [{result}].");
         }

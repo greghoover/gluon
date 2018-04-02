@@ -1,7 +1,5 @@
-using hase.DevLib.Framework.Core;
 using hase.DevLib.Services.FileSystemQuery.Client;
 using hase.DevLib.Services.FileSystemQuery.Contract;
-using hase.DevLib.Services.FileSystemQuery.Service;
 using Xunit;
 
 namespace hase.DevLib.Tests
