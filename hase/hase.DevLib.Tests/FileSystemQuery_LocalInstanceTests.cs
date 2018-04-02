@@ -12,7 +12,7 @@ namespace hase.DevLib.Tests
         public void VerifyCRootExists_ClientApi_LocalInstance()
         {
             var folderPath = @"c:";
-            var fsq = FileSystemQuery.NewLocal();
+            var fsq = new FileSystemQuery();
             var result = fsq.DoesDirectoryExist(folderPath);
             Xunit.Assert.True(result);
         }
@@ -20,7 +20,7 @@ namespace hase.DevLib.Tests
         public void VerifyCRootExists_ServiceApi_LocalInstance()
         {
             var folderPath = @"c:";
-            var fsqs = Service<FileSystemQueryService, FileSystemQueryRequest, FileSystemQueryResponse>.NewLocal();
+            var fsqs = new FileSystemQuery().Service;
             var request = new FileSystemQueryRequest
             {
                 FolderPath = folderPath,
@@ -35,7 +35,7 @@ namespace hase.DevLib.Tests
         public void VerifyBogusPathNotExist_ClientApi_LocalInstance()
         {
             var folderPath = @"slkjdfslkj";
-            var fsq = FileSystemQuery.NewLocal();
+            var fsq = new FileSystemQuery();
             var result = fsq.DoesDirectoryExist(folderPath);
             Xunit.Assert.False(result);
         }
@@ -43,7 +43,7 @@ namespace hase.DevLib.Tests
         public void VerifyBogusPathNotExist_ServiceApi_LocalInstance()
         {
             var folderPath = @"slkjdfslkj";
-            var fsqs = Service<FileSystemQueryService, FileSystemQueryRequest, FileSystemQueryResponse>.NewLocal();
+            var fsqs = new FileSystemQuery().Service;
             var request = new FileSystemQueryRequest
             {
                 FolderPath = folderPath,

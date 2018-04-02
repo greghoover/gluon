@@ -1,4 +1,5 @@
-﻿using hase.DevLib.Framework.Contract;
+﻿using hase.DevLib.Framework.Client;
+using hase.DevLib.Framework.Contract;
 using hase.DevLib.Framework.Core;
 using hase.DevLib.Framework.Relay.NamedPipe;
 using hase.DevLib.Services.FileSystemQuery.Contract;
@@ -7,33 +8,20 @@ using System;
 
 namespace hase.DevLib.Services.FileSystemQuery.Client
 {
-    public class FileSystemQuery : IFileSystemQuery
+    public class FileSystemQuery : ServiceClientBase<FileSystemQueryService, FileSystemQueryRequest, FileSystemQueryResponse>, IFileSystemQuery
     {
-        private IService<FileSystemQueryRequest, FileSystemQueryResponse> _service = null;
-        private FileSystemQuery() { }
-        //public FileSystemQuery()
-        //{
-        //    this._service = FileSystemQuery.NewLocal()._service;
-        //}
-        private FileSystemQuery(IService<FileSystemQueryRequest, FileSystemQueryResponse> service)
-        {
-            this._service = service;
-        }
+        public FileSystemQuery() { }
 
-        public static FileSystemQuery NewLocal()
-        {
-            var service = Service<FileSystemQueryService, FileSystemQueryRequest, FileSystemQueryResponse>.NewLocal();
-            return new FileSystemQuery(service);
-        }
-        public static FileSystemQuery NewWithConfigurableProxy<TProxy>(Action<TProxy> cfg)
-        {
-            var service = Service<FileSystemQueryService, FileSystemQueryRequest, FileSystemQueryResponse>.NewProxied<TProxy>();
-            return new FileSystemQuery(service);
-        }
+        public FileSystemQuery(Type proxyType) : base(proxyType) { }
+
+        //private FileSystemQuery(IService<FileSystemQueryRequest, FileSystemQueryResponse> service)
+        //{
+        //    this.Service = service;
+        //}
+
         public static FileSystemQuery NewWithNamedPipeProxy()
         {
-            var service = NewWithConfigurableProxy<NamedPipeRelayProxyClient<FileSystemQueryService, FileSystemQueryRequest, FileSystemQueryResponse>>(p => { });
-            return service;
+            return new FileSystemQuery(typeof(NamedPipeRelayProxyClient<FileSystemQueryService, FileSystemQueryRequest, FileSystemQueryResponse>));
         }
 
         public bool DoesDirectoryExist(string folderPath)
@@ -44,7 +32,7 @@ namespace hase.DevLib.Services.FileSystemQuery.Client
                 QueryType = FileSystemQueryTypeEnum.DirectoryExists
             };
 
-            var response = _service.Execute(request).ResponseString;
+            var response = Service.Execute(request).ResponseString;
             var result = bool.Parse(response);
             return result;
         }

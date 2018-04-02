@@ -1,5 +1,4 @@
 ﻿using hase.DevLib.Framework.Contract;
-using hase.DevLib.Framework.Relay.NamedPipe;
 using System;
 
 namespace hase.DevLib.Framework.Core

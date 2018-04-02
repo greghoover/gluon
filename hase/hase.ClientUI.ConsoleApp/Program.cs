@@ -1,5 +1,4 @@
 ﻿using hase.DevLib.Framework.Core;
-using hase.DevLib.Framework.Relay.NamedPipe;
 using hase.DevLib.Services.FileSystemQuery.Client;
 using System;
 
