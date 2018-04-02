@@ -1,18 +1,18 @@
-﻿using hase.DevLib.Framework.Contract;
-using ProtoBuf;
+﻿using ProtoBuf;
 using System.IO.Pipes;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace hase.DevLib.Framework.Relay.NamedPipe
 {
-    public class NamedPipeRelayProxyClient<TService, TRequest, TResponse> : RelayProxyClientBase<TService, TRequest, TResponse>
-        where TService : IService<TRequest, TResponse>
+    public class NamedPipeRelayProxyClient<TRequest, TResponse> : RelayProxyClientBase<TRequest, TResponse>
         where TRequest : class
         where TResponse : class
     {
         public override string Abbr => "nprpc";
         private NamedPipeClientStream pipe = null;
+
+        public NamedPipeRelayProxyClient(string proxyChannelName) : base(proxyChannelName) { }
 
         public async override Task ConnectAsync(int timeoutMs, CancellationToken ct)
         {

@@ -1,10 +1,6 @@
 ﻿using hase.DevLib.Framework.Contract;
 using hase.DevLib.Framework.Core;
-using hase.DevLib.Framework.Relay;
-using hase.DevLib.Framework.Relay.NamedPipe;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace hase.DevLib.Framework.Client
 {
@@ -19,9 +15,9 @@ namespace hase.DevLib.Framework.Client
         {
             this.Service = Service<TService, TRequest, TResponse>.NewLocal();
         }
-        public ServiceClientBase(Type proxyType)
+        public ServiceClientBase(Type proxyType, string proxyChannelName)
         {
-            Service = (IService<TRequest, TResponse>)Activator.CreateInstance(proxyType);
+            this.Service = (IService<TRequest, TResponse>)Activator.CreateInstance(proxyType, proxyChannelName);
         }
     }
 }

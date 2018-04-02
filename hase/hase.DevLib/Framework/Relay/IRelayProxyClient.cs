@@ -2,12 +2,10 @@
 
 namespace hase.DevLib.Framework.Relay
 {
-    public interface IRelayProxyClient<TService, TRequest, TResponse> : IServiceProxy<TService, TRequest, TResponse>
-        where TService : IService<TRequest, TResponse>
+    public interface IRelayProxyClient<TRequest, TResponse> : IService<TRequest, TResponse>
         where TRequest : class
         where TResponse : class
     {
-        TResponse Execute(TRequest request);
         string Abbr { get; }
     }
 }

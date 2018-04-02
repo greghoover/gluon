@@ -1,5 +1,4 @@
 ﻿using hase.DevLib.Framework.Client;
-using hase.DevLib.Framework.Contract;
 using hase.DevLib.Framework.Core;
 using hase.DevLib.Framework.Relay.NamedPipe;
 using hase.DevLib.Services.FileSystemQuery.Contract;
@@ -12,7 +11,7 @@ namespace hase.DevLib.Services.FileSystemQuery.Client
     {
         public FileSystemQuery() { }
 
-        public FileSystemQuery(Type proxyType) : base(proxyType) { }
+        public FileSystemQuery(Type proxyType) : base(proxyType, ServiceTypesUtil.GetServiceProxyName<FileSystemQueryService>()) { }
 
         //private FileSystemQuery(IService<FileSystemQueryRequest, FileSystemQueryResponse> service)
         //{
@@ -21,7 +20,7 @@ namespace hase.DevLib.Services.FileSystemQuery.Client
 
         public static FileSystemQuery NewWithNamedPipeProxy()
         {
-            return new FileSystemQuery(typeof(NamedPipeRelayProxyClient<FileSystemQueryService, FileSystemQueryRequest, FileSystemQueryResponse>));
+            return new FileSystemQuery(typeof(NamedPipeRelayProxyClient<FileSystemQueryRequest, FileSystemQueryResponse>));
         }
 
         public bool DoesDirectoryExist(string folderPath)

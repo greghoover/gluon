@@ -47,7 +47,7 @@ namespace hase.DevLib.Tests
         public void VerifyCRootExists_ClientApi_NamedPipeRelay()
         {
             var folderPath = @"c:";
-            var fsq = new FileSystemQuery(typeof(NamedPipeRelayProxyClient<FileSystemQueryService, FileSystemQueryRequest, FileSystemQueryResponse>));
+            var fsq = new FileSystemQuery(typeof(NamedPipeRelayProxyClient<FileSystemQueryRequest, FileSystemQueryResponse>));
             var result = fsq.DoesDirectoryExist(folderPath);
             Xunit.Assert.True(result);
         }
@@ -55,7 +55,7 @@ namespace hase.DevLib.Tests
         public void VerifyCRootExists_ServiceApi_NamedPipeRelay()
         {
             var folderPath = @"c:";
-            var fsqs = new FileSystemQuery(typeof(NamedPipeRelayProxyClient<FileSystemQueryService, FileSystemQueryRequest, FileSystemQueryResponse>)).Service;
+            var fsqs = new FileSystemQuery(typeof(NamedPipeRelayProxyClient<FileSystemQueryRequest, FileSystemQueryResponse>)).Service;
             var request = new FileSystemQueryRequest
             {
                 FolderPath = folderPath,
@@ -70,7 +70,7 @@ namespace hase.DevLib.Tests
         public void VerifyBogusPathNotExist_ClientApi_NamedPipeRelay()
         {
             var folderPath = @"slkjdfslkj";
-            var fsq = new FileSystemQuery(typeof(NamedPipeRelayProxyClient<FileSystemQueryService, FileSystemQueryRequest, FileSystemQueryResponse>));
+            var fsq = new FileSystemQuery(typeof(NamedPipeRelayProxyClient<FileSystemQueryRequest, FileSystemQueryResponse>));
             var result = fsq.DoesDirectoryExist(folderPath);
             Xunit.Assert.False(result);
         }
@@ -78,7 +78,7 @@ namespace hase.DevLib.Tests
         public void VerifyBogusPathNotExist_ServiceApi_NamedPipeRelay()
         {
             var folderPath = @"slkjdfslkj";
-            var fsqs = new FileSystemQuery(typeof(NamedPipeRelayProxyClient<FileSystemQueryService, FileSystemQueryRequest, FileSystemQueryResponse>)).Service;
+            var fsqs = new FileSystemQuery(typeof(NamedPipeRelayProxyClient<FileSystemQueryRequest, FileSystemQueryResponse>)).Service;
             var request = new FileSystemQueryRequest
             {
                 FolderPath = folderPath,

@@ -1,23 +1,26 @@
-﻿using hase.DevLib.Framework.Contract;
-using hase.DevLib.Framework.Core;
-using System;
+﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace hase.DevLib.Framework.Relay
 {
-    public abstract class RelayProxyClientBase<TService, TRequest, TResponse> : IRelayProxyClient<TService, TRequest, TResponse>
-        where TService : IService<TRequest, TResponse>
+    public abstract class RelayProxyClientBase<TRequest, TResponse> : IRelayProxyClient<TRequest, TResponse>
         where TRequest : class
         where TResponse : class
     {
-        public static readonly string ChannelName = ServiceTypesUtil.GetServiceProxyName<TService>();
+        public string ChannelName { get; private set; }
         public abstract string Abbr { get; }
 
         public abstract Task ConnectAsync(int timeoutMs, CancellationToken ct);
         public abstract void Disconnect();
         public abstract void SerializeRequest(TRequest request);
         public abstract TResponse DeserializeResponse();
+
+        private RelayProxyClientBase() { }
+        public RelayProxyClientBase(string proxyChannelName)
+        {
+            this.ChannelName = proxyChannelName;
+        }
 
         public TResponse Execute(TRequest request)
         {
