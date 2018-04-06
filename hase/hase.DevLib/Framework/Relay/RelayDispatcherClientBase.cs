@@ -11,15 +11,21 @@ namespace hase.DevLib.Framework.Relay
         where TRequest : class
         where TResponse : class
     {
-        protected readonly CancellationTokenSource _cts = new CancellationTokenSource();
-        public static readonly string ChannelName = typeof(TService).Name;
+        protected CancellationTokenSource _cts { get; private set; }
+        public string ChannelName { get; private set; }
         public abstract string Abbr { get; }
 
         public abstract Task ConnectAsync(int timeoutMs, CancellationToken ct);
         public abstract TRequest DeserializeRequest();
         public abstract void SerializeResponse(TResponse response);
 
-        public async Task StartAsync()
+        protected RelayDispatcherClientBase()
+        {
+            _cts = new CancellationTokenSource();
+            ChannelName = typeof(TService).Name;
+        }
+
+    public async Task StartAsync()
         {
             var ct = _cts.Token;
 
