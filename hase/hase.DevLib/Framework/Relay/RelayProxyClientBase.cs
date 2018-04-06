@@ -26,7 +26,7 @@ namespace hase.DevLib.Framework.Relay
         {
             TResponse response = null;
 
-            Console.WriteLine($"{this.Abbr}:{ChannelName} connecting... to relay.");
+            Console.WriteLine($"{this.Abbr}:{ChannelName} connecting to relay.");
             this.ConnectAsync(timeoutMs: 5000, ct: CancellationToken.None).Wait();
             Console.WriteLine($"{this.Abbr}:{ChannelName} connected.");
 

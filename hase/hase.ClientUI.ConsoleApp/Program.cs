@@ -1,5 +1,7 @@
 ﻿using hase.DevLib.Framework.Core;
 using hase.DevLib.Framework.Relay.NamedPipe;
+using hase.DevLib.Services.Calculator.Client;
+using hase.DevLib.Services.Calculator.Contract;
 using hase.DevLib.Services.FileSystemQuery.Client;
 using hase.DevLib.Services.FileSystemQuery.Contract;
 using System;
@@ -20,14 +22,21 @@ namespace hase.ClientUI.ConsoleApp
                         Console.WriteLine($"{item.Id}. {item.Desc}");
                     }
                     Console.Write("Enter choice: ");
-                    var choice = Console.ReadLine().Trim();
-                    if (choice == string.Empty)
+                    var input = Console.ReadLine().Trim();
+                    if (input == string.Empty)
+                        break;
+
+                    ServiceTypesEnum choice;
+                    if (!Enum.TryParse<ServiceTypesEnum>(input, out choice))
                         break;
 
                     switch (choice)
                     {
-                        case "1":
+                        case ServiceTypesEnum.FileSystemQuery:
                             DoFileSystemQuery();
+                            break;
+                        case ServiceTypesEnum.Calculator:
+                            DoCalculator();
                             break;
                         default:
                             Console.WriteLine("Unrecognized number. Please try again.");
@@ -47,6 +56,29 @@ namespace hase.ClientUI.ConsoleApp
             var fsq = new FileSystemQuery(typeof(NamedPipeRelayProxyClient<FileSystemQueryRequest, FileSystemQueryResponse>));
             var result = fsq.DoesDirectoryExist(folderPath);
             Console.WriteLine($"Was folder path [{folderPath}] found? [{result}].");
+        }
+        static void DoCalculator()
+        {
+            Console.WriteLine("For temporary simplicity, will always perform add.");
+            Console.Write("Enter I1: ");
+            var input1 = Console.ReadLine().Trim();
+            if (input1 == string.Empty)
+                return;
+            int i1;
+            if (!int.TryParse(input1, out i1))
+                return;
+
+            Console.Write("Enter I2: ");
+            var input2 = Console.ReadLine().Trim();
+            if (input2 == string.Empty)
+                return;
+            int i2;
+            if (!int.TryParse(input2, out i2))
+                return;
+
+            var calc = new Calculator(typeof(NamedPipeRelayProxyClient<CalculatorRequest, CalculatorResponse>));
+            var result = calc.Add(i1, i2);
+            Console.WriteLine($"[{i1} + {i2}] = [{result}].");
         }
     }
 }

@@ -23,7 +23,7 @@ namespace hase.DevLib.Framework.Relay
         {
             var ct = _cts.Token;
 
-            Console.WriteLine($"{this.Abbr}:{ChannelName} connecting... to relay.");
+            Console.WriteLine($"{this.Abbr}:{ChannelName} connecting to relay.");
             await this.ConnectAsync(timeoutMs: 5000, ct: ct);
             Console.WriteLine($"{this.Abbr}:{ChannelName} connected to relay.");
 

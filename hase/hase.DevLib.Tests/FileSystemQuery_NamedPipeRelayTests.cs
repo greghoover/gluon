@@ -9,39 +9,39 @@ using Xunit;
 
 namespace hase.DevLib.Tests
 {
-    public class RelayAndDispatcherFixture : IDisposable
+    public class FileSystemQueryRelayAndDispatcherFixture : IDisposable
     {
-        private NamedPipeRelayHub<FileSystemQueryRequest, FileSystemQueryResponse> _relay = null;
-        private IRelayDispatcherClient<FileSystemQueryService, FileSystemQueryRequest, FileSystemQueryResponse> _dispatcher = null;
+        private NamedPipeRelayHub<FileSystemQueryRequest, FileSystemQueryResponse> _fsqRelay = null;
+        private IRelayDispatcherClient<FileSystemQueryService, FileSystemQueryRequest, FileSystemQueryResponse> _fsqDispatcher = null;
 
-        public RelayAndDispatcherFixture()
+        public FileSystemQueryRelayAndDispatcherFixture()
         {
             Console.WriteLine("Starting Named Pipe Relay.");
             var servicePipeName = typeof(FileSystemQueryService).Name;
             var proxyPipeName = ServiceTypesUtil.GetServiceProxyName(servicePipeName);
 
-            _relay = new NamedPipeRelayHub<FileSystemQueryRequest, FileSystemQueryResponse>(servicePipeName, proxyPipeName);
-            _relay.StartAsync();
+            _fsqRelay = new NamedPipeRelayHub<FileSystemQueryRequest, FileSystemQueryResponse>(servicePipeName, proxyPipeName);
+            _fsqRelay.StartAsync();
             Console.WriteLine("Named Pipe Relay started.");
 
             Console.WriteLine("Starting Service Dispatcher");
-            _dispatcher = RelayDispatcherClient<NamedPipeRelayDispatcherClient<FileSystemQueryService, FileSystemQueryRequest, FileSystemQueryResponse>, FileSystemQueryService, FileSystemQueryRequest, FileSystemQueryResponse>.CreateInstance();
-            _dispatcher.StartAsync();
+            _fsqDispatcher = RelayDispatcherClient<NamedPipeRelayDispatcherClient<FileSystemQueryService, FileSystemQueryRequest, FileSystemQueryResponse>, FileSystemQueryService, FileSystemQueryRequest, FileSystemQueryResponse>.CreateInstance();
+            _fsqDispatcher.StartAsync();
             Console.WriteLine("Service Dispatcher started.");
         }
         public void Dispose()
         {
             Console.WriteLine("Stopping Dispatcher.");
-            _dispatcher.StopAsync().Wait();
+            _fsqDispatcher.StopAsync().Wait();
             Console.WriteLine("Dispatcher stopped.");
 
             Console.WriteLine("Stopping Relay.");
-            _relay.StopAsync().Wait();
+            _fsqRelay.StopAsync().Wait();
             Console.WriteLine("Relay stopped.");
         }
     }
 
-    public class FileSystemQuery_NamedPipeRelayTests : IClassFixture<RelayAndDispatcherFixture>
+    public class FileSystemQuery_NamedPipeRelayTests : IClassFixture<FileSystemQueryRelayAndDispatcherFixture>
     {
         [Fact]
         public void VerifyCRootExists_ClientApi_NamedPipeRelay()
