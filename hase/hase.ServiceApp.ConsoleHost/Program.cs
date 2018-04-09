@@ -5,6 +5,8 @@ using hase.DevLib.Services.Calculator.Service;
 using hase.DevLib.Services.FileSystemQuery.Contract;
 using hase.DevLib.Services.FileSystemQuery.Service;
 using System;
+using Gluon.Relay.Signalr.Client;
+using Gluon.Relay.Contracts;
 
 namespace hase.ServiceApp.ConsoleHost
 {
@@ -12,6 +14,11 @@ namespace hase.ServiceApp.ConsoleHost
     {
         static void Main(string[] args)
         {
+            var instanceId = "FileSystemQueryServiceHost";
+            var qs = $"?{ClientIdTypeEnum.ClientId}={instanceId}";
+            var subscriptionChannel = (@"http://localhost:5000/messagehub") + qs;
+            var proxy = new ServiceHostRelayProxy(instanceId, subscriptionChannel);
+
             var fsqDispatcher = RelayDispatcherClient<NamedPipeRelayDispatcherClient<FileSystemQueryService, FileSystemQueryRequest, FileSystemQueryResponse>, FileSystemQueryService, FileSystemQueryRequest, FileSystemQueryResponse>.CreateInstance();
             var calcDispatcher = RelayDispatcherClient<NamedPipeRelayDispatcherClient<CalculatorService, CalculatorRequest, CalculatorResponse>, CalculatorService, CalculatorRequest, CalculatorResponse>.CreateInstance();
 

@@ -1,6 +1,8 @@
 ﻿using hase.DevLib.Framework.Contract;
 using ProtoBuf;
+using System;
 using System.IO.Pipes;
+using System.Security.Principal;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -16,8 +18,15 @@ namespace hase.DevLib.Framework.Relay.NamedPipe
 
         public async override Task ConnectAsync(int timeoutMs, CancellationToken ct)
         {
-            pipe = new NamedPipeClientStream(".", ChannelName, PipeDirection.InOut, PipeOptions.None);
-            await pipe.ConnectAsync(timeoutMs, ct);
+            try
+            {
+                pipe = new NamedPipeClientStream(".", ChannelName, PipeDirection.InOut, PipeOptions.Asynchronous, TokenImpersonationLevel.None);
+                await pipe.ConnectAsync(timeoutMs, ct);
+            }
+            catch (Exception ex)
+            {
+
+            }
         }
         public override TRequest DeserializeRequest()
         {

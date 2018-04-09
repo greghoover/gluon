@@ -1,5 +1,7 @@
 ﻿using ProtoBuf;
+using System;
 using System.IO.Pipes;
+using System.Security.Principal;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -16,8 +18,15 @@ namespace hase.DevLib.Framework.Relay.NamedPipe
 
         public async override Task ConnectAsync(int timeoutMs, CancellationToken ct)
         {
-            pipe = new NamedPipeClientStream(".", ChannelName, PipeDirection.InOut, PipeOptions.None);
-            await pipe.ConnectAsync(timeoutMs);
+            try
+            {
+                pipe = new NamedPipeClientStream(".", ChannelName, PipeDirection.InOut, PipeOptions.Asynchronous | PipeOptions.WriteThrough, TokenImpersonationLevel.None);
+                await pipe.ConnectAsync(timeoutMs);
+            }
+            catch (Exception ex)
+            {
+
+            }
         }
 
         public override void SerializeRequest(TRequest request)

@@ -1,6 +1,8 @@
 ﻿using ProtoBuf;
 using System;
 using System.IO.Pipes;
+using System.Security.AccessControl;
+using System.Security.Principal;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -28,8 +30,24 @@ namespace hase.DevLib.Framework.Relay.NamedPipe
             this.ProxyPipeName = proxyPipeName;
             this.ServicePipeName = servicePipeName;
 
-            _proxyPipe = new NamedPipeServerStream(this.ProxyPipeName, PipeDirection.InOut);
-            _servicePipe = new NamedPipeServerStream(this.ServicePipeName, PipeDirection.InOut);
+            //var sid = new SecurityIdentifier(WellKnownSidType.WorldSid, null);
+            var sid = WindowsIdentity.GetCurrent().User;
+            var r0 = new PipeAccessRule(sid, PipeAccessRights.FullControl, AccessControlType.Allow);
+            
+            //var r1 = new PipeAccessRule("Everyone", PipeAccessRights.ReadWrite, AccessControlType.Allow);
+            //var r2 = new PipeAccessRule("Users", PipeAccessRights.ReadWrite | PipeAccessRights.CreateNewInstance, AccessControlType.Allow);
+            //var r3 = new PipeAccessRule("CREATOR OWNER", PipeAccessRights.FullControl, AccessControlType.Allow);
+            //var r4 = new PipeAccessRule("SYSTEM", PipeAccessRights.FullControl, AccessControlType.Allow);
+
+            _proxyPipe = new NamedPipeServerStream(this.ProxyPipeName, PipeDirection.InOut, 1, PipeTransmissionMode.Byte, PipeOptions.Asynchronous);
+            var proxyAccess = _proxyPipe.GetAccessControl();
+            proxyAccess.AddAccessRule(r0);
+           // _proxyPipe.SetAccessControl(proxyAccess);
+
+            _servicePipe = new NamedPipeServerStream(this.ServicePipeName, PipeDirection.InOut, 1, PipeTransmissionMode.Byte, PipeOptions.Asynchronous);
+            var serviceAccess = _proxyPipe.GetAccessControl();
+            serviceAccess.AddAccessRule(r0);
+            //_servicePipe.SetAccessControl(serviceAccess);
         }
 
         public async Task StartAsync()
