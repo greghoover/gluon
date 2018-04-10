@@ -24,7 +24,7 @@ namespace Gluon.Relay.Signalr.Client
             // todo: refactor the client invocation method signatures
             HubConnection.On<object>(CX.WorkerMethodName, commandData =>
             {
-                Console.WriteLine("called back");
+                //Console.WriteLine("called back");
                 //if (svcHost != null)
                 //{
                 //    var serviceInstance = svcHost.CreateServiceInstance(typeof(TService));
@@ -32,9 +32,7 @@ namespace Gluon.Relay.Signalr.Client
                 //}
             });
 
-            Debug.WriteLine("connecting to hub");
             HubConnection.StartAsync().Wait();
-            Debug.WriteLine("connected to hub");
         }
 
         public Task InvokeAsync(string methodName, params object[] args)

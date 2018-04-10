@@ -5,9 +5,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="1.0.0-alpha2-final" />
+    <PackageReference Include="Microsoft.AspNetCore.SignalR.Client.Core" Version="1.0.0-alpha2-final" />
     <PackageReference Include="System.IO.Pipes" Version="4.3.0" />
-    <PackageReference Include="System.IO.Pipes.AccessControl" Version="4.5.0-preview1-26216-02" />
     <PackageReference Include="Xamarin.Forms" Version="2.5.0.280555" />
   </ItemGroup>
 
