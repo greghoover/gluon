@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\hase.DevLib\hase.DevLib.csproj" />
+    <ProjectReference Include="..\hase.DevLib.Core20\hase.DevLib.Core20.csproj" />
   </ItemGroup>
 
 </Project>

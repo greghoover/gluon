@@ -5,12 +5,17 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.0" />
-    <PackageReference Include="Microsoft.AspNetCore.SignalR" Version="1.0.0-alpha2-final" />
+    <Compile Remove="Framework\Relay\Signalr\jic\**" />
+    <EmbeddedResource Remove="Framework\Relay\Signalr\jic\**" />
+    <None Remove="Framework\Relay\Signalr\jic\**" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\hase.DevLib\hase.DevLib.csproj" />
+    <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.SignalR" Version="1.0.0-preview2-final" />
+    <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="1.0.0-preview2-final" />
+    <PackageReference Include="protobuf-net" Version="2.3.7" />
+    <PackageReference Include="System.IO.Pipes" Version="4.3.0" />
   </ItemGroup>
 
 </Project>
