@@ -1,15 +1,12 @@
 ﻿using Microsoft.AspNetCore.SignalR.Client;
 using Newtonsoft.Json;
-using ProtoBuf;
 using System;
-using System.IO.Pipes;
-using System.Security.Principal;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace hase.DevLib.Framework.Relay.Signalr
 {
-    public class SignalrRelayProxyClient<TRequest, TResponse> : RelayProxyClientBase<TRequest, TResponse>
+    public class SignalrRelayProxy<TRequest, TResponse> : RelayProxyBase<TRequest, TResponse>
         where TRequest : class
         where TResponse : class
     {
@@ -18,7 +15,7 @@ namespace hase.DevLib.Framework.Relay.Signalr
         HubConnection _hub = null;
         private object _tmpResponse = null;
 
-        public SignalrRelayProxyClient(string proxyChannelName) : base(proxyChannelName) { }
+        public SignalrRelayProxy(string proxyChannelName) : base(proxyChannelName) { }
 
         public async override Task ConnectAsync(int timeoutMs, CancellationToken ct)
         {

@@ -1,7 +1,7 @@
 ﻿using hase.DevLib.Framework.Contract;
 using System;
 
-namespace hase.DevLib.Framework.Core
+namespace hase.DevLib.Framework.Service
 {
     public static class Service<TService, TRequest, TResponse>
         where TService : IService<TRequest, TResponse>

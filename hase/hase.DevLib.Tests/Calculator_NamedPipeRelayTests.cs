@@ -1,6 +1,6 @@
-using hase.DevLib.Framework.Core;
 using hase.DevLib.Framework.Relay;
 using hase.DevLib.Framework.Relay.NamedPipe;
+using hase.DevLib.Framework.Service;
 using hase.DevLib.Services.Calculator.Client;
 using hase.DevLib.Services.Calculator.Contract;
 using hase.DevLib.Services.Calculator.Service;
@@ -12,7 +12,7 @@ namespace hase.DevLib.Tests
     public class CalculatorRelayAndDispatcherFixture : IDisposable
     {
         private NamedPipeRelayHub<CalculatorRequest, CalculatorResponse> _calcRelay = null;
-        private IRelayDispatcherClient<CalculatorService, CalculatorRequest, CalculatorResponse> _calcDispatcher = null;
+        private IRelayDispatcher<CalculatorService, CalculatorRequest, CalculatorResponse> _calcDispatcher = null;
 
         public CalculatorRelayAndDispatcherFixture()
         {
@@ -25,7 +25,7 @@ namespace hase.DevLib.Tests
             Console.WriteLine("Named Pipe Relay started.");
 
             Console.WriteLine("Starting Service Dispatcher");
-            _calcDispatcher = RelayDispatcherClient<NamedPipeRelayDispatcherClient<CalculatorService, CalculatorRequest, CalculatorResponse>, CalculatorService, CalculatorRequest, CalculatorResponse>.CreateInstance();
+            _calcDispatcher = RelayDispatcher<NamedPipeRelayDispatcher<CalculatorService, CalculatorRequest, CalculatorResponse>, CalculatorService, CalculatorRequest, CalculatorResponse>.CreateInstance();
             _calcDispatcher.StartAsync();
             Console.WriteLine("Service Dispatcher started.");
         }
@@ -48,7 +48,7 @@ namespace hase.DevLib.Tests
         {
             var i1 = 5;
             var i2 = 10;
-            var calc = new Calculator(typeof(NamedPipeRelayProxyClient<CalculatorRequest, CalculatorResponse>));
+            var calc = new Calculator(typeof(NamedPipeRelayProxy<CalculatorRequest, CalculatorResponse>));
             var result = calc.Add(i1, i2);
             Xunit.Assert.True(result == i1 + i2);
         }
@@ -58,7 +58,7 @@ namespace hase.DevLib.Tests
             var i1 = 5;
             var i2 = 10;
             var request = new CalculatorRequest(CalculatorOpEnum.Add, i1, i2);
-            var calcService = new Calculator(typeof(NamedPipeRelayProxyClient<CalculatorRequest, CalculatorResponse>)).Service;
+            var calcService = new Calculator(typeof(NamedPipeRelayProxy<CalculatorRequest, CalculatorResponse>)).Service;
             var result = calcService.Execute(request).Result;
             Xunit.Assert.True(result == i1 + i2);
         }

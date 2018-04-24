@@ -1,12 +1,12 @@
 ﻿using hase.DevLib.Framework.Contract;
-using hase.DevLib.Framework.Core;
+using hase.DevLib.Framework.Service;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace hase.DevLib.Framework.Relay
 {
-    public abstract class RelayDispatcherClientBase<TService, TRequest, TResponse> : IRelayDispatcherClient<TService, TRequest, TResponse>
+    public abstract class RelayDispatcherBase<TService, TRequest, TResponse> : IRelayDispatcher<TService, TRequest, TResponse>
         where TService : IService<TRequest, TResponse>
         where TRequest : class
         where TResponse : class
@@ -19,7 +19,7 @@ namespace hase.DevLib.Framework.Relay
         public abstract TRequest DeserializeRequest();
         public abstract void SerializeResponse(TResponse response);
 
-        protected RelayDispatcherClientBase()
+        protected RelayDispatcherBase()
         {
             _cts = new CancellationTokenSource();
             ChannelName = typeof(TService).Name;

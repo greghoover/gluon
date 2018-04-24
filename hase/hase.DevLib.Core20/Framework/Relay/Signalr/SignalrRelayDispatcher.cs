@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace hase.DevLib.Framework.Relay.Signalr
 {
-    public class SignalrRelayDispatcherClient<TService, TRequest, TResponse> : RelayDispatcherClientBase<TService, TRequest, TResponse>
+    public class SignalrRelayDispatcher<TService, TRequest, TResponse> : RelayDispatcherBase<TService, TRequest, TResponse>
         where TService : IService<TRequest, TResponse>
         where TRequest : class
         where TResponse : class
@@ -19,7 +19,7 @@ namespace hase.DevLib.Framework.Relay.Signalr
         private string _tmpReqId = null;
         protected ConcurrentQueue<object> Requests { get; private set; }
 
-        public SignalrRelayDispatcherClient()
+        public SignalrRelayDispatcher()
         {
             Requests = new ConcurrentQueue<object>();
         }

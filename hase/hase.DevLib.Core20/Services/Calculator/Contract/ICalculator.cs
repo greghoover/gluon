@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace hase.DevLib.Services.Calculator.Contract
+﻿namespace hase.DevLib.Services.Calculator.Contract
 {
     public interface ICalculator
     {

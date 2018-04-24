@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace hase.DevLib.Framework.Relay
 {
-    public abstract class RelayProxyClientBase<TRequest, TResponse> : IRelayProxyClient<TRequest, TResponse>
+    public abstract class RelayProxyBase<TRequest, TResponse> : IRelayProxy<TRequest, TResponse>
         where TRequest : class
         where TResponse : class
     {
@@ -16,8 +16,8 @@ namespace hase.DevLib.Framework.Relay
         public abstract void SerializeRequest(TRequest request);
         public abstract TResponse DeserializeResponse();
 
-        private RelayProxyClientBase() { }
-        public RelayProxyClientBase(string proxyChannelName)
+        private RelayProxyBase() { }
+        public RelayProxyBase(string proxyChannelName)
         {
             this.ChannelName = proxyChannelName;
         }

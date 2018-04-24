@@ -1,6 +1,6 @@
-using hase.DevLib.Framework.Core;
 using hase.DevLib.Framework.Relay;
 using hase.DevLib.Framework.Relay.NamedPipe;
+using hase.DevLib.Framework.Service;
 using hase.DevLib.Services.FileSystemQuery.Client;
 using hase.DevLib.Services.FileSystemQuery.Contract;
 using hase.DevLib.Services.FileSystemQuery.Service;
@@ -12,7 +12,7 @@ namespace hase.DevLib.Tests
     public class FileSystemQueryRelayAndDispatcherFixture : IDisposable
     {
         private NamedPipeRelayHub<FileSystemQueryRequest, FileSystemQueryResponse> _fsqRelay = null;
-        private IRelayDispatcherClient<FileSystemQueryService, FileSystemQueryRequest, FileSystemQueryResponse> _fsqDispatcher = null;
+        private IRelayDispatcher<FileSystemQueryService, FileSystemQueryRequest, FileSystemQueryResponse> _fsqDispatcher = null;
 
         public FileSystemQueryRelayAndDispatcherFixture()
         {
@@ -25,7 +25,7 @@ namespace hase.DevLib.Tests
             Console.WriteLine("Named Pipe Relay started.");
 
             Console.WriteLine("Starting Service Dispatcher");
-            _fsqDispatcher = RelayDispatcherClient<NamedPipeRelayDispatcherClient<FileSystemQueryService, FileSystemQueryRequest, FileSystemQueryResponse>, FileSystemQueryService, FileSystemQueryRequest, FileSystemQueryResponse>.CreateInstance();
+            _fsqDispatcher = RelayDispatcher<NamedPipeRelayDispatcher<FileSystemQueryService, FileSystemQueryRequest, FileSystemQueryResponse>, FileSystemQueryService, FileSystemQueryRequest, FileSystemQueryResponse>.CreateInstance();
             _fsqDispatcher.StartAsync();
             Console.WriteLine("Service Dispatcher started.");
         }
@@ -47,7 +47,7 @@ namespace hase.DevLib.Tests
         public void VerifyCRootExists_ClientApi_NamedPipeRelay()
         {
             var folderPath = @"c:";
-            var fsq = new FileSystemQuery(typeof(NamedPipeRelayProxyClient<FileSystemQueryRequest, FileSystemQueryResponse>));
+            var fsq = new FileSystemQuery(typeof(NamedPipeRelayProxy<FileSystemQueryRequest, FileSystemQueryResponse>));
             var result = fsq.DoesDirectoryExist(folderPath);
             Xunit.Assert.True(result);
         }
@@ -55,7 +55,7 @@ namespace hase.DevLib.Tests
         public void VerifyCRootExists_ServiceApi_NamedPipeRelay()
         {
             var folderPath = @"c:";
-            var fsqs = new FileSystemQuery(typeof(NamedPipeRelayProxyClient<FileSystemQueryRequest, FileSystemQueryResponse>)).Service;
+            var fsqs = new FileSystemQuery(typeof(NamedPipeRelayProxy<FileSystemQueryRequest, FileSystemQueryResponse>)).Service;
             var request = new FileSystemQueryRequest
             {
                 FolderPath = folderPath,
@@ -70,7 +70,7 @@ namespace hase.DevLib.Tests
         public void VerifyBogusPathNotExist_ClientApi_NamedPipeRelay()
         {
             var folderPath = @"slkjdfslkj";
-            var fsq = new FileSystemQuery(typeof(NamedPipeRelayProxyClient<FileSystemQueryRequest, FileSystemQueryResponse>));
+            var fsq = new FileSystemQuery(typeof(NamedPipeRelayProxy<FileSystemQueryRequest, FileSystemQueryResponse>));
             var result = fsq.DoesDirectoryExist(folderPath);
             Xunit.Assert.False(result);
         }
@@ -78,7 +78,7 @@ namespace hase.DevLib.Tests
         public void VerifyBogusPathNotExist_ServiceApi_NamedPipeRelay()
         {
             var folderPath = @"slkjdfslkj";
-            var fsqs = new FileSystemQuery(typeof(NamedPipeRelayProxyClient<FileSystemQueryRequest, FileSystemQueryResponse>)).Service;
+            var fsqs = new FileSystemQuery(typeof(NamedPipeRelayProxy<FileSystemQueryRequest, FileSystemQueryResponse>)).Service;
             var request = new FileSystemQueryRequest
             {
                 FolderPath = folderPath,

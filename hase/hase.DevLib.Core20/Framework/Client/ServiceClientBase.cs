@@ -1,5 +1,5 @@
 ﻿using hase.DevLib.Framework.Contract;
-using hase.DevLib.Framework.Core;
+using hase.DevLib.Framework.Service;
 using System;
 
 namespace hase.DevLib.Framework.Client

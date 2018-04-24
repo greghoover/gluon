@@ -1,4 +1,4 @@
-﻿using hase.DevLib.Framework.Core;
+﻿using hase.DevLib.Framework.Service;
 using hase.DevLib.Framework.Relay.NamedPipe;
 using hase.DevLib.Services.Calculator.Contract;
 using hase.DevLib.Services.Calculator.Service;

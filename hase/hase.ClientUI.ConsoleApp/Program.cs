@@ -1,11 +1,12 @@
-﻿using hase.DevLib.Framework.Core;
-using hase.DevLib.Framework.Relay.NamedPipe;
+﻿using hase.DevLib.Framework.Relay.NamedPipe;
+using hase.DevLib.Framework.Relay.Signalr;
+using hase.DevLib.Framework.Service;
+using hase.DevLib.Services;
 using hase.DevLib.Services.Calculator.Client;
 using hase.DevLib.Services.Calculator.Contract;
 using hase.DevLib.Services.FileSystemQuery.Client;
 using hase.DevLib.Services.FileSystemQuery.Contract;
 using System;
-using hase.DevLib.Framework.Relay.Signalr;
 
 namespace hase.ClientUI.ConsoleApp
 {
@@ -54,8 +55,8 @@ namespace hase.ClientUI.ConsoleApp
             if (folderPath == string.Empty)
                 return;
 
-            var fsq = new FileSystemQuery(typeof(SignalrRelayProxyClient<FileSystemQueryRequest, FileSystemQueryResponse>));
-            //var fsq = new FileSystemQuery(typeof(NamedPipeRelayProxyClient<FileSystemQueryRequest, FileSystemQueryResponse>));
+            var fsq = new FileSystemQuery(typeof(SignalrRelayProxy<FileSystemQueryRequest, FileSystemQueryResponse>));
+            //var fsq = new FileSystemQuery(typeof(NamedPipeRelayProxy<FileSystemQueryRequest, FileSystemQueryResponse>));
             var result = fsq.DoesDirectoryExist(folderPath);
             Console.WriteLine($"Was folder path [{folderPath}] found? [{result}].");
         }
@@ -78,8 +79,8 @@ namespace hase.ClientUI.ConsoleApp
             if (!int.TryParse(input2, out i2))
                 return;
 
-            var calc = new Calculator(typeof(NamedPipeRelayProxyClient<CalculatorRequest, CalculatorResponse>));
-            //var calc = new Calculator(typeof(NamedPipeRelayProxyClient<CalculatorRequest, CalculatorResponse>));
+            var calc = new Calculator(typeof(NamedPipeRelayProxy<CalculatorRequest, CalculatorResponse>));
+            //var calc = new Calculator(typeof(NamedPipeRelayProxy<CalculatorRequest, CalculatorResponse>));
             var result = calc.Add(i1, i2);
             Console.WriteLine($"[{i1} + {i2}] = [{result}].");
         }

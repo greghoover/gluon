@@ -1,7 +1,8 @@
-﻿using System;
+﻿using hase.DevLib.Services;
+using System;
 using System.Collections.Generic;
 
-namespace hase.DevLib.Framework.Core
+namespace hase.DevLib.Framework.Service
 {
     public static class ServiceTypesUtil
     {
