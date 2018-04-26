@@ -14,27 +14,37 @@ namespace hase.RelayHub.ConsoleHost
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Starting SignalR Relay Server...");
-            Startup.BuildAndRunWebHost(args);
-            
+            var signalR = true;
+            var namedPipe = !signalR;
 
-            //var fsqServicePipeName = typeof(FileSystemQueryService).Name;
-            //var fsqProxyPipeName = ServiceTypesUtil.GetServiceProxyName(fsqServicePipeName);
-            ////var calcServicePipeName = typeof(CalculatorService).Name;
-            ////var calcProxyPipeName = ServiceTypesUtil.GetServiceProxyName(calcServicePipeName);
+            if (signalR)
+            {
+                Console.WriteLine("Starting SignalR Relay Server...");
+                Startup.BuildAndRunWebHost(args);
+            }
 
-            //Console.WriteLine("Starting Named Pipe Relay.");
-            //var fsqRelay = new NamedPipeRelayHub<FileSystemQueryRequest, FileSystemQueryResponse>(fsqServicePipeName, fsqProxyPipeName);
-            //fsqRelay.StartAsync();
-            ////var calcRelay = new NamedPipeRelayHub<CalculatorRequest, CalculatorResponse>(calcServicePipeName, calcProxyPipeName);
-            ////calcRelay.StartAsync();
-            //Console.WriteLine("Named Pipe Relay started.");
+            if (namedPipe)
+            {
+                var fsqServicePipeName = typeof(FileSystemQueryService).Name;
+                var fsqProxyPipeName = ServiceTypesUtil.GetServiceProxyName(fsqServicePipeName);
+                var calcServicePipeName = typeof(CalculatorService).Name;
+                var calcProxyPipeName = ServiceTypesUtil.GetServiceProxyName(calcServicePipeName);
 
-            Console.WriteLine("Press <Enter> to stop relay.");
-            Console.ReadLine();
-            //fsqRelay.StopAsync().Wait();
-            //calcRelay.StopAsync().Wait();
-            Console.WriteLine("Relay stopped.");
+                Console.WriteLine("Starting Named Pipe Relay.");
+                var fsqRelay = new NamedPipeRelayHub<FileSystemQueryRequest, FileSystemQueryResponse>(fsqServicePipeName, fsqProxyPipeName);
+                fsqRelay.StartAsync();
+                var calcRelay = new NamedPipeRelayHub<CalculatorRequest, CalculatorResponse>(calcServicePipeName, calcProxyPipeName);
+                calcRelay.StartAsync();
+                Console.WriteLine("Named Pipe Relay started.");
+                Console.WriteLine("Press <Enter> to stop relay.");
+                Console.ReadLine();
+
+                fsqRelay.StopAsync().Wait();
+                calcRelay.StopAsync().Wait();
+
+                Console.WriteLine("Relay stopped.");
+            }
+
 
             Console.Write("Press <Enter> to close window.");
             Console.ReadLine();

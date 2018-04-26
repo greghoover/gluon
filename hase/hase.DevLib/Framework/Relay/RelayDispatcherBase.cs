@@ -47,6 +47,8 @@ namespace hase.DevLib.Framework.Relay
 
         protected async virtual Task ProcessRequest(CancellationToken ct)
         {
+            await Task.CompletedTask; // no compiler warning please
+
             if (ct.IsCancellationRequested) return;
             //Console.WriteLine($"{this.Abbr}:Waiting to receive {ChannelName} request.");
             var request = this.DeserializeRequest();
@@ -68,7 +70,10 @@ namespace hase.DevLib.Framework.Relay
             {
                 response = service.Execute(request);
             }
-            catch (Exception ex) { }
+            catch (Exception ex)
+            {
+                var e = ex; // no compiler warning please
+            }
 
             return response;
         }

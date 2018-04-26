@@ -5,6 +5,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Collections.Concurrent;
+using System.Diagnostics.CodeAnalysis;
 
 namespace hase.DevLib.Framework.Relay.Signalr
 {
@@ -35,8 +36,12 @@ namespace hase.DevLib.Framework.Relay.Signalr
 
         public SignalrRelayHub()
         {
-            var proxyChannelName = "FileSystemQueryProxy";
-            var serviceChannelName = "FileSystemQueryService";
+            //var proxyChannelName = "FileSystemQueryProxy";
+            //var serviceChannelName = "FileSystemQueryService";
+            //var proxyChannelName = "CalculatorProxy";
+            //var serviceChannelName = "CalculatorService";
+            var proxyChannelName = "ServiceProxy";
+            var serviceChannelName = "ServiceDispatcher";
 
             this.ProxyChannelName = proxyChannelName;
             this.ServiceChannelName = serviceChannelName;
@@ -90,6 +95,8 @@ namespace hase.DevLib.Framework.Relay.Signalr
 
         public async Task StartAsync()
         {
+            await Task.CompletedTask; // no compiler warning please
+
             var ct = _cts.Token;
 
             Console.WriteLine($"srrs:Listening for {this.ServiceChannelName} connection.");

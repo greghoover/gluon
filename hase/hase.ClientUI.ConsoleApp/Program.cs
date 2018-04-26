@@ -1,17 +1,25 @@
-﻿using hase.DevLib.Framework.Relay.NamedPipe;
+﻿using hase.DevLib.Framework.Client;
+using hase.DevLib.Framework.Contract;
+using hase.DevLib.Framework.Relay;
+using hase.DevLib.Framework.Relay.NamedPipe;
 using hase.DevLib.Framework.Relay.Signalr;
 using hase.DevLib.Framework.Service;
 using hase.DevLib.Services;
 using hase.DevLib.Services.Calculator.Client;
 using hase.DevLib.Services.Calculator.Contract;
+using hase.DevLib.Services.Calculator.Service;
 using hase.DevLib.Services.FileSystemQuery.Client;
 using hase.DevLib.Services.FileSystemQuery.Contract;
+using hase.DevLib.Services.FileSystemQuery.Service;
 using System;
 
 namespace hase.ClientUI.ConsoleApp
 {
     class Program
     {
+        static bool signalR = true;
+        static bool namedPipe = !signalR;
+
         static void Main(string[] args)
         {
             Console.WriteLine("Client Console Host");
@@ -55,8 +63,17 @@ namespace hase.ClientUI.ConsoleApp
             if (folderPath == string.Empty)
                 return;
 
-            var fsq = new FileSystemQuery(typeof(SignalrRelayProxy<FileSystemQueryRequest, FileSystemQueryResponse>));
-            //var fsq = new FileSystemQuery(typeof(NamedPipeRelayProxy<FileSystemQueryRequest, FileSystemQueryResponse>));
+            var fsq = default(IFileSystemQuery);
+            //var fsq = default(IServiceClient<FileSystemQueryService, FileSystemQueryRequest, FileSystemQueryResponse>);
+            if (signalR)
+            {
+                fsq = new FileSystemQuery(typeof(SignalrRelayProxy<FileSystemQueryRequest, FileSystemQueryResponse>));
+            }
+            if (namedPipe)
+            {
+                fsq = new FileSystemQuery(typeof(NamedPipeRelayProxy<FileSystemQueryRequest, FileSystemQueryResponse>));
+            }
+            //var result = ((IFileSystemQuery)fsq).DoesDirectoryExist(folderPath);
             var result = fsq.DoesDirectoryExist(folderPath);
             Console.WriteLine($"Was folder path [{folderPath}] found? [{result}].");
         }
@@ -79,8 +96,16 @@ namespace hase.ClientUI.ConsoleApp
             if (!int.TryParse(input2, out i2))
                 return;
 
-            var calc = new Calculator(typeof(NamedPipeRelayProxy<CalculatorRequest, CalculatorResponse>));
-            //var calc = new Calculator(typeof(NamedPipeRelayProxy<CalculatorRequest, CalculatorResponse>));
+            var calc = default(ICalculator);
+            //var calc = default(IServiceClient<CalculatorService, CalculatorRequest, CalculatorResponse>);
+            if (signalR)
+            {
+                calc = new Calculator(typeof(SignalrRelayProxy<CalculatorRequest, CalculatorResponse>));
+            }
+            if (namedPipe)
+            {
+                calc = new Calculator(typeof(NamedPipeRelayProxy<CalculatorRequest, CalculatorResponse>));
+            }
             var result = calc.Add(i1, i2);
             Console.WriteLine($"[{i1} + {i2}] = [{result}].");
         }

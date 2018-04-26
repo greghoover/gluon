@@ -25,7 +25,7 @@ namespace hase.DevLib.Framework.Relay.NamedPipe
             }
             catch (Exception ex)
             {
-
+                var e = ex; // no compiler warning please
             }
         }
 
