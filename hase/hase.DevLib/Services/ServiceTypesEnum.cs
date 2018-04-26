@@ -1,4 +1,4 @@
-﻿namespace hase.DevLib.Framework.Core
+﻿namespace hase.DevLib.Services
 {
     public enum ServiceTypesEnum
     {

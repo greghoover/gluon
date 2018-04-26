@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace hase.DevLib.Framework.Relay.NamedPipe
 {
-    public class NamedPipeRelayDispatcherClient<TService, TRequest, TResponse> : RelayDispatcherClientBase<TService, TRequest, TResponse>
+    public class NamedPipeRelayDispatcher<TService, TRequest, TResponse> : RelayDispatcherBase<TService, TRequest, TResponse>
         where TService : IService<TRequest, TResponse>
         where TRequest : class
         where TResponse : class

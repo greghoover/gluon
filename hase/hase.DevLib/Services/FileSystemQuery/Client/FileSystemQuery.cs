@@ -1,6 +1,6 @@
 ﻿using hase.DevLib.Framework.Client;
 using hase.DevLib.Framework.Contract;
-using hase.DevLib.Framework.Core;
+using hase.DevLib.Framework.Service;
 using hase.DevLib.Services.FileSystemQuery.Contract;
 using hase.DevLib.Services.FileSystemQuery.Service;
 using System;
@@ -30,9 +30,15 @@ namespace hase.DevLib.Services.FileSystemQuery.Client
                 QueryType = FileSystemQueryTypeEnum.DirectoryExists
             };
 
-            var response = Service.Execute(request).ResponseString;
-            var result = bool.Parse(response);
-            return result;
+            var response = Service.Execute(request);
+            if (response == null)
+                return false;
+            else
+            {
+                var responseString = response.ResponseString;
+                var result = bool.Parse(responseString);
+                return result;
+            }
         }
     }
 }

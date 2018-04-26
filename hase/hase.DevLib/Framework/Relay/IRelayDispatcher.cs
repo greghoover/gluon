@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace hase.DevLib.Framework.Relay
 {
-    public interface IRelayDispatcherClient<TService, TRequest, TResponse>
+    public interface IRelayDispatcher<TService, TRequest, TResponse>
         where TService : IService<TRequest, TResponse>
         where TRequest : class
         where TResponse : class

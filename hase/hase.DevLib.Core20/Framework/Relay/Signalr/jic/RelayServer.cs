@@ -54,7 +54,7 @@ namespace Gluon.Relay.Signalr.Server
                     if (RequestResponseCache.TryAdd(correlationId, tcs))
                     {
                         // todo: refactor the client invocation method signatures
-                        client.InvokeAsync(CX.WorkerMethodName, request);
+                        client.SendAsync(CX.WorkerMethodName, request);
                         return tcs.Task;
                     }
                 }

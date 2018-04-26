@@ -7,14 +7,14 @@ using System.Threading.Tasks;
 
 namespace hase.DevLib.Framework.Relay.NamedPipe
 {
-    public class NamedPipeRelayProxyClient<TRequest, TResponse> : RelayProxyClientBase<TRequest, TResponse>
+    public class NamedPipeRelayProxy<TRequest, TResponse> : RelayProxyBase<TRequest, TResponse>
         where TRequest : class
         where TResponse : class
     {
         public override string Abbr => "nprpc";
         private NamedPipeClientStream pipe = null;
 
-        public NamedPipeRelayProxyClient(string proxyChannelName) : base(proxyChannelName) { }
+        public NamedPipeRelayProxy(string proxyChannelName) : base(proxyChannelName) { }
 
         public async override Task ConnectAsync(int timeoutMs, CancellationToken ct)
         {

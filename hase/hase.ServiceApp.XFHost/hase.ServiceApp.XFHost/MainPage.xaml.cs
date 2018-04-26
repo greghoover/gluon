@@ -1,5 +1,4 @@
-﻿using hase.DevLib.Framework.Core;
-using hase.DevLib.Framework.Relay;
+﻿using hase.DevLib.Framework.Relay;
 using hase.DevLib.Framework.Relay.NamedPipe;
 using hase.DevLib.Services.Calculator.Contract;
 using hase.DevLib.Services.Calculator.Service;
@@ -15,8 +14,8 @@ namespace hase.ServiceApp.XFHost
 {
 	public partial class MainPage : ContentPage
 	{
-		private IRelayDispatcherClient<FileSystemQueryService, FileSystemQueryRequest, FileSystemQueryResponse> fsqDispatcher = null;
-		private IRelayDispatcherClient<CalculatorService, CalculatorRequest, CalculatorResponse> calcDispatcher = null;
+		private IRelayDispatcher<FileSystemQueryService, FileSystemQueryRequest, FileSystemQueryResponse> fsqDispatcher = null;
+		private IRelayDispatcher<CalculatorService, CalculatorRequest, CalculatorResponse> calcDispatcher = null;
 
 		public MainPage()
 		{

@@ -1,6 +1,6 @@
 ﻿using Gluon.Relay.Contracts;
+using Microsoft.AspNetCore.Http.Connections.Features;
 using Microsoft.AspNetCore.SignalR;
-using Microsoft.AspNetCore.Sockets.Http.Features;
 using System;
 using System.Threading.Tasks;
 
@@ -30,7 +30,7 @@ namespace Gluon.Relay.Signalr.Server
         }
         private T GetHttpContextItem<T>(string key)
         {
-            var httpContext = Context.Connection.Features.Get<IHttpContextFeature>().HttpContext;
+            var httpContext = Context.Features.Get<IHttpContextFeature>().HttpContext;
             object vlu;
             if (httpContext.Items.TryGetValue(key, out vlu))
                 return (T)vlu;

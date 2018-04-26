@@ -5,9 +5,28 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Framework\Relay\Signalr\jic\**" />
-    <EmbeddedResource Remove="Framework\Relay\Signalr\jic\**" />
-    <None Remove="Framework\Relay\Signalr\jic\**" />
+    <Compile Remove="Framework\**" />
+    <Compile Remove="Services\**" />
+    <EmbeddedResource Remove="Framework\**" />
+    <EmbeddedResource Remove="Services\**" />
+    <None Remove="Framework\**" />
+    <None Remove="Services\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="Framework\Relay\Signalr\jic\ClientIdentifier.cs" />
+    <Compile Include="Framework\Relay\Signalr\jic\ClientIdTypeEnum.cs" />
+    <Compile Include="Framework\Relay\Signalr\jic\CX.cs" />
+    <Compile Include="Framework\Relay\Signalr\jic\LogoffMsg.cs" />
+    <Compile Include="Framework\Relay\Signalr\jic\LogonMsg.cs" />
+    <Compile Include="Framework\Relay\Signalr\jic\RelayServer.cs" />
+    <Compile Include="Framework\Relay\Signalr\jic\RelayServer_ClientLookup.cs" />
+    <Compile Include="Framework\Relay\Signalr\jic\RelayServer_Hub.cs" />
+    <Compile Include="Framework\Relay\Signalr\jic\Startup.cs" />
+    <Compile Include="Framework\Relay\Signalr\SignalrRelayDispatcher.cs" />
+    <Compile Include="Framework\Relay\Signalr\SignalrRelayHub.cs" />
+    <Compile Include="Framework\Relay\Signalr\SignalrRelayProxy.cs" />
+    <Compile Include="Framework\Relay\Signalr\Startup.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -16,6 +35,10 @@
     <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="1.0.0-preview2-final" />
     <PackageReference Include="protobuf-net" Version="2.3.7" />
     <PackageReference Include="System.IO.Pipes" Version="4.3.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\hase.DevLib\hase.DevLib.csproj" />
   </ItemGroup>
 
 </Project>
