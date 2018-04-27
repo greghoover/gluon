@@ -8,10 +8,10 @@ namespace hase.DevLib.Services.Calculator.Contract
         [ProtoMember(1)]
         public CalculatorRequest Request { get; set; }
         [ProtoMember(2)]
-        public int Result { get; set; }
+        public int? Result { get; set; }
 
         private CalculatorResponse() { }
-        public CalculatorResponse(CalculatorRequest request, int result)
+        public CalculatorResponse(CalculatorRequest request, int? result)
         {
             this.Result = result;
         }

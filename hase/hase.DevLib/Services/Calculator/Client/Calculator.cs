@@ -22,7 +22,7 @@ namespace hase.DevLib.Services.Calculator.Client
         /// </summary>
         public Calculator(IService<CalculatorRequest, CalculatorResponse> service) : base(service) { }
 
-        public int Add(int i1, int i2)
+        public int? Add(int i1, int i2)
         {
             var request = new CalculatorRequest
             {
@@ -33,7 +33,7 @@ namespace hase.DevLib.Services.Calculator.Client
             return Service.Execute(request).Result;
         }
 
-        public int Sub(int i1, int i2)
+        public int? Sub(int i1, int i2)
         {
             var request = new CalculatorRequest
             {

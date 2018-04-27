@@ -24,9 +24,6 @@
     <Compile Include="Framework\Relay\Signalr\jic\RelayServer_ClientLookup.cs" />
     <Compile Include="Framework\Relay\Signalr\jic\RelayServer_Hub.cs" />
     <Compile Include="Framework\Relay\Signalr\jic\Startup.cs" />
-    <Compile Include="Framework\Relay\Signalr\SignalrRelayDispatcher.cs" />
-    <Compile Include="Framework\Relay\Signalr\SignalrRelayHub.cs" />
-    <Compile Include="Framework\Relay\Signalr\SignalrRelayProxy.cs" />
     <Compile Include="Framework\Relay\Signalr\Startup.cs" />
   </ItemGroup>
 
@@ -34,7 +31,6 @@
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.SignalR" Version="1.0.0-preview2-final" />
     <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="1.0.0-preview2-final" />
-    <PackageReference Include="protobuf-net" Version="2.3.7" />
     <PackageReference Include="System.IO.Pipes" Version="4.3.0" />
   </ItemGroup>
 

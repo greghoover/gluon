@@ -22,7 +22,7 @@ namespace hase.DevLib.Services.FileSystemQuery.Client
         /// </summary>
         public FileSystemQuery(IService<FileSystemQueryRequest, FileSystemQueryResponse> service) : base(service) { }
 
-        public bool DoesDirectoryExist(string folderPath)
+        public bool? DoesDirectoryExist(string folderPath)
         {
             var request = new FileSystemQueryRequest
             {
@@ -31,13 +31,12 @@ namespace hase.DevLib.Services.FileSystemQuery.Client
             };
 
             var response = Service.Execute(request);
-            if (response == null)
-                return false;
+
+            if (response?.ResponseString == null)
+                return null;
             else
             {
-                var responseString = response.ResponseString;
-                var result = bool.Parse(responseString);
-                return result;
+                return bool.Parse(response.ResponseString);
             }
         }
     }
