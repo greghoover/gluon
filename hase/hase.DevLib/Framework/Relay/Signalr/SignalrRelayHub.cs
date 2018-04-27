@@ -1,11 +1,8 @@
 ﻿using Microsoft.AspNetCore.SignalR;
-using Microsoft.AspNetCore.Authentication;
-using ProtoBuf;
 using System;
+using System.Collections.Concurrent;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Collections.Concurrent;
-using System.Diagnostics.CodeAnalysis;
 
 namespace hase.DevLib.Framework.Relay.Signalr
 {
