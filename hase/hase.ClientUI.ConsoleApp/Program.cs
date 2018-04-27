@@ -17,9 +17,6 @@ namespace hase.ClientUI.ConsoleApp
 {
     class Program
     {
-        static bool signalR = true;
-        static bool namedPipe = !signalR;
-
         static void Main(string[] args)
         {
             Console.WriteLine("Client Console Host");
@@ -64,11 +61,11 @@ namespace hase.ClientUI.ConsoleApp
                 return;
 
             var fsq = default(IFileSystemQuery);
-            if (signalR)
+            if (RelayUtil.RelayTypeDflt == RelayTypeEnum.SignalR)
             {
                 fsq = new FileSystemQuery(typeof(SignalrRelayProxy<FileSystemQueryRequest, FileSystemQueryResponse>));
             }
-            if (namedPipe)
+            if (RelayUtil.RelayTypeDflt == RelayTypeEnum.NamedPipes)
             {
                 fsq = new FileSystemQuery(typeof(NamedPipeRelayProxy<FileSystemQueryRequest, FileSystemQueryResponse>));
             }
@@ -95,11 +92,11 @@ namespace hase.ClientUI.ConsoleApp
                 return;
 
             var calc = default(ICalculator);
-            if (signalR)
+            if (RelayUtil.RelayTypeDflt == RelayTypeEnum.SignalR)
             {
                 calc = new Calculator(typeof(SignalrRelayProxy<CalculatorRequest, CalculatorResponse>));
             }
-            if (namedPipe)
+            if (RelayUtil.RelayTypeDflt == RelayTypeEnum.NamedPipes)
             {
                 calc = new Calculator(typeof(NamedPipeRelayProxy<CalculatorRequest, CalculatorResponse>));
             }

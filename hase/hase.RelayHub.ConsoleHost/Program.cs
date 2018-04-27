@@ -7,6 +7,7 @@ using hase.DevLib.Services.FileSystemQuery.Service;
 using System;
 //using Gluon.Relay.Signalr.Server;
 using hase.DevLib.Framework.Relay.Signalr;
+using hase.DevLib.Framework.Relay;
 
 namespace hase.RelayHub.ConsoleHost
 {
@@ -14,16 +15,12 @@ namespace hase.RelayHub.ConsoleHost
     {
         static void Main(string[] args)
         {
-            var signalR = true;
-            var namedPipe = !signalR;
-
-            if (signalR)
+            if (RelayUtil.RelayTypeDflt == RelayTypeEnum.SignalR)
             {
                 Console.WriteLine("Starting SignalR Relay Server...");
                 Startup.BuildAndRunWebHost(args);
             }
-
-            if (namedPipe)
+            if (RelayUtil.RelayTypeDflt == RelayTypeEnum.NamedPipes)
             {
                 var fsqServicePipeName = typeof(FileSystemQueryService).Name;
                 var fsqProxyPipeName = ServiceTypesUtil.GetServiceProxyName(fsqServicePipeName);

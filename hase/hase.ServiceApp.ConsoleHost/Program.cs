@@ -13,13 +13,10 @@ namespace hase.ServiceApp.ConsoleHost
     {
         static void Main(string[] args)
         {
-            var signalR = true;
-            var namedPipe = !signalR;
-
             var fsqDispatcher = default(IRelayDispatcher<FileSystemQueryService, FileSystemQueryRequest, FileSystemQueryResponse>);
             var calcDispatcher = default(IRelayDispatcher<CalculatorService, CalculatorRequest, CalculatorResponse>);
 
-            if (signalR)
+            if (RelayUtil.RelayTypeDflt == RelayTypeEnum.SignalR)
             {
                 //var instanceId = "FileSystemQueryServiceHost";
                 //var qs = $"?{ClientIdTypeEnum.ClientId}={instanceId}";
@@ -29,7 +26,7 @@ namespace hase.ServiceApp.ConsoleHost
                 fsqDispatcher = RelayDispatcher<SignalrRelayDispatcher<FileSystemQueryService, FileSystemQueryRequest, FileSystemQueryResponse>, FileSystemQueryService, FileSystemQueryRequest, FileSystemQueryResponse>.CreateInstance();
                 calcDispatcher = RelayDispatcher<SignalrRelayDispatcher<CalculatorService, CalculatorRequest, CalculatorResponse>, CalculatorService, CalculatorRequest, CalculatorResponse>.CreateInstance();
             }
-            if (namedPipe)
+            if (RelayUtil.RelayTypeDflt == RelayTypeEnum.NamedPipes)
             {
                 fsqDispatcher = RelayDispatcher<NamedPipeRelayDispatcher<FileSystemQueryService, FileSystemQueryRequest, FileSystemQueryResponse>, FileSystemQueryService, FileSystemQueryRequest, FileSystemQueryResponse>.CreateInstance();
                 calcDispatcher = RelayDispatcher<NamedPipeRelayDispatcher<CalculatorService, CalculatorRequest, CalculatorResponse>, CalculatorService, CalculatorRequest, CalculatorResponse>.CreateInstance();

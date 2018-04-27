@@ -22,10 +22,20 @@ namespace hase.ServiceApp.XFHost
 		{
 			InitializeComponent();
 
-            var folderPath = @"c:\";
-            //var fsq = new FileSystemQuery(typeof(SignalrRelayProxy<FileSystemQueryRequest, FileSystemQueryResponse>));
-            var fsq = new FileSystemQuery(typeof(NamedPipeRelayProxy<FileSystemQueryRequest, FileSystemQueryResponse>));
-            var result = fsq.DoesDirectoryExist(folderPath);
+            Task.Run(() =>
+            {
+                try
+                {
+                    var folderPath = @"c:\";
+                    //var fsq = new FileSystemQuery(typeof(SignalrRelayProxy<FileSystemQueryRequest, FileSystemQueryResponse>));
+                    var fsq = new FileSystemQuery(typeof(NamedPipeRelayProxy<FileSystemQueryRequest, FileSystemQueryResponse>));
+                    var result = fsq.DoesDirectoryExist(folderPath);
+                }
+                catch (Exception ex)
+                {
+                    var e = ex;
+                }
+            }).Wait();
 
             //var instanceId = "FileSystemQueryServiceHost";
             //var qs = $"?{ClientIdTypeEnum.ClientId}={instanceId}";
