@@ -64,7 +64,6 @@ namespace hase.ClientUI.ConsoleApp
                 return;
 
             var fsq = default(IFileSystemQuery);
-            //var fsq = default(IServiceClient<FileSystemQueryService, FileSystemQueryRequest, FileSystemQueryResponse>);
             if (signalR)
             {
                 fsq = new FileSystemQuery(typeof(SignalrRelayProxy<FileSystemQueryRequest, FileSystemQueryResponse>));
@@ -73,7 +72,6 @@ namespace hase.ClientUI.ConsoleApp
             {
                 fsq = new FileSystemQuery(typeof(NamedPipeRelayProxy<FileSystemQueryRequest, FileSystemQueryResponse>));
             }
-            //var result = ((IFileSystemQuery)fsq).DoesDirectoryExist(folderPath);
             var result = fsq.DoesDirectoryExist(folderPath);
             Console.WriteLine($"Was folder path [{folderPath}] found? [{result}].");
         }
@@ -97,7 +95,6 @@ namespace hase.ClientUI.ConsoleApp
                 return;
 
             var calc = default(ICalculator);
-            //var calc = default(IServiceClient<CalculatorService, CalculatorRequest, CalculatorResponse>);
             if (signalR)
             {
                 calc = new Calculator(typeof(SignalrRelayProxy<CalculatorRequest, CalculatorResponse>));

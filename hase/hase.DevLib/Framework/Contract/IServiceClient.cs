@@ -5,5 +5,6 @@
         where TRequest : class
         where TResponse : class
     {
+        IService<TRequest, TResponse> Service { get; }
     }
 }
