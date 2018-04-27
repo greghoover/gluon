@@ -23,8 +23,8 @@ namespace hase.ServiceApp.XFHost
 		{
 			InitializeComponent();
 
-			Task.Run(() =>
-			{
+			//Task.Run(() =>
+			//{
 				try
 				{
 					var folderPath = @"c:\";
@@ -36,7 +36,7 @@ namespace hase.ServiceApp.XFHost
 				{
 					var e = ex;
 				}
-			}).Wait();
+			//}).Wait();
 
 			//var instanceId = "FileSystemQueryServiceHost";
 			//var qs = $"?{ClientIdTypeEnum.ClientId}={instanceId}";
