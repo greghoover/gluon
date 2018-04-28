@@ -34,6 +34,16 @@ namespace hase.DevLib.Framework.Service
             else
                 return serviceName + "proxy";
         }
+
+        public static string GetProxyServiceName(string proxyName)
+        {
+            if (proxyName.EndsWith("Proxy"))
+                return proxyName.Substring(0, proxyName.Length - 5) + "Service";
+            else if (proxyName.EndsWith("proxy"))
+                return proxyName.Substring(0, proxyName.Length - 5) + "service";
+            else
+                return proxyName + "service";
+        }
     }
 }
 

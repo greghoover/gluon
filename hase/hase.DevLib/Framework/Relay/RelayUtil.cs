@@ -5,7 +5,7 @@
         Unknown = 0,
         SignalR = 1,
         NamedPipes = 2,
-        ZeroMQ = 3,
+        NetMq = 3,
     }
     public static class RelayUtil
     {

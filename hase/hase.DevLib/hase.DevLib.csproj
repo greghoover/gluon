@@ -7,8 +7,13 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.SignalR" Version="1.0.0-preview2-final" />
     <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="1.0.0-preview2-final" />
+    <PackageReference Include="NetMQ.Zyre.Standard" Version="1.0.0-rc1" />
     <PackageReference Include="protobuf-net" Version="2.3.7" />
     <PackageReference Include="System.IO.Pipes" Version="4.3.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Framework\Relay\NetMq\" />
   </ItemGroup>
 
 </Project>

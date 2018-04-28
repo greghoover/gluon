@@ -53,7 +53,7 @@ namespace hase.DevLib.Framework.Relay.Signalr
             try
             {
                 await _hub.StartAsync();
-                await _hub.InvokeAsync("RegisterServiceDispatcherAsync");
+                await _hub.InvokeAsync("RegisterServiceDispatcherAsync", ChannelName);
             }
             catch (Exception ex)
             {
@@ -64,9 +64,9 @@ namespace hase.DevLib.Framework.Relay.Signalr
         {
             _tmpReqId = reqId;
             Console.WriteLine($"request [{reqId}] enqueued");
-            //Console.WriteLine($"{this.Abbr}:Staging {ChannelName} request: {request}.");
+            //Console.WriteLine($"{this.Abbr}:Staging {ChannelName} request.");
             Requests.Enqueue(req);
-            //Console.WriteLine($"{this.Abbr}:Staged {ChannelName} request: {request}.");
+            Console.WriteLine($"{this.Abbr}:Staged {ChannelName} request.");
         }
 
         public override TRequest DeserializeRequest()
@@ -87,7 +87,7 @@ namespace hase.DevLib.Framework.Relay.Signalr
         {
             //Serializer.SerializeWithLengthPrefix(pipe, response, PrefixStyle.Base128);
 
-            _hub.InvokeAsync("ServiceResponseAsync", _tmpReqId, response);
+            _hub.InvokeAsync("DispatcherResponseAsync", ChannelName, _tmpReqId, response);
         }
     }
 }
