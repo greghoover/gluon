@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.SignalR.Client;
+﻿using hase.DevLib.Framework.Contract;
+using Microsoft.AspNetCore.SignalR.Client;
 using Newtonsoft.Json;
 using System;
 using System.Threading;
@@ -7,8 +8,8 @@ using System.Threading.Tasks;
 namespace hase.DevLib.Framework.Relay.Signalr
 {
     public class SignalrRelayProxy<TRequest, TResponse> : RelayProxyBase<TRequest, TResponse>
-        where TRequest : class
-        where TResponse : class
+        where TRequest : ProxyMessage
+        where TResponse : ProxyMessage
     {
         public override string Abbr => "srrpc";
         //private SignalrClientStream pipe = null;
@@ -43,7 +44,7 @@ namespace hase.DevLib.Framework.Relay.Signalr
         {
             //Serializer.SerializeWithLengthPrefix(pipe, request, PrefixStyle.Base128);
             var proxyChannel = this.ChannelName;
-            var requestId = Guid.NewGuid().ToString();
+            var requestId = request.Headers.MessageId;
             _tmpResponse = _hub.InvokeAsync<object>("ProcessProxyRequestAsync", proxyChannel, requestId, request).Result;
         }
 

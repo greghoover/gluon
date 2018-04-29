@@ -8,8 +8,8 @@ namespace hase.DevLib.Framework.Relay
 {
     public abstract class RelayDispatcherBase<TService, TRequest, TResponse> : IRelayDispatcher<TService, TRequest, TResponse>
         where TService : IService<TRequest, TResponse>
-        where TRequest : class
-        where TResponse : class
+        where TRequest : ProxyMessage
+        where TResponse : ProxyMessage
     {
         protected CancellationTokenSource _cts { get; private set; }
         public string ChannelName { get; private set; }
@@ -17,7 +17,7 @@ namespace hase.DevLib.Framework.Relay
 
         public abstract Task ConnectAsync(int timeoutMs, CancellationToken ct);
         public abstract TRequest DeserializeRequest();
-        public abstract void SerializeResponse(TResponse response);
+        public abstract void SerializeResponse(string requestId, TResponse response);
 
         protected RelayDispatcherBase()
         {
@@ -52,14 +52,14 @@ namespace hase.DevLib.Framework.Relay
             if (ct.IsCancellationRequested) return;
             //Console.WriteLine($"{this.Abbr}:Waiting to receive {ChannelName} request.");
             var request = this.DeserializeRequest();
-            Console.WriteLine($"{this.Abbr}:Received {ChannelName} request: {request}.");
+            Console.WriteLine($"{this.Abbr}:Processing {ChannelName} request {request.Headers.MessageId}.");
 
             if (ct.IsCancellationRequested) return;
             var response = DispatchRequest(request);
 
             if (ct.IsCancellationRequested) return;
-            Console.WriteLine($"{this.Abbr}:Sending {ChannelName} response: {response}.");
-            this.SerializeResponse(response);
+            Console.WriteLine($"{this.Abbr}:Sending {ChannelName} response {response.Headers.MessageId} for request {request.Headers.MessageId}.");
+            this.SerializeResponse(request.Headers.MessageId, response);
             //Console.WriteLine($"{this.Abbr}:Sent {ChannelName} response.");
         }
         protected virtual TResponse DispatchRequest(TRequest request)

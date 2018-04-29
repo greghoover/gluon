@@ -11,15 +11,14 @@ namespace hase.DevLib.Framework.Relay.Signalr
 {
     public class SignalrRelayDispatcher<TService, TRequest, TResponse> : RelayDispatcherBase<TService, TRequest, TResponse>
         where TService : IService<TRequest, TResponse>
-        where TRequest : class
-        where TResponse : class
+        where TRequest : ProxyMessage
+        where TResponse : ProxyMessage
     {
-        private string _tmpReqId = null;
-        protected ConcurrentQueue<object> Requests { get; private set; }
+        protected ConcurrentQueue<TRequest> Requests { get; private set; }
 
         public SignalrRelayDispatcher()
         {
-            Requests = new ConcurrentQueue<object>();
+            Requests = new ConcurrentQueue<TRequest>();
         }
 
         public override string Abbr => "srrdc";
@@ -62,32 +61,31 @@ namespace hase.DevLib.Framework.Relay.Signalr
         }
         private void StageRequest(string reqId, object req)
         {
-            _tmpReqId = reqId;
-            Console.WriteLine($"request [{reqId}] enqueued");
-            //Console.WriteLine($"{this.Abbr}:Staging {ChannelName} request.");
-            Requests.Enqueue(req);
-            Console.WriteLine($"{this.Abbr}:Staged {ChannelName} request.");
+            TRequest request = JsonConvert.DeserializeObject<TRequest>(req.ToString());
+            var requestId = request.Headers.MessageId;
+
+            //Console.WriteLine($"{this.Abbr}:Enqueueing {ChannelName} request {requestId}.");
+            Requests.Enqueue(request);
+            Console.WriteLine($"{this.Abbr}:Enqueued {ChannelName} request {requestId}.");
         }
 
         public override TRequest DeserializeRequest()
         {
             //return Serializer.DeserializeWithLengthPrefix<TRequest>(pipe, PrefixStyle.Base128);
 
-            var gotReq = false;
-            object obj = null;
-            while(!gotReq)
+            TRequest request = null;
+            while(request == null)
             {
-                gotReq = Requests.TryDequeue(out obj);
+                Requests.TryDequeue(out request);
                 Task.Delay(150).Wait();
             }
-            TRequest request = JsonConvert.DeserializeObject<TRequest>(obj.ToString());
             return request;
         }
-        public override void SerializeResponse(TResponse response)
+        public override void SerializeResponse(string requestId, TResponse response)
         {
             //Serializer.SerializeWithLengthPrefix(pipe, response, PrefixStyle.Base128);
 
-            _hub.InvokeAsync("DispatcherResponseAsync", ChannelName, _tmpReqId, response);
+            _hub.InvokeAsync("DispatcherResponseAsync", ChannelName, requestId, response);
         }
     }
 }

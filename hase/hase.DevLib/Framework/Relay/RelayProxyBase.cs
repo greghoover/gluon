@@ -1,12 +1,13 @@
-﻿using System;
+﻿using hase.DevLib.Framework.Contract;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace hase.DevLib.Framework.Relay
 {
     public abstract class RelayProxyBase<TRequest, TResponse> : IRelayProxy<TRequest, TResponse>
-        where TRequest : class
-        where TResponse : class
+        where TRequest : ProxyMessage
+        where TResponse : ProxyMessage
     {
         public string ChannelName { get; private set; }
         public abstract string Abbr { get; }

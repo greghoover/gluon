@@ -1,9 +1,10 @@
-﻿using ProtoBuf;
+﻿using hase.DevLib.Framework.Contract;
+using ProtoBuf;
 
 namespace hase.DevLib.Services.FileSystemQuery.Contract
 {
     [ProtoContract]
-    public class FileSystemQueryResponse
+    public class FileSystemQueryResponse : ProxyMessage
     {
         [ProtoMember(1)]
         public FileSystemQueryRequest Request { get; set; }

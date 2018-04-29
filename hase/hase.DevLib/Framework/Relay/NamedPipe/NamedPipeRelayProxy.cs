@@ -1,4 +1,5 @@
-﻿using ProtoBuf;
+﻿using hase.DevLib.Framework.Contract;
+using ProtoBuf;
 using System;
 using System.IO.Pipes;
 using System.Security.Principal;
@@ -8,8 +9,8 @@ using System.Threading.Tasks;
 namespace hase.DevLib.Framework.Relay.NamedPipe
 {
     public class NamedPipeRelayProxy<TRequest, TResponse> : RelayProxyBase<TRequest, TResponse>
-        where TRequest : class
-        where TResponse : class
+        where TRequest : ProxyMessage
+        where TResponse : ProxyMessage
     {
         public override string Abbr => "nprpc";
         private NamedPipeClientStream pipe = null;

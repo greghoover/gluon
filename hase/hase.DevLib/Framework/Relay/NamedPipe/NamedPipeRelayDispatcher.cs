@@ -10,8 +10,8 @@ namespace hase.DevLib.Framework.Relay.NamedPipe
 {
     public class NamedPipeRelayDispatcher<TService, TRequest, TResponse> : RelayDispatcherBase<TService, TRequest, TResponse>
         where TService : IService<TRequest, TResponse>
-        where TRequest : class
-        where TResponse : class
+        where TRequest : ProxyMessage
+        where TResponse : ProxyMessage
     {
         public override string Abbr => "nprdc";
         private NamedPipeClientStream pipe = null;
@@ -32,7 +32,7 @@ namespace hase.DevLib.Framework.Relay.NamedPipe
         {
             return Serializer.DeserializeWithLengthPrefix<TRequest>(pipe, PrefixStyle.Base128);
         }
-        public override void SerializeResponse(TResponse response)
+        public override void SerializeResponse(string requestId, TResponse response)
         {
             Serializer.SerializeWithLengthPrefix(pipe, response, PrefixStyle.Base128);
         }

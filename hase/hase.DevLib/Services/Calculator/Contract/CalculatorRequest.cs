@@ -1,9 +1,10 @@
-﻿using ProtoBuf;
+﻿using hase.DevLib.Framework.Contract;
+using ProtoBuf;
 
 namespace hase.DevLib.Services.Calculator.Contract
 {
     [ProtoContract]
-    public class CalculatorRequest
+    public class CalculatorRequest : ProxyMessage
     {
         [ProtoMember(1)]
         public CalculatorOpEnum Operation { get; set; }
