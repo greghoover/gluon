@@ -44,8 +44,8 @@ namespace hase.DevLib.Framework.Relay.Signalr
         {
             //Serializer.SerializeWithLengthPrefix(pipe, request, PrefixStyle.Base128);
             var proxyChannel = this.ChannelName;
-            var requestId = request.Headers.MessageId;
-            _tmpResponse = _hub.InvokeAsync<object>("ProcessProxyRequestAsync", proxyChannel, requestId, request).Result;
+            //var requestId = request.Headers.MessageId;
+            _tmpResponse = _hub.InvokeAsync<object>("ProcessProxyRequestAsync", proxyChannel, request).Result;
         }
 
         public override TResponse DeserializeResponse()

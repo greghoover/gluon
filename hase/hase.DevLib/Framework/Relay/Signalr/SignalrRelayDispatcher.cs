@@ -43,10 +43,10 @@ namespace hase.DevLib.Framework.Relay.Signalr
                 //.WithMessageHandler(h => handler)
                 .Build();
 
-            _hub.On<string, object>("dispatch",
-                (reqId, req) =>
+            _hub.On<object>("dispatch",
+                (req) =>
                 {
-                    StageRequest(reqId, req);
+                    StageRequest(req);
                 });
 
             try
@@ -59,7 +59,7 @@ namespace hase.DevLib.Framework.Relay.Signalr
                 var e = ex;
             }
         }
-        private void StageRequest(string reqId, object req)
+        private void StageRequest(object req)
         {
             TRequest request = JsonConvert.DeserializeObject<TRequest>(req.ToString());
             var requestId = request.Headers.MessageId;
@@ -84,7 +84,6 @@ namespace hase.DevLib.Framework.Relay.Signalr
         public override void SerializeResponse(string requestId, TResponse response)
         {
             //Serializer.SerializeWithLengthPrefix(pipe, response, PrefixStyle.Base128);
-
             _hub.InvokeAsync("DispatcherResponseAsync", ChannelName, requestId, response);
         }
     }
