@@ -24,18 +24,13 @@ namespace hase.DevLib.Framework.Relay.Signalr
                 .WithUrl("http://localhost:5000/route")
                 .Build();
 
-            //_hub.On<object>("reply",
-            //    (req) => {
-            //        TRequest request = (TRequest)req;
-            //        Console.WriteLine($"{request}");
-            //    });
-
             try
             {
                 await _hub.StartAsync();
             }
             catch (Exception ex)
             {
+                await _hub.DisposeAsync();
                 var e = ex;
             }
         }
@@ -58,6 +53,7 @@ namespace hase.DevLib.Framework.Relay.Signalr
         public override void Disconnect()
         {
             //pipe.Dispose();
+            _hub.DisposeAsync().Wait();
         }
     }
 }

@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.SignalR;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -33,12 +32,11 @@ namespace hase.DevLib.Framework.Relay.Signalr
         }
         public override Task OnDisconnectedAsync(Exception exception)
         {
-            var connectionId = Context.ConnectionId;
-
-            var item = DispatcherConnections.FirstOrDefault((kvp) =>
-                kvp.Value == Context.ConnectionId);
-
-            if (item.Key != default(string) || item.Value != default(string))
+            var item = DispatcherConnections.Where(kvp => kvp.Value == Context.ConnectionId)
+                 .Select(kvp => new { kvp.Key, kvp.Value })
+                 .FirstOrDefault();
+            
+            if (item != null)
             {
                 var dummy = default(string);
                 DispatcherConnections.TryRemove(item.Key, out dummy);
