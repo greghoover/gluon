@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 namespace hase.DevLib.Framework.Relay
 {
     public abstract class RelayProxyBase<TRequest, TResponse> : IRelayProxy<TRequest, TResponse>
-        where TRequest : ProxyMessage
-        where TResponse : ProxyMessage
+        where TRequest : ApplicationRequestMessage
+        where TResponse : ApplicationResponseMessage
     {
         public string ChannelName { get; private set; }
         public abstract string Abbr { get; }

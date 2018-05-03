@@ -17,13 +17,13 @@ namespace hase.DevLib.Framework.Relay.Signalr
 
         private static ConcurrentDictionary<string, string> DispatcherConnections;
         private static  ConcurrentDictionary<string, string> ProxyRequests;
-        private static ConcurrentDictionary<string, object> DispatcherResponses;
+        private static ConcurrentDictionary<string, HttpResponseMessageWrapperEx> DispatcherResponses;
 
         static SignalrRelayHub()
         {
             DispatcherConnections = new ConcurrentDictionary<string, string>();
             ProxyRequests = new ConcurrentDictionary<string, string>();
-            DispatcherResponses = new ConcurrentDictionary<string, object>();
+            DispatcherResponses = new ConcurrentDictionary<string, HttpResponseMessageWrapperEx>();
         }
 
         public override Task OnConnectedAsync()
@@ -52,10 +52,11 @@ namespace hase.DevLib.Framework.Relay.Signalr
             return Task.CompletedTask;
         }
 
-        public async Task<object> ProcessProxyRequestAsync(string proxyChannel, object req)
+        //public async Task<object> ProcessProxyRequestAsync(string proxyChannel, object req)
+        public async Task<HttpResponseMessageWrapperEx> ProcessProxyRequestAsync(HttpRequestMessageWrapperEx request)
         {
-            ProxyMessage pm = JsonConvert.DeserializeObject<ProxyMessage>(req.ToString());
-            var requestId = pm.Headers.MessageId;
+            var proxyChannel = request.GetSourceChannel();
+            var requestId = request.GetRequestId();
 
             var connectionId = Context.ConnectionId;
             ProxyRequests.AddOrUpdate(requestId, connectionId, (key, val) => { return val; });
@@ -66,13 +67,13 @@ namespace hase.DevLib.Framework.Relay.Signalr
             var dispatcherChannel = ServiceTypesUtil.GetProxyServiceName(proxyChannel);
             Console.WriteLine($"srrs:Sending request to dispatcher [{dispatcherChannel}] [{requestId}].");
             var dispatcherConnectionId = GetDispatcherConnectionId(dispatcherChannel);
-            await Clients.Client(dispatcherConnectionId).SendAsync("dispatch", req);
+            await Clients.Client(dispatcherConnectionId).SendAsync("dispatch", request);
 
             if (_cts.IsCancellationRequested)
                 return null;
             Console.WriteLine($"srrs:Awaiting response from dispatcher [{dispatcherChannel}].");
 
-            object response = null;
+            HttpResponseMessageWrapperEx response = null;
             while (true)
             {
                 if (_cts.IsCancellationRequested)
@@ -82,11 +83,12 @@ namespace hase.DevLib.Framework.Relay.Signalr
                 if (DispatcherResponses.TryRemove(requestId, out response))
                     break;
             }
+
             return response;
         }
 
 
-        public Task DispatcherResponseAsync(string dispatcherChannel, string requestId, object response)
+        public Task DispatcherResponseAsync(string dispatcherChannel, string requestId, HttpResponseMessageWrapperEx response)
         {
             Console.WriteLine($"srrs:Received message from dispatcher [{dispatcherChannel}].");
             DispatcherResponses.AddOrUpdate(requestId, response, (key, val) => { return val; });

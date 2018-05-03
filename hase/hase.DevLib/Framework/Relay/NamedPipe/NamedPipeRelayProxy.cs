@@ -9,8 +9,8 @@ using System.Threading.Tasks;
 namespace hase.DevLib.Framework.Relay.NamedPipe
 {
     public class NamedPipeRelayProxy<TRequest, TResponse> : RelayProxyBase<TRequest, TResponse>
-        where TRequest : ProxyMessage
-        where TResponse : ProxyMessage
+        where TRequest : ApplicationRequestMessage
+        where TResponse : ApplicationResponseMessage
     {
         public override string Abbr => "nprpc";
         private NamedPipeClientStream pipe = null;

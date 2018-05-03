@@ -8,8 +8,8 @@ using System.Threading.Tasks;
 namespace hase.DevLib.Framework.Relay.Signalr
 {
     public class SignalrRelayProxy<TRequest, TResponse> : RelayProxyBase<TRequest, TResponse>
-        where TRequest : ProxyMessage
-        where TResponse : ProxyMessage
+        where TRequest : ApplicationRequestMessage
+        where TResponse : ApplicationResponseMessage
     {
         public override string Abbr => "srrpc";
         //private SignalrClientStream pipe = null;
@@ -38,16 +38,22 @@ namespace hase.DevLib.Framework.Relay.Signalr
         public override void SerializeRequest(TRequest request)
         {
             //Serializer.SerializeWithLengthPrefix(pipe, request, PrefixStyle.Base128);
-            var proxyChannel = this.ChannelName;
-            //var requestId = request.Headers.MessageId;
-            _tmpResponse = _hub.InvokeAsync<object>("ProcessProxyRequestAsync", proxyChannel, request).Result;
+
+            request.Headers.SourceChannel = this.ChannelName;
+
+            var wrapper = request.ToTransportRequest();
+
+            _tmpResponse = _hub.InvokeAsync<object>("ProcessProxyRequestAsync", wrapper).ConfigureAwait(false).GetAwaiter().GetResult();
         }
 
         public override TResponse DeserializeResponse()
         {
             //return Serializer.DeserializeWithLengthPrefix<TResponse>(pipe, PrefixStyle.Base128);
 
-            return JsonConvert.DeserializeObject<TResponse>(_tmpResponse.ToString());
+            //return JsonConvert.DeserializeObject<TResponse>(_tmpResponse.ToString());
+            var wrapper = JsonConvert.DeserializeObject<HttpResponseMessageWrapperEx>(_tmpResponse.ToString());
+            var response = wrapper.ToApplicationResponse<TResponse>();
+            return response;
         }
 
         public override void Disconnect()

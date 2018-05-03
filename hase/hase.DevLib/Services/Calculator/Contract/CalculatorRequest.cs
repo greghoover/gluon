@@ -4,7 +4,7 @@ using ProtoBuf;
 namespace hase.DevLib.Services.Calculator.Contract
 {
     [ProtoContract]
-    public class CalculatorRequest : ProxyMessage
+    public class CalculatorRequest : ApplicationRequestMessage
     {
         [ProtoMember(1)]
         public CalculatorOpEnum Operation { get; set; }

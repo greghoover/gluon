@@ -11,8 +11,8 @@ namespace hase.DevLib.Framework.Relay.Signalr
 {
     public class SignalrRelayDispatcher<TService, TRequest, TResponse> : RelayDispatcherBase<TService, TRequest, TResponse>
         where TService : IService<TRequest, TResponse>
-        where TRequest : ProxyMessage
-        where TResponse : ProxyMessage
+        where TRequest : ApplicationRequestMessage
+        where TResponse : ApplicationResponseMessage
     {
         protected ConcurrentQueue<TRequest> Requests { get; private set; }
 
@@ -52,7 +52,7 @@ namespace hase.DevLib.Framework.Relay.Signalr
             try
             {
                 await _hub.StartAsync();
-                await _hub.InvokeAsync("RegisterServiceDispatcherAsync", ChannelName);
+                await _hub.InvokeAsync("RegisterServiceDispatcherAsync", ChannelName).ConfigureAwait(false);
             }
             catch (Exception ex)
             {
@@ -61,7 +61,9 @@ namespace hase.DevLib.Framework.Relay.Signalr
         }
         private void StageRequest(object req)
         {
-            TRequest request = JsonConvert.DeserializeObject<TRequest>(req.ToString());
+            var wrapper = JsonConvert.DeserializeObject<HttpRequestMessageWrapperEx>(req.ToString());
+            var request = wrapper.ToApplicationRequest<TRequest>();
+
             var requestId = request.Headers.MessageId;
 
             //Console.WriteLine($"{this.Abbr}:Enqueueing {ChannelName} request {requestId}.");
@@ -84,7 +86,9 @@ namespace hase.DevLib.Framework.Relay.Signalr
         public override void SerializeResponse(string requestId, TResponse response)
         {
             //Serializer.SerializeWithLengthPrefix(pipe, response, PrefixStyle.Base128);
-            _hub.InvokeAsync("DispatcherResponseAsync", ChannelName, requestId, response);
+            response.Headers.SourceChannel = this.ChannelName;
+            var wrapper = response.ToTransportResponse();
+            _hub.InvokeAsync("DispatcherResponseAsync", ChannelName, requestId, wrapper).ConfigureAwait(false).GetAwaiter().GetResult();
         }
     }
 }
