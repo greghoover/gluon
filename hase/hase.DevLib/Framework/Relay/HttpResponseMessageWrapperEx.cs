@@ -3,18 +3,19 @@ using System.Net.Http;
 
 namespace hase.DevLib.Framework.Relay
 {
+    /// <summary>
+    /// Extended to add a paramaterless constructor for Json de-serialization, and for a property to store the original request.
+    /// </summary>
     public class HttpResponseMessageWrapperEx : HttpResponseMessageWrapper
     {
-        public HttpRequestMessageWrapper RequestWrapper { get; set; }
+        public HttpRequestMessageWrapperEx RequestWrapper { get; set; }
 
-        public HttpResponseMessageWrapperEx() : base(new HttpResponseMessage(), null) { }
-
-        public HttpResponseMessageWrapperEx(HttpResponseMessage httpResponse, string content) : base(httpResponse, content)
+        public HttpResponseMessageWrapperEx() : this(new HttpResponseMessage(), null) { }
+        public HttpResponseMessageWrapperEx(HttpResponseMessage httpResponse) : this(httpResponse, null) { }
+        public HttpResponseMessageWrapperEx(HttpResponseMessage httpResponse, string content) : this(httpResponse, content, null) { }
+        public HttpResponseMessageWrapperEx(HttpResponseMessage httpResponse, string content, HttpRequestMessageWrapperEx requestWrapper) : base(httpResponse, content)
         {
+            this.RequestWrapper = requestWrapper;
         }
-        //public HttpResponseMessageWrapperEx(HttpResponseMessage httpResponse, string content, HttpRequestMessageWrapper requestWrapper) : base(httpResponse, content)
-        //{
-        //    this.RequestWrapper = requestWrapper;
-        //}
     }
 }

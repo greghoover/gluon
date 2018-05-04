@@ -1,104 +1,105 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Text;
-using hase.DevLib.Framework.Contract;
+﻿using hase.DevLib.Framework.Contract;
 using Microsoft.Rest;
 using Newtonsoft.Json;
+using System;
+using System.Linq;
+using System.Net.Http;
 
 namespace hase.DevLib.Framework.Relay
 {
     public static class TransportUtil
     {
-        //public static string TransportRequestIdHeader => "pragma";
-        //public static string TransportResponseIdHeader => "pragma";
-        //public static string TransportRequestIdHeader => "x-Request-ID";
-        //public static string TransportResponseIdHeader => "x-Response-ID";
-        public static string TransportRequestIdHeader => "request-Id";
-        public static string TransportResponseIdHeader => "response-Id";
-        public static string TransportChannelHeader => "fromChannel";
-        public static string TransportDateHeader => "date";
+        //public static string RequestIdHeader => "pragma";
+        public static string RequestIdHeader => "request-Id";
+        public static string RequestDateHeader => "date";
+        public static string RequestChannelHeader => "from-Channel";
 
-        //http.Content = new StringContent(JsonConvert.SerializeObject(request));
+        //public static string ResponseIdHeader => "pragma";
+        public static string ResponseIdHeader => "response-Id";
+        public static string ResponseDateHeader => "date";
+        public static string ResponseChannelHeader => "from-Channel";
 
         public static HttpRequestMessageWrapperEx ToTransportRequest(this AppRequestMessage request)
         {
-            var http = new HttpRequestMessage(HttpMethod.Get, new Uri(@"http://www.google.com"));
-            http.Headers.Date = request.Headers.CreatedOn;
-            http.Headers.Add(TransportChannelHeader, request.Headers.SourceChannel);
-            // The following line of code is necessary prior to assigning a 'pragma' http header.
-            //http.Headers.CacheControl = new CacheControlHeaderValue { NoCache = true };
-            http.Headers.Add(TransportRequestIdHeader, request.Headers.MessageId);
+            // Could interact with the wrapper directly, but trying to use
+            // http message as much as possible so that if we want to push
+            // the wrapper contents into an http message, would prob have better result.
+            var http = new HttpRequestMessage();
+            http.Content = new StringContent(JsonConvert.SerializeObject(request));
 
-            var content = JsonConvert.SerializeObject(request);
+            http.Headers.Add(RequestIdHeader, request.Headers.MessageId);
+            http.Headers.Date = request.Headers.CreatedOn;
+            //http.Headers.Add(RequestDateHeader, request.Headers.CreatedOn?.ToString());
+            http.Headers.Add(RequestChannelHeader, request.Headers.SourceChannel);
+
+            var content = http.Content.ReadAsStringAsync().ConfigureAwait(false).GetAwaiter().GetResult();
             var wrapper = new HttpRequestMessageWrapperEx(http, content);
 
             return wrapper;
         }
-
-        public static string GetRequestId(this HttpRequestMessageWrapper wrapper)
-        {
-            return wrapper.Headers[TransportRequestIdHeader].FirstOrDefault();
-        }
-
-        public static DateTimeOffset? GetCreatedOn(this HttpMessageWrapper wrapper)
-        {
-            var date = wrapper.Headers[TransportDateHeader].FirstOrDefault();
-            var createdOn = default(DateTimeOffset);
-            DateTimeOffset.TryParse(date, out createdOn);
-            return createdOn;
-        }
-        public static string GetSourceChannel(this HttpMessageWrapper wrapper)
-        {
-            return wrapper.Headers[TransportChannelHeader].FirstOrDefault();
-        }
-
-        public static string GetResponseId(this HttpResponseMessageWrapper wrapper)
-        {
-            return wrapper.Headers[TransportResponseIdHeader].FirstOrDefault();
-        }
-
-
         public static TRequest ToAppRequestMessage<TRequest>(this HttpRequestMessageWrapperEx wrapper) where TRequest : AppRequestMessage
         {
             return JsonConvert.DeserializeObject<TRequest>(wrapper.Content);
+        }
+
+        public static HttpResponseMessageWrapperEx ToTransportResponse(this AppResponseMessage response)
+        {
+            // Could interact with the wrapper directly, but trying to use
+            // http message as much as possible so that if we want to push
+            // the wrapper contents into an http message, would prob have better result.
+            var http = new HttpResponseMessage();
+            http.Content = new StringContent(JsonConvert.SerializeObject(response));
+
+            http.Headers.Add(ResponseIdHeader, response.Headers.MessageId);
+            http.Headers.Date = response.Headers.CreatedOn;
+            //http.Headers.Add(ResponseDateHeader, response.Headers.CreatedOn?.ToString());
+            http.Headers.Add(ResponseChannelHeader, response.Headers.SourceChannel);
+
+            var content = http.Content.ReadAsStringAsync().ConfigureAwait(false).GetAwaiter().GetResult();
+            var wrapper = new HttpResponseMessageWrapperEx(http, content);
+
+            // TODO: Should probably pass this in to forego the overhead of performing it twice.
+            wrapper.RequestWrapper = response.AppRequestMessage.ToTransportRequest();
+
+            return wrapper;
         }
         public static TResponse ToAppResponseMessage<TResponse>(this HttpResponseMessageWrapperEx wrapper) where TResponse : AppResponseMessage
         {
             return JsonConvert.DeserializeObject<TResponse>(wrapper.Content);
         }
 
-        public static HttpResponseMessageWrapperEx ToTransportResponse(this AppResponseMessage response)
+
+        public static string GetRequestId(this HttpRequestMessageWrapper wrapper)
         {
-            var http = new HttpResponseMessage(System.Net.HttpStatusCode.OK);
-            http.Headers.Date = response.Headers.CreatedOn;
-            http.Headers.Add(TransportChannelHeader, response.Headers.SourceChannel);
-            // The following line of code is necessary prior to assigning a 'pragma' http header.
-            //http.Headers.CacheControl = new CacheControlHeaderValue { NoCache = true };
-            http.Headers.Add(TransportResponseIdHeader, response.Headers.MessageId);
-
-            var content = JsonConvert.SerializeObject(response);
-            var wrapper = new HttpResponseMessageWrapperEx(http, content);
-
-            // Maybe pass this in so we don't have to do it again.
-            //wrapper.RequestWrapper = response.AppRequestMessage.ToTransportRequest();
-
-            return wrapper;
+            return wrapper.Headers[RequestIdHeader].FirstOrDefault();
+        }
+        public static DateTimeOffset? GetCreatedOn(this HttpRequestMessageWrapper wrapper)
+        {
+            var date = wrapper.Headers[RequestDateHeader].FirstOrDefault();
+            var createdOn = default(DateTimeOffset);
+            DateTimeOffset.TryParse(date, out createdOn);
+            return createdOn;
+        }
+        public static string GetSourceChannel(this HttpRequestMessageWrapper wrapper)
+        {
+            return wrapper.Headers[RequestChannelHeader].FirstOrDefault();
         }
 
-        public static string GetFirstHeaderValue(this HttpHeaders headers, string headerName)
+
+        public static string GetResponseId(this HttpResponseMessageWrapper wrapper)
         {
-            IEnumerable<string> values;
-            if (headers.TryGetValues(headerName, out values))
-            {
-                foreach (string vlu in values)
-                {
-                    return vlu;
-                }
-            }
-            return default(string);
+            return wrapper.Headers[ResponseIdHeader].FirstOrDefault();
+        }
+        public static DateTimeOffset? GetCreatedOn(this HttpResponseMessageWrapper wrapper)
+        {
+            var date = wrapper.Headers[ResponseDateHeader].FirstOrDefault();
+            var createdOn = default(DateTimeOffset);
+            DateTimeOffset.TryParse(date, out createdOn);
+            return createdOn;
+        }
+        public static string GetSourceChannel(this HttpResponseMessageWrapper wrapper)
+        {
+            return wrapper.Headers[ResponseChannelHeader].FirstOrDefault();
         }
     }
 }
