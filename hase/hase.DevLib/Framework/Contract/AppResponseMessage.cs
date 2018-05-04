@@ -9,5 +9,10 @@
         {
             this.AppRequestMessage = request;
         }
+
+        public override string ToString()
+        {
+            return $"ResponseId[{this.Headers.MessageId}]";
+        }
     }
 }

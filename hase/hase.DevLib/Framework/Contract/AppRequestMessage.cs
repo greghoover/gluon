@@ -1,10 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace hase.DevLib.Framework.Contract
+﻿namespace hase.DevLib.Framework.Contract
 {
     public class AppRequestMessage : AppMessage
     {
+        public override string ToString()
+        {
+            return $"RequestId[{this.Headers.MessageId}]";
+        }
     }
 }

@@ -25,23 +25,21 @@ namespace hase.DevLib.Framework.Relay
 
         public TResponse Execute(TRequest request)
         {
-            TResponse response = null;
-
-            Console.WriteLine($"{this.Abbr}:{ChannelName} connecting to relay.");
+            Console.WriteLine($"{this.Abbr}:{this.ChannelName} connecting to relay.");
             this.ConnectAsync(timeoutMs: 5000, ct: CancellationToken.None).Wait();
-            Console.WriteLine($"{this.Abbr}:{ChannelName} connected.");
+            Console.WriteLine($"{this.Abbr}:{this.ChannelName} connected.");
 
-            Console.WriteLine($"{this.Abbr}:Sending {ChannelName} request: {request}.");
+            Console.WriteLine($"{this.Abbr}:Sending [{this.ChannelName}] request [{request}].");
             this.SerializeRequest(request);
-            //Console.WriteLine($"{this.Abbr}:Sent {ChannelName} request.");
+            //Console.WriteLine($"{this.Abbr}:Sent [{this.ChannelName}] request.");
 
-            //Console.WriteLine($"{this.Abbr}:Receiving {ChannelName} response.");
-            response = this.DeserializeResponse();
-            Console.WriteLine($"{this.Abbr}:Received {ChannelName} response: {response}.");
+            //Console.WriteLine($"{this.Abbr}:Receiving [{this.ChannelName}] response.");
+            TResponse response = this.DeserializeResponse();
+            Console.WriteLine($"{this.Abbr}:Received [{this.ChannelName}] response [{response}].");
 
-            //Console.WriteLine($"{this.Abbr}:{ChannelName} disconnecting from relay.");
+            //Console.WriteLine($"{this.Abbr}:{this.ChannelName} disconnecting from relay.");
             this.Disconnect();
-            Console.WriteLine($"{this.Abbr}:{ChannelName} disconnected from relay.");
+            Console.WriteLine($"{this.Abbr}:{this.ChannelName} disconnected from relay.");
 
             return response;
         }
