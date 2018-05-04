@@ -10,8 +10,8 @@ namespace hase.DevLib.Framework.Relay.NamedPipe
 {
     public class NamedPipeRelayDispatcher<TService, TRequest, TResponse> : RelayDispatcherBase<TService, TRequest, TResponse>
         where TService : IService<TRequest, TResponse>
-        where TRequest : ApplicationRequestMessage
-        where TResponse : ApplicationResponseMessage
+        where TRequest : AppRequestMessage
+        where TResponse : AppResponseMessage
     {
         public override string Abbr => "nprdc";
         private NamedPipeClientStream pipe = null;

@@ -4,7 +4,7 @@ using ProtoBuf;
 namespace hase.DevLib.Services.FileSystemQuery.Contract
 {
     [ProtoContract]
-    public class FileSystemQueryRequest : ApplicationRequestMessage
+    public class FileSystemQueryRequest : AppRequestMessage
     {
         [ProtoMember(1)]
         public FileSystemQueryTypeEnum QueryType { get; set; }

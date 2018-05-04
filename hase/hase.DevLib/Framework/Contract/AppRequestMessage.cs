@@ -4,7 +4,7 @@ using System.Text;
 
 namespace hase.DevLib.Framework.Contract
 {
-    public class ApplicationRequestMessage : ApplicationMessage
+    public class AppRequestMessage : AppMessage
     {
     }
 }

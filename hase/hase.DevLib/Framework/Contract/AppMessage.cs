@@ -2,7 +2,7 @@
 
 namespace hase.DevLib.Framework.Contract
 {
-    public class ApplicationMessage
+    public class AppMessage
     {
         public class MessageHeaders
         {
@@ -19,7 +19,7 @@ namespace hase.DevLib.Framework.Contract
 
         public MessageHeaders Headers { get; set; }
 
-        public ApplicationMessage()
+        public AppMessage()
         {
             Headers = new MessageHeaders();
         }

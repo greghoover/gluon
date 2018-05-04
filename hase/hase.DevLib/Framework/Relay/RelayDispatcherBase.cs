@@ -8,8 +8,8 @@ namespace hase.DevLib.Framework.Relay
 {
     public abstract class RelayDispatcherBase<TService, TRequest, TResponse> : IRelayDispatcher<TService, TRequest, TResponse>
         where TService : IService<TRequest, TResponse>
-        where TRequest : ApplicationRequestMessage
-        where TResponse : ApplicationResponseMessage
+        where TRequest : AppRequestMessage
+        where TResponse : AppResponseMessage
     {
         protected CancellationTokenSource _cts { get; private set; }
         public string ChannelName { get; private set; }
@@ -70,8 +70,8 @@ namespace hase.DevLib.Framework.Relay
             {
                 response = service.Execute(request);
 
-                //if (response.ApplicationRequestMessage == null)
-                //    response.ApplicationRequestMessage = request;
+                if (response.AppRequestMessage == null)
+                    response.AppRequestMessage = request;
             }
             catch (Exception ex)
             {

@@ -8,8 +8,8 @@ using System.Threading.Tasks;
 namespace hase.DevLib.Framework.Relay.Signalr
 {
     public class SignalrRelayProxy<TRequest, TResponse> : RelayProxyBase<TRequest, TResponse>
-        where TRequest : ApplicationRequestMessage
-        where TResponse : ApplicationResponseMessage
+        where TRequest : AppRequestMessage
+        where TResponse : AppResponseMessage
     {
         public override string Abbr => "srrpc";
         //private SignalrClientStream pipe = null;
@@ -52,7 +52,7 @@ namespace hase.DevLib.Framework.Relay.Signalr
 
             //return JsonConvert.DeserializeObject<TResponse>(_tmpResponse.ToString());
             var wrapper = JsonConvert.DeserializeObject<HttpResponseMessageWrapperEx>(_tmpResponse.ToString());
-            var response = wrapper.ToApplicationResponse<TResponse>();
+            var response = wrapper.ToAppResponseMessage<TResponse>();
             return response;
         }
 

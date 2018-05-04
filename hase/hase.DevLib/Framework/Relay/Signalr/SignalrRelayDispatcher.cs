@@ -11,8 +11,8 @@ namespace hase.DevLib.Framework.Relay.Signalr
 {
     public class SignalrRelayDispatcher<TService, TRequest, TResponse> : RelayDispatcherBase<TService, TRequest, TResponse>
         where TService : IService<TRequest, TResponse>
-        where TRequest : ApplicationRequestMessage
-        where TResponse : ApplicationResponseMessage
+        where TRequest : AppRequestMessage
+        where TResponse : AppResponseMessage
     {
         protected ConcurrentQueue<TRequest> Requests { get; private set; }
 
@@ -62,7 +62,7 @@ namespace hase.DevLib.Framework.Relay.Signalr
         private void StageRequest(object req)
         {
             var wrapper = JsonConvert.DeserializeObject<HttpRequestMessageWrapperEx>(req.ToString());
-            var request = wrapper.ToApplicationRequest<TRequest>();
+            var request = wrapper.ToAppRequestMessage<TRequest>();
 
             var requestId = request.Headers.MessageId;
 

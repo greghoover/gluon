@@ -23,7 +23,7 @@ namespace hase.DevLib.Framework.Relay
 
         //http.Content = new StringContent(JsonConvert.SerializeObject(request));
 
-        public static HttpRequestMessageWrapperEx ToTransportRequest(this ApplicationRequestMessage request)
+        public static HttpRequestMessageWrapperEx ToTransportRequest(this AppRequestMessage request)
         {
             var http = new HttpRequestMessage(HttpMethod.Get, new Uri(@"http://www.google.com"));
             http.Headers.Date = request.Headers.CreatedOn;
@@ -61,16 +61,16 @@ namespace hase.DevLib.Framework.Relay
         }
 
 
-        public static TRequest ToApplicationRequest<TRequest>(this HttpRequestMessageWrapperEx wrapper) where TRequest : ApplicationRequestMessage
+        public static TRequest ToAppRequestMessage<TRequest>(this HttpRequestMessageWrapperEx wrapper) where TRequest : AppRequestMessage
         {
             return JsonConvert.DeserializeObject<TRequest>(wrapper.Content);
         }
-        public static TResponse ToApplicationResponse<TResponse>(this HttpResponseMessageWrapperEx wrapper) where TResponse : ApplicationResponseMessage
+        public static TResponse ToAppResponseMessage<TResponse>(this HttpResponseMessageWrapperEx wrapper) where TResponse : AppResponseMessage
         {
             return JsonConvert.DeserializeObject<TResponse>(wrapper.Content);
         }
 
-        public static HttpResponseMessageWrapperEx ToTransportResponse(this ApplicationResponseMessage response)
+        public static HttpResponseMessageWrapperEx ToTransportResponse(this AppResponseMessage response)
         {
             var http = new HttpResponseMessage(System.Net.HttpStatusCode.OK);
             http.Headers.Date = response.Headers.CreatedOn;
@@ -83,7 +83,7 @@ namespace hase.DevLib.Framework.Relay
             var wrapper = new HttpResponseMessageWrapperEx(http, content);
 
             // Maybe pass this in so we don't have to do it again.
-            //wrapper.RequestWrapper = response.ApplicationRequestMessage.ToTransportRequest();
+            //wrapper.RequestWrapper = response.AppRequestMessage.ToTransportRequest();
 
             return wrapper;
         }
