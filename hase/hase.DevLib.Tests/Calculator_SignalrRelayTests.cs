@@ -10,21 +10,25 @@ namespace hase.DevLib.Tests
         [Fact]
         public void VerifyCRootExists_ClientApi_SignalrRelay()
         {
-            var i1 = 5;
-            var i2 = 10;
-            var calc = new Calculator(typeof(SignalrRelayProxy<CalculatorRequest, CalculatorResponse>));
-            var result = calc.Add(i1, i2);
-            Xunit.Assert.True(result == i1 + i2);
+            var client = new Calculator(typeof(SignalrRelayProxy<CalculatorRequest, CalculatorResponse>));
+
+            var result = client.Add(5, 10);
+            Xunit.Assert.True(result == 15);
         }
         [Fact]
         public void VerifyCRootExists_ServiceApi_SignalrRelay()
         {
-            var i1 = 5;
-            var i2 = 10;
-            var request = new CalculatorRequest(CalculatorOpEnum.Add, i1, i2);
-            var calcService = new Calculator(typeof(SignalrRelayProxy<CalculatorRequest, CalculatorResponse>)).Service;
-            var result = calcService.Execute(request).Result;
-            Xunit.Assert.True(result == i1 + i2);
+            var service = new Calculator(typeof(SignalrRelayProxy<CalculatorRequest, CalculatorResponse>)).Service;
+
+            var request = new CalculatorRequest
+            {
+                I1 = 5,
+                I2 = 10,
+                Operation = CalculatorOpEnum.Add,
+            };
+
+            var result = service.Execute(request).Result;
+            Xunit.Assert.True(result == 15);
         }
     }
 }

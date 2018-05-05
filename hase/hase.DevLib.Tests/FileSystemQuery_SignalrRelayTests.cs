@@ -10,46 +10,46 @@ namespace hase.DevLib.Tests
         [Fact]
         public void VerifyCRootExists_ClientApi_SignalrRelay()
         {
-            var folderPath = @"c:";
-            var fsq = new FileSystemQuery(typeof(SignalrRelayProxy<FileSystemQueryRequest, FileSystemQueryResponse>));
-            var result = fsq.DoesDirectoryExist(folderPath);
+            var client = new FileSystemQuery(typeof(SignalrRelayProxy<FileSystemQueryRequest, FileSystemQueryResponse>));
+
+            var result = client.DoesDirectoryExist(@"c:");
             Xunit.Assert.True(result);
         }
         [Fact]
         public void VerifyCRootExists_ServiceApi_SignalrRelay()
         {
-            var folderPath = @"c:";
-            var fsqs = new FileSystemQuery(typeof(SignalrRelayProxy<FileSystemQueryRequest, FileSystemQueryResponse>)).Service;
+            var service = new FileSystemQuery(typeof(SignalrRelayProxy<FileSystemQueryRequest, FileSystemQueryResponse>)).Service;
+
             var request = new FileSystemQueryRequest
             {
-                FolderPath = folderPath,
+                FolderPath = @"c:",
                 QueryType = FileSystemQueryTypeEnum.DirectoryExists
             };
 
-            var response = fsqs.Execute(request).ResponseString;
+            var response = service.Execute(request).ResponseString;
             var result = bool.Parse(response);
             Xunit.Assert.True(result);
         }
         [Fact]
         public void VerifyBogusPathNotExist_ClientApi_SignalrRelay()
         {
-            var folderPath = @"slkjdfslkj";
-            var fsq = new FileSystemQuery(typeof(SignalrRelayProxy<FileSystemQueryRequest, FileSystemQueryResponse>));
-            var result = fsq.DoesDirectoryExist(folderPath);
+            var client = new FileSystemQuery(typeof(SignalrRelayProxy<FileSystemQueryRequest, FileSystemQueryResponse>));
+
+            var result = client.DoesDirectoryExist("slkdjfslkdflsdfjlsdkjf");
             Xunit.Assert.False(result);
         }
         [Fact]
         public void VerifyBogusPathNotExist_ServiceApi_SignalrRelay()
         {
-            var folderPath = @"slkjdfslkj";
-            var fsqs = new FileSystemQuery(typeof(SignalrRelayProxy<FileSystemQueryRequest, FileSystemQueryResponse>)).Service;
+            var service = new FileSystemQuery(typeof(SignalrRelayProxy<FileSystemQueryRequest, FileSystemQueryResponse>)).Service;
+
             var request = new FileSystemQueryRequest
             {
-                FolderPath = folderPath,
+                FolderPath = @"slkdjfslkdflsdfjlsdkjf",
                 QueryType = FileSystemQueryTypeEnum.DirectoryExists
             };
 
-            var response = fsqs.Execute(request).ResponseString;
+            var response = service.Execute(request).ResponseString;
             var result = bool.Parse(response);
             Xunit.Assert.False(result);
         }
