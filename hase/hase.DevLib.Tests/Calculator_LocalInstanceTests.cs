@@ -1,6 +1,5 @@
 using hase.DevLib.Services.Calculator.Client;
 using hase.DevLib.Services.Calculator.Contract;
-using hase.DevLib.Services.Calculator.Service;
 using Xunit;
 
 namespace hase.DevLib.Tests
@@ -10,21 +9,25 @@ namespace hase.DevLib.Tests
         [Fact]
         public void VerifyAddTwoNumbers_ClientApi_LocalInstance()
         {
-            var i1 = 5;
-            var i2 = 10;
-            var calc = new Calculator();
-            var result = calc.Add(i1, i2);
-            Xunit.Assert.True(result == i1 + i2);
+            var client = new Calculator();
+
+            var result = client.Add(5, 10);
+            Xunit.Assert.True(result == 15);
         }
         [Fact]
         public void VerifyAddTwoNumbers_ServiceApi_LocalInstance()
         {
-            var i1 = 5;
-            var i2 = 10;
-            var request = new CalculatorRequest(CalculatorOpEnum.Add, i1, i2);
-            var calcService = new CalculatorService();
-            var result = calcService.Execute(request).Result;
-            Xunit.Assert.True(result == i1 + i2);
+            var service = new Calculator().Service;
+
+            var request = new CalculatorRequest
+            {
+                I1 = 5,
+                I2 = 10,
+                Operation = CalculatorOpEnum.Add,
+            };
+
+            var result = service.Execute(request).Result;
+            Xunit.Assert.True(result == 15);
         }
     }
 }
