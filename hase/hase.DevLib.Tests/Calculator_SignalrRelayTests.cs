@@ -9,7 +9,7 @@ namespace hase.DevLib.Tests
     public class Calculator_SignalrRelayTests : IClassFixture<SignalrRelayFixture>, IClassFixture<Calculator_SignalrDispatcherFixture>
     {
         [Fact]
-        public void AddTwoIntegers_ClientApi_SignalrRelay()
+        public void VerifyAddTwoNumbers_ClientApi_SignalrRelay()
         {
             var client = new Calculator(typeof(SignalrRelayProxy<CalculatorRequest, CalculatorResponse>));
 
@@ -17,7 +17,7 @@ namespace hase.DevLib.Tests
             Xunit.Assert.True(result == 15);
         }
         [Fact]
-        public void AddTwoIntegers_ServiceApi_SignalrRelay()
+        public void VerifyAddTwoNumbers_ServiceApi_SignalrRelay()
         {
             var service = new Calculator(typeof(SignalrRelayProxy<CalculatorRequest, CalculatorResponse>)).Service;
 

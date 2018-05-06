@@ -46,7 +46,7 @@
 //    public class Calculator_NamedPipeRelayTests : IClassFixture<CalculatorNamedPipeRelayAndDispatcherFixture>
 //    {
 //        [Fact]
-//        public void VerifyCRootExists_ClientApi_NamedPipeRelay()
+//        public void VerifyAddTwoNumbers_ClientApi_NamedPipeRelay()
 //        {
 //            var i1 = 5;
 //            var i2 = 10;
@@ -55,7 +55,7 @@
 //            Xunit.Assert.True(result == i1 + i2);
 //        }
 //        [Fact]
-//        public void VerifyCRootExists_ServiceApi_NamedPipeRelay()
+//        public void VerifyAddTwoNumbers_ServiceApi_NamedPipeRelay()
 //        {
 //            var i1 = 5;
 //            var i2 = 10;
