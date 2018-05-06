@@ -1,6 +1,7 @@
 using hase.DevLib.Framework.Relay.Signalr;
 using hase.DevLib.Services.Calculator.Client;
 using hase.DevLib.Services.Calculator.Contract;
+using hase.DevLib.Tests.Fixtures;
 using Xunit;
 
 namespace hase.DevLib.Tests
@@ -8,7 +9,7 @@ namespace hase.DevLib.Tests
     public class Calculator_SignalrRelayTests : IClassFixture<SignalrRelayFixture>, IClassFixture<Calculator_SignalrDispatcherFixture>
     {
         [Fact]
-        public void VerifyCRootExists_ClientApi_SignalrRelay()
+        public void AddTwoIntegers_ClientApi_SignalrRelay()
         {
             var client = new Calculator(typeof(SignalrRelayProxy<CalculatorRequest, CalculatorResponse>));
 
@@ -16,7 +17,7 @@ namespace hase.DevLib.Tests
             Xunit.Assert.True(result == 15);
         }
         [Fact]
-        public void VerifyCRootExists_ServiceApi_SignalrRelay()
+        public void AddTwoIntegers_ServiceApi_SignalrRelay()
         {
             var service = new Calculator(typeof(SignalrRelayProxy<CalculatorRequest, CalculatorResponse>)).Service;
 

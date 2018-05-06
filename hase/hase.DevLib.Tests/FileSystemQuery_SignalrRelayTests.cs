@@ -1,6 +1,7 @@
 using hase.DevLib.Framework.Relay.Signalr;
 using hase.DevLib.Services.FileSystemQuery.Client;
 using hase.DevLib.Services.FileSystemQuery.Contract;
+using hase.DevLib.Tests.Fixtures;
 using Xunit;
 
 namespace hase.DevLib.Tests
