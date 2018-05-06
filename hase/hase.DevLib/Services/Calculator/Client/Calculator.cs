@@ -1,6 +1,4 @@
 ﻿using hase.DevLib.Framework.Client;
-using hase.DevLib.Framework.Contract;
-using hase.DevLib.Framework.Service;
 using hase.DevLib.Services.Calculator.Contract;
 using hase.DevLib.Services.Calculator.Service;
 using System;
@@ -16,11 +14,7 @@ namespace hase.DevLib.Services.Calculator.Client
         /// <summary>
         /// Create proxied service instance.
         /// </summary>
-        public Calculator(Type proxyType) : base(proxyType, ServiceTypesUtil.GetServiceProxyName<CalculatorService>()) { }
-        /// <summary>
-        /// Use provided service instance.
-        /// </summary>
-        public Calculator(IService<CalculatorRequest, CalculatorResponse> service) : base(service) { }
+        public Calculator(Type proxyType) : base(proxyType) { }
 
         public int? Add(int i1, int i2)
         {

@@ -15,13 +15,15 @@ namespace hase.DevLib.Framework.Client
         {
             this.Service = Service<TService, TRequest, TResponse>.NewLocal();
         }
-        public ServiceClientBase(Type proxyType, string proxyChannelName)
+        public ServiceClientBase(Type proxyType, string proxyChannelName = null)
         {
+            if (proxyChannelName == null)
+                proxyChannelName = ServiceTypesUtil.GetServiceProxyName<TService>();
             this.Service = (IService<TRequest, TResponse>)Activator.CreateInstance(proxyType, proxyChannelName);
         }
-        public ServiceClientBase(IService<TRequest, TResponse> service)
-        {
-            this.Service = service;
-        }
+        //public ServiceClientBase(IService<TRequest, TResponse> service)
+        //{
+        //    this.Service = service;
+        //}
     }
 }
