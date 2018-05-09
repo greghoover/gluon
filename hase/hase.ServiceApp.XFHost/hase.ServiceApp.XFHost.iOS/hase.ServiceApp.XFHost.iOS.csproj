@@ -130,7 +130,7 @@
       <ExcludeAssets>all</ExcludeAssets>
     </PackageReference>
     <PackageReference Include="Xamarin.Forms">
-      <Version>3.0.0.427558-pre4</Version>
+      <Version>3.0.0.446417</Version>
     </PackageReference>
   </ItemGroup>
 </Project>

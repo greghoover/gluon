@@ -18,7 +18,7 @@ namespace Gluon.Relay.Signalr.Client
 
             HubConnection = (new HubConnectionBuilder() as IHubConnectionBuilder)
                 .WithUrl(messageHubChannel)
-                .WithConsoleLogger()
+                //.WithConsoleLogger()
                 .Build();
 
             // todo: refactor the client invocation method signatures
