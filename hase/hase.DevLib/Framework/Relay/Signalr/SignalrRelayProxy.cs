@@ -26,7 +26,6 @@ namespace hase.DevLib.Framework.Relay.Signalr
                     .WithUrl("http://localhost:5000/route")
                     .Build();
 
-                //_hub.StartAsync().ConfigureAwait(false).GetAwaiter().GetResult();
                 await _hub.StartAsync();
             }
             catch (Exception ex)
@@ -44,7 +43,6 @@ namespace hase.DevLib.Framework.Relay.Signalr
 
             var wrapper = await request.ToTransportRequestAsync();
 
-            //_tmpResponse = _hub.InvokeAsync<object>("ProcessProxyRequestAsync", wrapper).ConfigureAwait(false).GetAwaiter().GetResult();
             _tmpResponse = await _hub.InvokeAsync<object>("ProcessProxyRequestAsync", wrapper);
         }
 

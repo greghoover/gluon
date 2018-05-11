@@ -57,7 +57,7 @@ namespace hase.DevLib.Framework.Relay
             //http.Headers.Add(ResponseDateHeader, response.Headers.CreatedOn?.ToString());
             http.Headers.Add(ResponseChannelHeader, response.Headers.SourceChannel);
 
-            var content = http.Content.ReadAsStringAsync().ConfigureAwait(false).GetAwaiter().GetResult();
+            var content = await http.Content.ReadAsStringAsync();
             var wrapper = new HttpResponseMessageWrapperEx(http, content);
 
             // TODO: Should probably pass this in to forego the overhead of performing it twice.
