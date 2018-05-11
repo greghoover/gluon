@@ -30,9 +30,10 @@ namespace hase.DevLib.Framework.Relay.NamedPipe
             }
         }
 
-        public override void SerializeRequest(TRequest request)
+        public override Task SerializeRequest(TRequest request)
         {
             Serializer.SerializeWithLengthPrefix(pipe, request, PrefixStyle.Base128);
+            return Task.CompletedTask;
         }
 
         public override TResponse DeserializeResponse()
@@ -40,7 +41,7 @@ namespace hase.DevLib.Framework.Relay.NamedPipe
             return Serializer.DeserializeWithLengthPrefix<TResponse>(pipe, PrefixStyle.Base128);
         }
 
-        public override void Disconnect()
+        public override void DisconnectAsync()
         {
             pipe.Dispose();
         }

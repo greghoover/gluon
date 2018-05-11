@@ -17,7 +17,7 @@ namespace hase.DevLib.Tests.Fixtures
             Task.Run(() =>
             {
                 _dispatcher = RelayDispatcher<SignalrRelayDispatcher<CalculatorService, CalculatorRequest, CalculatorResponse>, CalculatorService, CalculatorRequest, CalculatorResponse>.CreateInstance();
-                _dispatcher.StartAsync();
+                _dispatcher.StartAsync(); // not awaiting on purpose
             //Task.Delay(2000).Wait();
         });
             Console.WriteLine("Service Dispatcher started.");
@@ -25,10 +25,10 @@ namespace hase.DevLib.Tests.Fixtures
         public void Dispose()
         {
             Console.WriteLine("Stopping Dispatcher.");
-            Task.Run(() =>
+            Task.Run(async () =>
             {
                 if (_dispatcher != null)
-                    _dispatcher.StopAsync().Wait();
+                    await _dispatcher.StopAsync();
             //Task.Delay(2000).Wait();
         });
             Console.WriteLine("Dispatcher stopped.");

@@ -8,12 +8,13 @@ using System;
 //using Gluon.Relay.Signalr.Server;
 using hase.DevLib.Framework.Relay.Signalr;
 using hase.DevLib.Framework.Relay;
+using System.Threading.Tasks;
 
 namespace hase.RelayHub.ConsoleHost
 {
     class Program
     {
-        static void Main(string[] args)
+        private static async Task Main(string[] args)
         {
             if (RelayUtil.RelayTypeDflt == RelayTypeEnum.SignalR)
             {
@@ -29,15 +30,15 @@ namespace hase.RelayHub.ConsoleHost
 
                 Console.WriteLine("Starting Named Pipe Relay.");
                 var fsqRelay = new NamedPipeRelayHub<FileSystemQueryRequest, FileSystemQueryResponse>(fsqServicePipeName, fsqProxyPipeName);
-                fsqRelay.StartAsync();
+                fsqRelay.StartAsync(); // not awaiting on purpose
                 var calcRelay = new NamedPipeRelayHub<CalculatorRequest, CalculatorResponse>(calcServicePipeName, calcProxyPipeName);
-                calcRelay.StartAsync();
+                calcRelay.StartAsync(); // not awaiting on purpose
                 Console.WriteLine("Named Pipe Relay started.");
                 Console.WriteLine("Press <Enter> to stop relay.");
                 Console.ReadLine();
 
-                fsqRelay.StopAsync().Wait();
-                calcRelay.StopAsync().Wait();
+                await fsqRelay.StopAsync();
+                await calcRelay.StopAsync();
 
                 Console.WriteLine("Relay stopped.");
             }

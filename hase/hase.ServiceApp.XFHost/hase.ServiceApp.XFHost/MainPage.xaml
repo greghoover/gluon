@@ -4,8 +4,13 @@
 			 xmlns:local="clr-namespace:hase.ServiceApp.XFHost"
 			 x:Class="hase.ServiceApp.XFHost.MainPage">
 
-	<Label Text="Welcome to Xamarin.Forms!" 
+	<!--<Label Text="Welcome to Xamarin.Forms!" 
 		   VerticalOptions="Center" 
-		   HorizontalOptions="Center" />
+		   HorizontalOptions="Center" />-->
 
+    <Button x:Name="PressMeButton"
+        Text="Press Me!"
+        Pressed="PressMeButton_Pressed"
+        Clicked="PressMeButton_Clicked"/>
+    
 </ContentPage>

@@ -4,6 +4,7 @@ using Newtonsoft.Json;
 using System;
 using System.Linq;
 using System.Net.Http;
+using System.Threading.Tasks;
 
 namespace hase.DevLib.Framework.Relay
 {
@@ -19,7 +20,7 @@ namespace hase.DevLib.Framework.Relay
         public static string ResponseDateHeader => "date";
         public static string ResponseChannelHeader => "from-Channel";
 
-        public static HttpRequestMessageWrapperEx ToTransportRequest(this AppRequestMessage request)
+        public async static Task<HttpRequestMessageWrapperEx> ToTransportRequestAsync(this AppRequestMessage request)
         {
             // Could interact with the wrapper directly, but trying to use
             // http message as much as possible so that if we want to push
@@ -32,7 +33,8 @@ namespace hase.DevLib.Framework.Relay
             //http.Headers.Add(RequestDateHeader, request.Headers.CreatedOn?.ToString());
             http.Headers.Add(RequestChannelHeader, request.Headers.SourceChannel);
 
-            var content = http.Content.ReadAsStringAsync().ConfigureAwait(false).GetAwaiter().GetResult();
+            //var content = http.Content.ReadAsStringAsync().ConfigureAwait(false).GetAwaiter().GetResult();
+            var content = await http.Content.ReadAsStringAsync();
             var wrapper = new HttpRequestMessageWrapperEx(http, content);
 
             return wrapper;
@@ -42,7 +44,7 @@ namespace hase.DevLib.Framework.Relay
             return JsonConvert.DeserializeObject<TRequest>(wrapper.Content);
         }
 
-        public static HttpResponseMessageWrapperEx ToTransportResponse(this AppResponseMessage response)
+        public async static Task<HttpResponseMessageWrapperEx> ToTransportResponseAsync(this AppResponseMessage response)
         {
             // Could interact with the wrapper directly, but trying to use
             // http message as much as possible so that if we want to push
@@ -59,7 +61,7 @@ namespace hase.DevLib.Framework.Relay
             var wrapper = new HttpResponseMessageWrapperEx(http, content);
 
             // TODO: Should probably pass this in to forego the overhead of performing it twice.
-            wrapper.RequestWrapper = response.AppRequestMessage.ToTransportRequest();
+            wrapper.RequestWrapper = await response.AppRequestMessage.ToTransportRequestAsync();
 
             return wrapper;
         }

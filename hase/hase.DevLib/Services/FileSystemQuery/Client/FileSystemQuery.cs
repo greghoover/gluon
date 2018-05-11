@@ -2,6 +2,7 @@
 using hase.DevLib.Services.FileSystemQuery.Contract;
 using hase.DevLib.Services.FileSystemQuery.Service;
 using System;
+using System.Threading.Tasks;
 
 namespace hase.DevLib.Services.FileSystemQuery.Client
 {
@@ -24,8 +25,7 @@ namespace hase.DevLib.Services.FileSystemQuery.Client
                 QueryType = FileSystemQueryTypeEnum.DirectoryExists
             };
 
-            var response = Service.Execute(request);
-
+            var response = Task.Run<FileSystemQueryResponse>(() => Service.Execute(request)).Result;
             if (response?.ResponseString == null)
                 return null;
             else

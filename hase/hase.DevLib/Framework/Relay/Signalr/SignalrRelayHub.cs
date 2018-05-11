@@ -79,7 +79,7 @@ namespace hase.DevLib.Framework.Relay.Signalr
                 if (_cts.IsCancellationRequested)
                     return null;
 
-                Task.Delay(100).Wait();
+                Task.Delay(100).Wait(); // why?
                 if (DispatcherResponses.TryRemove(requestId, out response))
                     break;
             }

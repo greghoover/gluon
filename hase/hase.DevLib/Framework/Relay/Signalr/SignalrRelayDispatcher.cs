@@ -1,5 +1,6 @@
 ﻿using hase.DevLib.Framework.Contract;
 using Microsoft.AspNetCore.SignalR.Client;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Concurrent;
@@ -36,6 +37,7 @@ namespace hase.DevLib.Framework.Relay.Signalr
 
             _hub = new HubConnectionBuilder()
                 .WithUrl("http://localhost:5000/route")
+                .ConfigureLogging(logging => logging.SetMinimumLevel(LogLevel.Debug))
                 //.WithConsoleLogger(LogLevel.Debug)
                 //.WithJsonProtocol()
                 //.WithUseDefaultCredentials(true)
@@ -71,7 +73,7 @@ namespace hase.DevLib.Framework.Relay.Signalr
             Console.WriteLine($"{this.Abbr}:Enqueued {ChannelName} request {requestId}.");
         }
 
-        public override TRequest DeserializeRequest()
+        public async override Task<TRequest> DeserializeRequest()
         {
             //return Serializer.DeserializeWithLengthPrefix<TRequest>(pipe, PrefixStyle.Base128);
 
@@ -79,16 +81,16 @@ namespace hase.DevLib.Framework.Relay.Signalr
             while(request == null)
             {
                 Requests.TryDequeue(out request);
-                Task.Delay(150).Wait();
+                await Task.Delay(150);
             }
             return request;
         }
-        public override void SerializeResponse(string requestId, TResponse response)
+        public async override void SerializeResponse(string requestId, TResponse response)
         {
             //Serializer.SerializeWithLengthPrefix(pipe, response, PrefixStyle.Base128);
             response.Headers.SourceChannel = this.ChannelName;
-            var wrapper = response.ToTransportResponse();
-            _hub.InvokeAsync("DispatcherResponseAsync", ChannelName, requestId, wrapper).ConfigureAwait(false).GetAwaiter().GetResult();
+            var wrapper = response.ToTransportResponseAsync().Result;
+            await _hub.InvokeAsync("DispatcherResponseAsync", ChannelName, requestId, wrapper);
         }
     }
 }

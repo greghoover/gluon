@@ -2,6 +2,7 @@
 using hase.DevLib.Services.Calculator.Contract;
 using hase.DevLib.Services.Calculator.Service;
 using System;
+using System.Threading.Tasks;
 
 namespace hase.DevLib.Services.Calculator.Client
 {
@@ -24,7 +25,9 @@ namespace hase.DevLib.Services.Calculator.Client
                 I1 = i1,
                 I2 = i2,
             };
-            return Service.Execute(request).Result;
+
+            var response = Task.Run(async () => await Service.Execute(request)).Result;
+            return response.Answer;
         }
 
         public int? Sub(int i1, int i2)
@@ -35,7 +38,9 @@ namespace hase.DevLib.Services.Calculator.Client
                 I1 = i1,
                 I2 = i2,
             };
-            return Service.Execute(request).Result;
+
+            var response = Task.Run<CalculatorResponse>(() => Service.Execute(request)).Result;
+            return response.Answer;
         }
     }
 }

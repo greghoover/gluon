@@ -38,13 +38,12 @@ namespace hase.DevLib.Framework.Relay.Signalr
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddCors(options =>
-            {
-                options.AddPolicy("any",
-                    policy => policy.AllowAnyOrigin()
-                                    .AllowAnyHeader()
-                                    .AllowAnyMethod());
-            });
-            //services.AddCors();
+                options.AddPolicy("AllowCors",
+                    builder => builder.AllowAnyOrigin()
+                    .AllowCredentials()
+                    .AllowAnyHeader()
+                    .AllowAnyMethod()));
+
             services.AddSignalR();
         }
 
@@ -53,13 +52,7 @@ namespace hase.DevLib.Framework.Relay.Signalr
         /// </summary>
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            app.UseCors("any");
-            //app.UseCors(cors =>
-            //{
-            //    cors.AllowAnyHeader();
-            //    cors.AllowAnyOrigin();
-            //    cors.AllowAnyMethod();
-            //});
+            app.UseCors("AllowCors");
 
             app.UseWebSockets();
 

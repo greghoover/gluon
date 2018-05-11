@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using System.Threading.Tasks;
 using hase.DevLib.Framework.Contract;
 using hase.DevLib.Services.FileSystemQuery.Contract;
 
@@ -7,7 +8,7 @@ namespace hase.DevLib.Services.FileSystemQuery.Service
     public class FileSystemQueryService : IService<FileSystemQueryRequest, FileSystemQueryResponse>
     {
         // todo: consider making this an async method.
-        public FileSystemQueryResponse Execute(FileSystemQueryRequest request)
+        public Task<FileSystemQueryResponse> Execute(FileSystemQueryRequest request)
         {
             string responseText = null;
             switch (request.QueryType)
@@ -18,7 +19,7 @@ namespace hase.DevLib.Services.FileSystemQuery.Service
             }
 
             var response = new FileSystemQueryResponse(request, responseText);
-            return response;
+            return Task.FromResult(response);
         }
     }
 }

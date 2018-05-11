@@ -16,7 +16,7 @@ namespace hase.DevLib.Framework.Relay
         public abstract string Abbr { get; }
 
         public abstract Task ConnectAsync(int timeoutMs, CancellationToken ct);
-        public abstract TRequest DeserializeRequest();
+        public abstract Task<TRequest> DeserializeRequest();
         public abstract void SerializeResponse(string requestId, TResponse response);
 
         protected RelayDispatcherBase()
@@ -51,24 +51,24 @@ namespace hase.DevLib.Framework.Relay
 
             if (ct.IsCancellationRequested) return;
             //Console.WriteLine($"{this.Abbr}:Waiting to receive {ChannelName} request.");
-            var request = this.DeserializeRequest();
+            var request = await this.DeserializeRequest();
             Console.WriteLine($"{this.Abbr}:Processing {ChannelName} request {request.Headers.MessageId}.");
 
             if (ct.IsCancellationRequested) return;
-            var response = DispatchRequest(request);
+            var response = await DispatchRequestAsync(request);
 
             if (ct.IsCancellationRequested) return;
             Console.WriteLine($"{this.Abbr}:Sending {ChannelName} response {response.Headers.MessageId} for request {request.Headers.MessageId}.");
             this.SerializeResponse(request.Headers.MessageId, response);
             //Console.WriteLine($"{this.Abbr}:Sent {ChannelName} response.");
         }
-        protected virtual TResponse DispatchRequest(TRequest request)
+        protected async virtual Task<TResponse> DispatchRequestAsync(TRequest request)
         {
             var service = Service<TService, TRequest, TResponse>.NewLocal();
             TResponse response = default(TResponse);
             try
             {
-                response = service.Execute(request);
+                response = await service.Execute(request);
 
                 if (response.AppRequestMessage == null)
                     response.AppRequestMessage = request;

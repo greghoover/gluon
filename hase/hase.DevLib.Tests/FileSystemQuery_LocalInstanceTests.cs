@@ -15,7 +15,7 @@ namespace hase.DevLib.Tests
             Xunit.Assert.True(result);
         }
         [Fact]
-        public void VerifyCRootExists_ServiceApi_LocalInstance()
+        public async void VerifyCRootExists_ServiceApi_LocalInstance()
         {
             var service = new FileSystemQuery().Service;
 
@@ -25,9 +25,9 @@ namespace hase.DevLib.Tests
                 QueryType = FileSystemQueryTypeEnum.DirectoryExists
             };
 
-            var response = service.Execute(request).ResponseString;
-            var result = bool.Parse(response);
-            Xunit.Assert.True(result);
+            var result = await service.Execute(request);
+            var response = result.ResponseString;
+            Xunit.Assert.True(bool.Parse(response));
         }
         [Fact]
         public void VerifyBogusPathNotExist_ClientApi_LocalInstance()
@@ -38,7 +38,7 @@ namespace hase.DevLib.Tests
             Xunit.Assert.False(result);
         }
         [Fact]
-        public void VerifyBogusPathNotExist_ServiceApi_LocalInstance()
+        public async void VerifyBogusPathNotExist_ServiceApi_LocalInstance()
         {
             var service = new FileSystemQuery().Service;
 
@@ -48,9 +48,9 @@ namespace hase.DevLib.Tests
                 QueryType = FileSystemQueryTypeEnum.DirectoryExists
             };
 
-            var response = service.Execute(request).ResponseString;
-            var result = bool.Parse(response);
-            Xunit.Assert.False(result);
+            var result = await service.Execute(request);
+            var response = result.ResponseString;
+            Xunit.Assert.False(bool.Parse(response));
         }
     }
 }

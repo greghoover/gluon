@@ -26,17 +26,17 @@
 
 //            Console.WriteLine("Starting Service Dispatcher");
 //            _fsqDispatcher = RelayDispatcher<NamedPipeRelayDispatcher<FileSystemQueryService, FileSystemQueryRequest, FileSystemQueryResponse>, FileSystemQueryService, FileSystemQueryRequest, FileSystemQueryResponse>.CreateInstance();
-//            _fsqDispatcher.StartAsync();
+//            _fsqDispatcher.StartAsync(); // not awaiting on purpose
 //            Console.WriteLine("Service Dispatcher started.");
 //        }
 //        public void Dispose()
 //        {
 //            Console.WriteLine("Stopping Dispatcher.");
-//            _fsqDispatcher.StopAsync().Wait();
+//            _fsqDispatcher.StopAsync().Wait(); // use await
 //            Console.WriteLine("Dispatcher stopped.");
 
 //            Console.WriteLine("Stopping Relay.");
-//            _fsqRelay.StopAsync().Wait();
+//            _fsqRelay.StopAsync().Wait(); // use wait
 //            Console.WriteLine("Relay stopped.");
 //        }
 //    }
@@ -52,7 +52,7 @@
 //            Xunit.Assert.True(result);
 //        }
 //        [Fact]
-//        public void VerifyCRootExists_ServiceApi_NamedPipeRelay()
+//        public async void VerifyCRootExists_ServiceApi_NamedPipeRelay()
 //        {
 //            var folderPath = @"c:";
 //            var fsqs = new FileSystemQuery(typeof(NamedPipeRelayProxy<FileSystemQueryRequest, FileSystemQueryResponse>)).Service;
@@ -62,9 +62,9 @@
 //                QueryType = FileSystemQueryTypeEnum.DirectoryExists
 //            };
 
-//            var response = fsqs.Execute(request).ResponseString;
-//            var result = bool.Parse(response);
-//            Xunit.Assert.True(result);
+//            var result = await fsqs.Execute(request);
+//            var response = result.ResponseString;;
+//            Xunit.Assert.True(response);
 //        }
 //        [Fact]
 //        public void VerifyBogusPathNotExist_ClientApi_NamedPipeRelay()
@@ -75,7 +75,7 @@
 //            Xunit.Assert.False(result);
 //        }
 //        [Fact]
-//        public void VerifyBogusPathNotExist_ServiceApi_NamedPipeRelay()
+//        public async void VerifyBogusPathNotExist_ServiceApi_NamedPipeRelay()
 //        {
 //            var folderPath = @"slkjdfslkj";
 //            var fsqs = new FileSystemQuery(typeof(NamedPipeRelayProxy<FileSystemQueryRequest, FileSystemQueryResponse>)).Service;
@@ -85,9 +85,9 @@
 //                QueryType = FileSystemQueryTypeEnum.DirectoryExists
 //            };
 
-//            var response = fsqs.Execute(request).ResponseString;
-//            var result = bool.Parse(response);
-//            Xunit.Assert.False(result);
+//            var result = async fsqs.Execute(request);
+//            var response = result.ResponseString;
+//            Xunit.Assert.False(bool.Parse(response));
 //        }
 //    }
 //}

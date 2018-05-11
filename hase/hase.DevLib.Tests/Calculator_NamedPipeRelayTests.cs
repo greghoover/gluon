@@ -28,17 +28,17 @@
 
 //            Console.WriteLine("Starting Service Dispatcher");
 //            _calcDispatcher = RelayDispatcher<NamedPipeRelayDispatcher<CalculatorService, CalculatorRequest, CalculatorResponse>, CalculatorService, CalculatorRequest, CalculatorResponse>.CreateInstance();
-//            _calcDispatcher.StartAsync();
+//            _calcDispatcher.StartAsync(); // not awaiting on purpose
 //            Console.WriteLine("Service Dispatcher started.");
 //        }
 //        public void Dispose()
 //        {
 //            Console.WriteLine("Stopping Dispatcher.");
-//            _calcDispatcher.StopAsync().Wait();
+//            _calcDispatcher.StopAsync().Wait(); // use await
 //            Console.WriteLine("Dispatcher stopped.");
 
 //            Console.WriteLine("Stopping Relay.");
-//            _calcRelay.StopAsync().Wait();
+//            _calcRelay.StopAsync().Wait(); // use await
 //            Console.WriteLine("Relay stopped.");
 //        }
 //    }
@@ -55,14 +55,14 @@
 //            Xunit.Assert.True(result == i1 + i2);
 //        }
 //        [Fact]
-//        public void VerifyAddTwoNumbers_ServiceApi_NamedPipeRelay()
+//        public async void VerifyAddTwoNumbers_ServiceApi_NamedPipeRelay()
 //        {
 //            var i1 = 5;
 //            var i2 = 10;
 //            var request = new CalculatorRequest(CalculatorOpEnum.Add, i1, i2);
 //            var calcService = new Calculator(typeof(NamedPipeRelayProxy<CalculatorRequest, CalculatorResponse>)).Service;
-//            var result = calcService.Execute(request).Result;
-//            Xunit.Assert.True(result == i1 + i2);
+//            var result = await calcService.Execute(request);
+//            Xunit.Assert.True(result.Answer == i1 + i2);
 //        }
 //    }
 //}

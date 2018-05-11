@@ -13,8 +13,8 @@ namespace hase.DevLib.Framework.Relay
         public abstract string Abbr { get; }
 
         public abstract Task ConnectAsync(int timeoutMs, CancellationToken ct);
-        public abstract void Disconnect();
-        public abstract void SerializeRequest(TRequest request);
+        public abstract void DisconnectAsync();
+        public abstract Task SerializeRequest(TRequest request);
         public abstract TResponse DeserializeResponse();
 
         private RelayProxyBase() { }
@@ -23,14 +23,14 @@ namespace hase.DevLib.Framework.Relay
             this.ChannelName = proxyChannelName;
         }
 
-        public TResponse Execute(TRequest request)
+        public async Task<TResponse> Execute(TRequest request)
         {
             Console.WriteLine($"{this.Abbr}:{this.ChannelName} connecting to relay.");
-            this.ConnectAsync(timeoutMs: 5000, ct: CancellationToken.None).Wait();
+            await this.ConnectAsync(timeoutMs: 5000, ct: CancellationToken.None);
             Console.WriteLine($"{this.Abbr}:{this.ChannelName} connected.");
 
             Console.WriteLine($"{this.Abbr}:Sending [{this.ChannelName}] request [{request}].");
-            this.SerializeRequest(request);
+            await this.SerializeRequest(request);
             //Console.WriteLine($"{this.Abbr}:Sent [{this.ChannelName}] request.");
 
             //Console.WriteLine($"{this.Abbr}:Receiving [{this.ChannelName}] response.");
@@ -38,7 +38,7 @@ namespace hase.DevLib.Framework.Relay
             Console.WriteLine($"{this.Abbr}:Received [{this.ChannelName}] response [{response}].");
 
             //Console.WriteLine($"{this.Abbr}:{this.ChannelName} disconnecting from relay.");
-            this.Disconnect();
+            this.DisconnectAsync();
             Console.WriteLine($"{this.Abbr}:{this.ChannelName} disconnected from relay.");
 
             return response;

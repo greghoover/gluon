@@ -20,12 +20,13 @@ namespace hase.DevLib.Framework.Relay.Signalr
 
         public async override Task ConnectAsync(int timeoutMs, CancellationToken ct)
         {
-            _hub = new HubConnectionBuilder()
-                .WithUrl("http://localhost:5000/route")
-                .Build();
-
             try
             {
+                _hub = new HubConnectionBuilder()
+                    .WithUrl("http://localhost:5000/route")
+                    .Build();
+
+                //_hub.StartAsync().ConfigureAwait(false).GetAwaiter().GetResult();
                 await _hub.StartAsync();
             }
             catch (Exception ex)
@@ -35,15 +36,16 @@ namespace hase.DevLib.Framework.Relay.Signalr
             }
         }
 
-        public override void SerializeRequest(TRequest request)
+        public async override Task SerializeRequest(TRequest request)
         {
             //Serializer.SerializeWithLengthPrefix(pipe, request, PrefixStyle.Base128);
 
             request.Headers.SourceChannel = this.ChannelName;
 
-            var wrapper = request.ToTransportRequest();
+            var wrapper = await request.ToTransportRequestAsync();
 
-            _tmpResponse = _hub.InvokeAsync<object>("ProcessProxyRequestAsync", wrapper).ConfigureAwait(false).GetAwaiter().GetResult();
+            //_tmpResponse = _hub.InvokeAsync<object>("ProcessProxyRequestAsync", wrapper).ConfigureAwait(false).GetAwaiter().GetResult();
+            _tmpResponse = await _hub.InvokeAsync<object>("ProcessProxyRequestAsync", wrapper);
         }
 
         public override TResponse DeserializeResponse()
@@ -56,10 +58,10 @@ namespace hase.DevLib.Framework.Relay.Signalr
             return response;
         }
 
-        public override void Disconnect()
+        public async override void DisconnectAsync()
         {
             //pipe.Dispose();
-            _hub.DisposeAsync().Wait();
+            await _hub.DisposeAsync();
         }
     }
 }

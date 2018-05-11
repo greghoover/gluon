@@ -15,7 +15,7 @@ namespace hase.DevLib.Tests
             Xunit.Assert.True(result == 15);
         }
         [Fact]
-        public void VerifyAddTwoNumbers_ServiceApi_LocalInstance()
+        public async void VerifyAddTwoNumbers_ServiceApi_LocalInstance()
         {
             var service = new Calculator().Service;
 
@@ -26,8 +26,8 @@ namespace hase.DevLib.Tests
                 Operation = CalculatorOpEnum.Add,
             };
 
-            var result = service.Execute(request).Result;
-            Xunit.Assert.True(result == 15);
+            var result = await service.Execute(request);
+            Xunit.Assert.True(result.Answer == 15);
         }
     }
 }

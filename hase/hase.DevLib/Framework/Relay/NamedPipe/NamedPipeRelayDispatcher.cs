@@ -28,9 +28,10 @@ namespace hase.DevLib.Framework.Relay.NamedPipe
                 var e = ex; // no compiler warning please
             }
         }
-        public override TRequest DeserializeRequest()
+        public async override Task<TRequest> DeserializeRequest()
         {
-            return Serializer.DeserializeWithLengthPrefix<TRequest>(pipe, PrefixStyle.Base128);
+            var request = Serializer.DeserializeWithLengthPrefix<TRequest>(pipe, PrefixStyle.Base128);
+            return request;
         }
         public override void SerializeResponse(string requestId, TResponse response)
         {

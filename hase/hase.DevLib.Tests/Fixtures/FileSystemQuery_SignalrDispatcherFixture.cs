@@ -17,20 +17,20 @@ namespace hase.DevLib.Tests.Fixtures
             Task.Run(() =>
             {
                 _dispatcher = RelayDispatcher<SignalrRelayDispatcher<FileSystemQueryService, FileSystemQueryRequest, FileSystemQueryResponse>, FileSystemQueryService, FileSystemQueryRequest, FileSystemQueryResponse>.CreateInstance();
-                _dispatcher.StartAsync();
+                _dispatcher.StartAsync(); // not awaiting on purpose
             //Task.Delay(2000).Wait();
-        });
+            });
             Console.WriteLine("Service Dispatcher started.");
         }
         public void Dispose()
         {
             Console.WriteLine("Stopping Dispatcher.");
-            Task.Run(() =>
+            Task.Run(async () =>
             {
                 if (_dispatcher != null)
-                    _dispatcher.StopAsync().Wait();
-            //Task.Delay(2000).Wait();
-        });
+                    await _dispatcher.StopAsync();
+                //Task.Delay(2000).Wait();
+            });
             Console.WriteLine("Dispatcher stopped.");
         }
     }
