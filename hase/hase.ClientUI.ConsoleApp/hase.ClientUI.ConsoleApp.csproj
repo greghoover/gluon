@@ -10,10 +10,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Include="..\global.json" Link="global.json" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\hase.DevLib.Core20\hase.DevLib.Core20.csproj" />
   </ItemGroup>
 
