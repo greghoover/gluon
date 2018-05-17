@@ -22,7 +22,7 @@ namespace hase.RelayHub.ConsoleHost
                 Console.WriteLine("Starting SignalR Relay Server...");
                 var relay = Startup.BuildWebHost(args);
                 var ct = new CancellationToken();
-                relay.StartAsync(ct); // not awaiting on purpose
+                await relay.StartAsync(ct);
                 Console.WriteLine("SignalR Relay started.");
                 Console.WriteLine("Press <Enter> to stop relay.");
                 Console.ReadLine();

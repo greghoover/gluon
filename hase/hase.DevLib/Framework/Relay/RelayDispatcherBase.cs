@@ -60,7 +60,7 @@ namespace hase.DevLib.Framework.Relay
         private async Task TeardownConnection()
         {
             await Task.CompletedTask; // suppress compiler warning
-            //await Task.Delay(1000); // time to clean up
+            Console.WriteLine($"{this.Abbr}:{ChannelName} disconnected from relay.");
         }
 
         protected async virtual Task ProcessRequest(CancellationToken ct)
