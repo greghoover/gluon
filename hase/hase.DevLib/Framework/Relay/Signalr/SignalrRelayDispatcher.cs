@@ -78,7 +78,7 @@ namespace hase.DevLib.Framework.Relay.Signalr
             //return Serializer.DeserializeWithLengthPrefix<TRequest>(pipe, PrefixStyle.Base128);
 
             TRequest request = null;
-            while(request == null)
+            while(!this.CT.IsCancellationRequested && request == null)
             {
                 Requests.TryDequeue(out request);
                 await Task.Delay(150);

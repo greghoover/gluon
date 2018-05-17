@@ -1,13 +1,14 @@
-﻿using hase.DevLib.Framework.Service;
+﻿using hase.DevLib.Framework.Relay;
 using hase.DevLib.Framework.Relay.NamedPipe;
+using hase.DevLib.Framework.Relay.Signalr;
+using hase.DevLib.Framework.Service;
 using hase.DevLib.Services.Calculator.Contract;
 using hase.DevLib.Services.Calculator.Service;
 using hase.DevLib.Services.FileSystemQuery.Contract;
 using hase.DevLib.Services.FileSystemQuery.Service;
+using Microsoft.AspNetCore.Hosting;
 using System;
-//using Gluon.Relay.Signalr.Server;
-using hase.DevLib.Framework.Relay.Signalr;
-using hase.DevLib.Framework.Relay;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace hase.RelayHub.ConsoleHost
@@ -19,7 +20,14 @@ namespace hase.RelayHub.ConsoleHost
             if (RelayUtil.RelayTypeDflt == RelayTypeEnum.SignalR)
             {
                 Console.WriteLine("Starting SignalR Relay Server...");
-                Startup.BuildAndRunWebHost(args);
+                var relay = Startup.BuildWebHost(args);
+                var ct = new CancellationToken();
+                relay.StartAsync(ct); // not awaiting on purpose
+                Console.WriteLine("SignalR Relay started.");
+                Console.WriteLine("Press <Enter> to stop relay.");
+                Console.ReadLine();
+                await relay.StopAsync(TimeSpan.FromSeconds(5));
+                Console.WriteLine("Relay stopped.");
             }
             if (RelayUtil.RelayTypeDflt == RelayTypeEnum.NamedPipes)
             {
@@ -42,7 +50,6 @@ namespace hase.RelayHub.ConsoleHost
 
                 Console.WriteLine("Relay stopped.");
             }
-
 
             Console.Write("Press <Enter> to close window.");
             Console.ReadLine();

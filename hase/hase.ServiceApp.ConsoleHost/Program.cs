@@ -6,6 +6,7 @@ using hase.DevLib.Services.Calculator.Service;
 using hase.DevLib.Services.FileSystemQuery.Contract;
 using hase.DevLib.Services.FileSystemQuery.Service;
 using System;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace hase.ServiceApp.ConsoleHost
@@ -14,6 +15,7 @@ namespace hase.ServiceApp.ConsoleHost
     {
         static async Task Main(string[] args)
         {
+            var ct = new CancellationToken();
             var fsqDispatcher = default(IRelayDispatcher<FileSystemQueryService, FileSystemQueryRequest, FileSystemQueryResponse>);
             var calcDispatcher = default(IRelayDispatcher<CalculatorService, CalculatorRequest, CalculatorResponse>);
 
@@ -34,14 +36,14 @@ namespace hase.ServiceApp.ConsoleHost
             }
 
             Console.WriteLine("Starting Service Dispatcher");
-            fsqDispatcher.StartAsync(); // not awaiting on purpose
-            calcDispatcher.StartAsync(); // not awaiting on purpose
+            await fsqDispatcher.StartAsync(ct);
+            await calcDispatcher.StartAsync(ct);
             Console.WriteLine("Service Dispatcher started.");
 
             Console.WriteLine("Press <Enter> to stop dispatcher.");
             Console.ReadLine();
-            await fsqDispatcher.StopAsync();
-            await calcDispatcher.StopAsync();
+            await fsqDispatcher.StopAsync(ct);
+            await calcDispatcher.StopAsync(ct);
             Console.WriteLine("Dispatcher stopped.");
 
             Console.Write("Press <Enter> to close window.");

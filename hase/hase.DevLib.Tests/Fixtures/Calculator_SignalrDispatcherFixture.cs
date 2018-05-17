@@ -3,23 +3,24 @@ using hase.DevLib.Framework.Relay.Signalr;
 using hase.DevLib.Services.Calculator.Contract;
 using hase.DevLib.Services.Calculator.Service;
 using System;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace hase.DevLib.Tests.Fixtures
 {
     public class Calculator_SignalrDispatcherFixture : IDisposable
     {
+        private CancellationToken _ct = new CancellationToken();
         private IRelayDispatcher<CalculatorService, CalculatorRequest, CalculatorResponse> _dispatcher = null;
 
         public Calculator_SignalrDispatcherFixture()
         {
             Console.WriteLine("Starting Service Dispatcher");
-            Task.Run(() =>
+            Task.Run(async () =>
             {
                 _dispatcher = RelayDispatcher<SignalrRelayDispatcher<CalculatorService, CalculatorRequest, CalculatorResponse>, CalculatorService, CalculatorRequest, CalculatorResponse>.CreateInstance();
-                _dispatcher.StartAsync(); // not awaiting on purpose
-            //Task.Delay(2000).Wait();
-        });
+                await _dispatcher.StartAsync(_ct);
+            });
             Console.WriteLine("Service Dispatcher started.");
         }
         public void Dispose()
@@ -28,9 +29,8 @@ namespace hase.DevLib.Tests.Fixtures
             Task.Run(async () =>
             {
                 if (_dispatcher != null)
-                    await _dispatcher.StopAsync();
-            //Task.Delay(2000).Wait();
-        });
+                    await _dispatcher.StopAsync(_ct);
+            });
             Console.WriteLine("Dispatcher stopped.");
         }
     }
