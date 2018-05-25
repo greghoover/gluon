@@ -27,9 +27,9 @@ namespace hase.DevLib.Framework.Relay
 
         private async Task SpinupConnection()
         {
-            Console.WriteLine($"{this.Abbr}:{ChannelName} connecting to relay.");
+            Console.WriteLine($"{this.Abbr}:{ChannelName} dispatcher connecting to relay.");
             await this.ConnectAsync(timeoutMs: 5000, ct: CT);
-            Console.WriteLine($"{this.Abbr}:{ChannelName} connected to relay.");
+            Console.WriteLine($"{this.Abbr}:{ChannelName} dispatcher connected to relay.");
         }
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {

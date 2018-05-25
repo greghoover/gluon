@@ -8,7 +8,6 @@ using hase.DevLib.Services.FileSystemQuery.Contract;
 using hase.DevLib.Services.FileSystemQuery.Service;
 using Microsoft.AspNetCore.Hosting;
 using System;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace hase.RelayHub.ConsoleHost
@@ -17,18 +16,23 @@ namespace hase.RelayHub.ConsoleHost
     {
         private static async Task Main(string[] args)
         {
+            Console.WriteLine("Starting Relay Server Console Host...");
+
             if (RelayUtil.RelayTypeDflt == RelayTypeEnum.SignalR)
             {
-                Console.WriteLine("Starting SignalR Relay Server...");
+                Console.WriteLine("Building SignalR relay server.");
                 var relay = Startup.BuildWebHost(args);
-                var ct = new CancellationToken();
-                await relay.StartAsync(ct);
-                Console.WriteLine("SignalR Relay started.");
-                Console.WriteLine("Press <Enter> to stop relay.");
-                Console.ReadLine();
+
+                Console.WriteLine("Starting SignalR relay server.");
+                await relay.StartAsync();
+                Console.WriteLine("SignalR relay server started.");
+
+                Console.WriteLine("Press Ctrl+C to shut down.");
+                await relay.WaitForShutdownAsync();
                 await relay.StopAsync(TimeSpan.FromSeconds(5));
-                Console.WriteLine("Relay stopped.");
+                Console.WriteLine("SignalR relay server stopped.");
             }
+
             if (RelayUtil.RelayTypeDflt == RelayTypeEnum.NamedPipes)
             {
                 var fsqServicePipeName = typeof(FileSystemQueryService).Name;
@@ -51,6 +55,7 @@ namespace hase.RelayHub.ConsoleHost
                 Console.WriteLine("Relay stopped.");
             }
 
+            Console.WriteLine();
             Console.Write("Press <Enter> to close window.");
             Console.ReadLine();
         }
