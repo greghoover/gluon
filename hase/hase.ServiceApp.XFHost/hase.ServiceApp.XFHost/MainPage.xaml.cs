@@ -1,7 +1,4 @@
-﻿using hase.DevLib.Framework.Relay.Signalr;
-using hase.DevLib.Services.FileSystemQuery.Client;
-using hase.DevLib.Services.FileSystemQuery.Contract;
-using System;
+﻿using System;
 using Xamarin.Forms;
 
 namespace hase.ServiceApp.XFHost
@@ -19,27 +16,7 @@ namespace hase.ServiceApp.XFHost
 
         private void PressMeButton_Clicked(object sender, EventArgs e)
         {
-            var button = (Button)sender;
-            button.Text = "Init";
-
-            try
-            {
-                var folderPath = @"c:\";
-                var fsq = new FileSystemQuery(typeof(SignalrRelayProxy<FileSystemQueryRequest, FileSystemQueryResponse>));
-                var result = fsq.DoesDirectoryExist(folderPath);
-                button.Text = $"Does folder [{folderPath}] exist? [{result}].";
-            }
-            catch (Exception ex)
-            {
-                var txt = ex.Message;
-                if (ex.InnerException != null)
-                    txt += Environment.NewLine + ex.InnerException.Message;
-                button.Text = txt;
-            }
-            finally
-            {
-            }
-
+            (sender as Button).Text = "Clicked.";
         }
     }
 }

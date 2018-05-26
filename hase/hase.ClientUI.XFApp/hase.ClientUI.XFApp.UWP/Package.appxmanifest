@@ -7,15 +7,15 @@
   IgnorableNamespaces="uap mp">
 
   <Identity
-    Name="1b6ae00f-f7cd-4a0a-83fd-2c774ad9c002"
-    Publisher="CN=4cd309f1-f9ee-42ae-b703-58d2cff9b90e"
+    Name="b9373da5-b633-4aa6-a346-e8f95691a6cb"
+    Publisher="CN=afa77542-18f4-40fc-8834-2cf70eccd856"
     Version="1.0.0.0" />
 
   <mp:PhoneIdentity PhoneProductId="ec0cc741-fd3e-485c-81be-68815c480690" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
   <Properties>
     <DisplayName>hase.ClientUI.XFApp.UWP</DisplayName>
-    <PublisherDisplayName>4cd309f1-f9ee-42ae-b703-58d2cff9b90e</PublisherDisplayName>
+    <PublisherDisplayName>afa77542-18f4-40fc-8834-2cf70eccd856</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
 

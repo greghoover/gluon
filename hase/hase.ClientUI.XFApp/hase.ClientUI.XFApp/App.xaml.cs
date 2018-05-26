@@ -1,6 +1,5 @@
-﻿using System;
+using System;
 using Xamarin.Forms;
-using hase.ClientUI.XFApp.Views;
 using Xamarin.Forms.Xaml;
 
 [assembly: XamlCompilation (XamlCompilationOptions.Compile)]
@@ -8,11 +7,9 @@ namespace hase.ClientUI.XFApp
 {
 	public partial class App : Application
 	{
-		
 		public App ()
 		{
 			InitializeComponent();
-
 
 			MainPage = new MainPage();
 		}

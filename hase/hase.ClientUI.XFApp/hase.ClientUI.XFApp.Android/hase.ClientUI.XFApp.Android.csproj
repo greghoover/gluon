@@ -3,9 +3,9 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{B477292A-20A5-472F-9081-33580A516693}</ProjectGuid>
+    <ProjectGuid>{E0B6B7E4-29F9-4272-98A4-037CD9297B18}</ProjectGuid>
     <ProjectTypeGuids>{EFBA0AD7-5A72-4C68-AF49-83D382785DCF};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <TemplateGuid>{6968b3a4-1835-46a3-ac5c-1ae33b475983}</TemplateGuid>
+    <TemplateGuid>{c9e5eea5-ca05-42a1-839b-61506e0a37df}</TemplateGuid>
     <OutputType>Library</OutputType>
     <RootNamespace>hase.ClientUI.XFApp.Droid</RootNamespace>
     <AssemblyName>hase.ClientUI.XFApp.Android</AssemblyName>
@@ -82,9 +82,9 @@
     <AndroidResource Include="Resources\mipmap-xxhdpi\launcher_foreground.png" />
     <AndroidResource Include="Resources\mipmap-xxxhdpi\Icon.png" />
     <AndroidResource Include="Resources\mipmap-xxxhdpi\launcher_foreground.png" />
-    <AndroidResource Include="Resources\drawable\xamarin_logo.png" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Resources\drawable\" />
     <Folder Include="Resources\drawable-hdpi\" />
     <Folder Include="Resources\drawable-xhdpi\" />
     <Folder Include="Resources\drawable-xxhdpi\" />
@@ -92,7 +92,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\hase.ClientUI.XFApp\hase.ClientUI.XFApp.csproj">
-      <Project>{40292D9F-2F46-426A-826A-BD4889132552}</Project>
+      <Project>{2227CF42-739A-4F05-BF19-0F205EE5B6D7}</Project>
       <Name>hase.ClientUI.XFApp</Name>
     </ProjectReference>
   </ItemGroup>
