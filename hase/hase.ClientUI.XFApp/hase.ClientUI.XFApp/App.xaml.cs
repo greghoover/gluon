@@ -1,8 +1,7 @@
-using System;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
-[assembly: XamlCompilation (XamlCompilationOptions.Compile)]
+[assembly: XamlCompilation(XamlCompilationOptions.Compile)]
 namespace hase.ClientUI.XFApp
 {
 	public partial class App : Application
@@ -11,7 +10,7 @@ namespace hase.ClientUI.XFApp
 		{
 			InitializeComponent();
 
-			MainPage = new MainPage();
+			MainPage = new ServiceClientsTabbedPage();
 		}
 
 		protected override void OnStart ()

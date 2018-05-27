@@ -4,16 +4,11 @@
              xmlns:local="clr-namespace:hase.ClientUI.XFApp"
              x:Class="hase.ClientUI.XFApp.MainPage">
 
-    <!--<StackLayout>
-        --><!-- Place new controls here --><!--
+    <StackLayout>
+        <!-- Place new controls here -->
     	<Label Text="Welcome to Xamarin.Forms!" 
            HorizontalOptions="Center"
            VerticalOptions="CenterAndExpand" />
-    </StackLayout>-->
-
-    <Button x:Name="PressMeButton"
-        Text="Press Me!"
-        Pressed="PressMeButton_Pressed"
-        Clicked="PressMeButton_Clicked"/>
+    </StackLayout>
 
 </ContentPage>
