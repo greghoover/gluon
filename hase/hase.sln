@@ -39,7 +39,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "hase.ClientUI.XFApp.iOS", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "hase.ClientUI.XFApp.UWP", "hase.ClientUI.XFApp\hase.ClientUI.XFApp.UWP\hase.ClientUI.XFApp.UWP.csproj", "{B60ABCCD-E24D-42C6-8147-95B0398E9F47}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "hase.ClientUI.XFApp", "hase.ClientUI.XFApp\hase.ClientUI.XFApp\hase.ClientUI.XFApp.csproj", "{30E107DA-477D-4722-B323-535873BD1334}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "hase.ClientUI.XFApp", "hase.ClientUI.XFApp\hase.ClientUI.XFApp\hase.ClientUI.XFApp.csproj", "{30E107DA-477D-4722-B323-535873BD1334}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
