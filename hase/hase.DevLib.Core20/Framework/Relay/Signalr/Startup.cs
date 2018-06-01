@@ -14,7 +14,13 @@ namespace hase.DevLib.Framework.Relay.Signalr
         public static IWebHost BuildWebHost(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
             .UseStartup<Startup>()
-            .UseKestrel()
+            .UseKestrel(kopt => {
+                kopt.ListenLocalhost(5000);
+                foreach(var addy in RelayUtil.RelayListenerIPs)
+                {
+                    kopt.Listen(addy, 5000);
+                }
+            })
             .Build();
         public static void BuildAndRunWebHost(string[] args) =>
             BuildWebHost(args).Run();
