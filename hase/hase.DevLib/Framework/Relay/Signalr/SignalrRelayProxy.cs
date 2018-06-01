@@ -1,4 +1,5 @@
 ﻿using hase.DevLib.Framework.Contract;
+using Microsoft.AspNetCore.Http.Connections;
 using Microsoft.AspNetCore.SignalR.Client;
 using Newtonsoft.Json;
 using System;
@@ -20,18 +21,25 @@ namespace hase.DevLib.Framework.Relay.Signalr
 
         public async override Task ConnectAsync(int timeoutMs, CancellationToken ct)
         {
-            try
+            foreach (var addy in RelayUtil.RelayIPs)
             {
-                _hub = new HubConnectionBuilder()
-                    .WithUrl("http://localhost:5000/route")
-                    .Build();
+                if (addy.AddressFamily == System.Net.Sockets.AddressFamily.InterNetworkV6)
+                    continue;
+                try
+                {
+                    _hub = new HubConnectionBuilder()
+                        .WithUrl($"http://{addy.ToString()}:5000/route")
+                        .Build();
 
-                await _hub.StartAsync();
-            }
-            catch (Exception ex)
-            {
-                await _hub.DisposeAsync();
-                var e = ex;
+                    await _hub.StartAsync();
+                    break;
+                }
+                catch (Exception ex)
+                {
+                    var e = ex;
+                    if (_hub != null)
+                        await _hub.DisposeAsync();
+                }
             }
         }
 

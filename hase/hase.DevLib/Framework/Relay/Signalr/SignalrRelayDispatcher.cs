@@ -36,7 +36,7 @@ namespace hase.DevLib.Framework.Relay.Signalr
             };
 
             _hub = new HubConnectionBuilder()
-                .WithUrl("http://localhost:5000/route")
+                .WithUrl($"http://{RelayUtil.RelayHostName}:5000/route")
                 .ConfigureLogging(logging => logging.SetMinimumLevel(LogLevel.Debug))
                 //.WithConsoleLogger(LogLevel.Debug)
                 //.WithJsonProtocol()
