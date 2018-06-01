@@ -45,7 +45,8 @@ namespace hase.DevLib.Framework.Relay.Signalr
                 //.WithMessageHandler(h => handler)
                 .Build();
 
-            _hub.On<object>("dispatch",
+            //_hub.On<object>("dispatch",
+            _hub.On<HttpRequestMessageWrapperEx>("dispatch",
                 (req) =>
                 {
                     StageRequest(req);
@@ -61,9 +62,8 @@ namespace hase.DevLib.Framework.Relay.Signalr
                 var e = ex;
             }
         }
-        private void StageRequest(object req)
+        private void StageRequest(HttpRequestMessageWrapperEx wrapper)
         {
-            var wrapper = JsonConvert.DeserializeObject<HttpRequestMessageWrapperEx>(req.ToString());
             var request = wrapper.ToAppRequestMessage<TRequest>();
 
             var requestId = request.Headers.MessageId;
@@ -72,6 +72,11 @@ namespace hase.DevLib.Framework.Relay.Signalr
             Requests.Enqueue(request);
             Console.WriteLine($"{this.Abbr}:Enqueued {ChannelName} request {requestId}.");
         }
+        //private void StageRequest(object req)
+        //{
+        //    var wrapper = JsonConvert.DeserializeObject<HttpRequestMessageWrapperEx>(req.ToString());
+        //    this.StageRequest(wrapper);
+        //}
 
         public async override Task<TRequest> DeserializeRequest()
         {
