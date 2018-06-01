@@ -1,4 +1,5 @@
 ﻿using hase.DevLib.Framework.Contract;
+using Microsoft.AspNetCore.Http.Connections;
 using Microsoft.AspNetCore.SignalR.Client;
 using Newtonsoft.Json;
 using System;
