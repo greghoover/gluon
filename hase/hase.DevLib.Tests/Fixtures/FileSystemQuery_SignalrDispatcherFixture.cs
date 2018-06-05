@@ -11,14 +11,14 @@ namespace hase.DevLib.Tests.Fixtures
     public class FileSystemQuery_SignalrDispatcherFixture : IDisposable
     {
         private CancellationToken _ct = new CancellationToken();
-        private IRelayDispatcher<FileSystemQueryService, FileSystemQueryRequest, FileSystemQueryResponse> _dispatcher = null;
+        private IRelayDispatcher _dispatcher = null;
 
         public FileSystemQuery_SignalrDispatcherFixture()
         {
             Console.WriteLine("Starting Service Dispatcher");
             Task.Run(async () =>
             {
-                _dispatcher = RelayDispatcher<SignalrRelayDispatcher<FileSystemQueryService, FileSystemQueryRequest, FileSystemQueryResponse>, FileSystemQueryService, FileSystemQueryRequest, FileSystemQueryResponse>.CreateInstance();
+                _dispatcher = new SignalrRelayDispatcher("FileSystemQueryService");
                 await _dispatcher.StartAsync(_ct);
             });
             Console.WriteLine("Service Dispatcher started.");

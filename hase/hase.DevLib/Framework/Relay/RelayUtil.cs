@@ -10,15 +10,9 @@ namespace hase.DevLib.Framework.Relay
         NamedPipes = 2,
         NetMq = 3,
     }
-    public enum DispatchStrategyEnum
-    {
-        Generics = 1,
-        Reflection = 2
-    }
     public static class RelayUtil
     {
         public static RelayTypeEnum RelayTypeDflt { get; } = RelayTypeEnum.SignalR;
-        public static DispatchStrategyEnum DispatchStrategy { get; } = DispatchStrategyEnum.Reflection;
 
         public static string RelayHostName
         {

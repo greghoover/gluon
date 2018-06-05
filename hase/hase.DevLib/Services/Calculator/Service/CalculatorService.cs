@@ -1,13 +1,13 @@
-﻿using hase.DevLib.Framework.Contract;
+﻿using hase.DevLib.Framework.Service;
 using hase.DevLib.Services.Calculator.Contract;
 using System.Threading.Tasks;
 
 namespace hase.DevLib.Services.Calculator.Service
 {
-    public class CalculatorService : IService<CalculatorRequest, CalculatorResponse>
+    public class CalculatorService : ServiceBase<CalculatorRequest, CalculatorResponse>
     {
         // todo: consider making this an async method.
-        public Task<CalculatorResponse> Execute(CalculatorRequest request)
+        public override Task<CalculatorResponse> Execute(CalculatorRequest request)
         {
             int result = 0;
             switch (request.Operation)

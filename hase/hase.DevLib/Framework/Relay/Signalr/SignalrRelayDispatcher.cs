@@ -1,4 +1,5 @@
 ﻿using hase.DevLib.Framework.Contract;
+using hase.DevLib.Framework.Service;
 using Microsoft.AspNetCore.SignalR.Client;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
@@ -10,16 +11,13 @@ using System.Threading.Tasks;
 
 namespace hase.DevLib.Framework.Relay.Signalr
 {
-    public class SignalrRelayDispatcher<TService, TRequest, TResponse> : RelayDispatcherBase<TService, TRequest, TResponse>
-        where TService : IService<TRequest, TResponse>
-        where TRequest : AppRequestMessage
-        where TResponse : AppResponseMessage
+    public class SignalrRelayDispatcher : RelayDispatcherBase
     {
-        protected ConcurrentQueue<TRequest> Requests { get; private set; }
+        protected ConcurrentQueue<AppRequestMessage> Requests { get; private set; }
 
-        public SignalrRelayDispatcher()
+        public SignalrRelayDispatcher(string channelName) : base(channelName)
         {
-            Requests = new ConcurrentQueue<TRequest>();
+            Requests = new ConcurrentQueue<AppRequestMessage>();
         }
 
         public override string Abbr => "srrdc";
@@ -64,7 +62,11 @@ namespace hase.DevLib.Framework.Relay.Signalr
         }
         private void StageRequest(HttpRequestMessageWrapperEx wrapper)
         {
-            var request = wrapper.ToAppRequestMessage<TRequest>();
+            // todo: 06/05/18 gph. Revisit. Currently duplicating efforts.
+            var appReq = wrapper.ToAppRequestMessage<AppRequestMessage>();
+            var service = ServiceFactory2.NewLocal(appReq.ServiceTypeName);
+            var requestType = service.GetType().BaseType.GenericTypeArguments[0];
+            var request = wrapper.ToAppRequestMessage(requestType);
 
             var requestId = request.Headers.MessageId;
 
@@ -78,11 +80,11 @@ namespace hase.DevLib.Framework.Relay.Signalr
         //    this.StageRequest(wrapper);
         //}
 
-        public async override Task<TRequest> DeserializeRequest()
+        public async override Task<AppRequestMessage> DeserializeRequest()
         {
-            //return Serializer.DeserializeWithLengthPrefix<TRequest>(pipe, PrefixStyle.Base128);
+            //return Serializer.DeserializeWithLengthPrefix<AppRequestMessage>(pipe, PrefixStyle.Base128);
 
-            TRequest request = null;
+            AppRequestMessage request = null;
             while(!this.CT.IsCancellationRequested && request == null)
             {
                 Requests.TryDequeue(out request);
@@ -90,7 +92,7 @@ namespace hase.DevLib.Framework.Relay.Signalr
             }
             return request;
         }
-        public async override void SerializeResponse(string requestId, TResponse response)
+        public async override void SerializeResponse(string requestId, AppResponseMessage response)
         {
             //Serializer.SerializeWithLengthPrefix(pipe, response, PrefixStyle.Base128);
             response.Headers.SourceChannel = this.ChannelName;

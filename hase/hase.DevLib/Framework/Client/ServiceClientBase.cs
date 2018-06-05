@@ -4,22 +4,26 @@ using System;
 
 namespace hase.DevLib.Framework.Client
 {
-    public abstract class ServiceClientBase<TService, TRequest, TResponse> : IServiceClient<TService, TRequest, TResponse>
-        where TService : IService<TRequest, TResponse>
-        where TRequest : class
-        where TResponse : class
+    public abstract class ServiceClientBase<TRequest, TResponse> : IServiceClient<TRequest, TResponse>
+        where TRequest : AppRequestMessage
+        where TResponse : AppResponseMessage
+
     {
         public IService<TRequest, TResponse> Service { get; protected set; }
 
         public ServiceClientBase()
         {
-            this.Service = Service<TService, TRequest, TResponse>.NewLocal();
+            var serviceTypeName = this.GetType().Name + "Service";
+            this.Service = ServiceFactory<TRequest, TResponse>.NewLocal(serviceTypeName);
         }
         public ServiceClientBase(Type proxyType, string proxyChannelName = null)
         {
             if (proxyChannelName == null)
-                proxyChannelName = ServiceTypesUtil.GetServiceProxyName<TService>();
-            this.Service = (IService<TRequest, TResponse>)Activator.CreateInstance(proxyType, proxyChannelName);
+            {
+                //proxyChannelName = ServiceTypesUtil.GetServiceProxyName<TService>();
+                proxyChannelName = this.GetType().Name + "Proxy";
+            }
+            this.Service = ServiceFactory<TRequest, TResponse>.NewProxied(proxyType, proxyChannelName);
         }
         //public ServiceClientBase(IService<TRequest, TResponse> service)
         //{

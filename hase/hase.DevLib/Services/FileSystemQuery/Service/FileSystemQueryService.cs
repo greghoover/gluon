@@ -1,14 +1,14 @@
-﻿using System.IO;
-using System.Threading.Tasks;
-using hase.DevLib.Framework.Contract;
+﻿using hase.DevLib.Framework.Service;
 using hase.DevLib.Services.FileSystemQuery.Contract;
+using System.IO;
+using System.Threading.Tasks;
 
 namespace hase.DevLib.Services.FileSystemQuery.Service
 {
-    public class FileSystemQueryService : IService<FileSystemQueryRequest, FileSystemQueryResponse>
+    public class FileSystemQueryService : ServiceBase<FileSystemQueryRequest, FileSystemQueryResponse>
     {
         // todo: consider making this an async method.
-        public Task<FileSystemQueryResponse> Execute(FileSystemQueryRequest request)
+        public override Task<FileSystemQueryResponse> Execute(FileSystemQueryRequest request)
         {
             string responseText = null;
             switch (request.QueryType)

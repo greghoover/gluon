@@ -43,5 +43,11 @@ namespace hase.DevLib.Framework.Relay
 
             return response;
         }
+
+        public Task<AppResponseMessage> Execute(AppRequestMessage request)
+        {
+            var responseTask = this.Execute((TRequest)request);
+            return RelayUtil.GeneralizeTask<AppResponseMessage, TResponse>(responseTask);
+        }
     }
 }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace hase.DevLib.Services.FileSystemQuery.Client
 {
-    public class FileSystemQuery : ServiceClientBase<FileSystemQueryService, FileSystemQueryRequest, FileSystemQueryResponse>, IFileSystemQuery
+    public class FileSystemQuery : ServiceClientBase<FileSystemQueryRequest, FileSystemQueryResponse>, IFileSystemQuery
     {
         /// <summary>
         /// Create local service instance.

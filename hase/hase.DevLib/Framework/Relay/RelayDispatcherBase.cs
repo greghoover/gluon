@@ -7,22 +7,19 @@ using System.Threading.Tasks;
 
 namespace hase.DevLib.Framework.Relay
 {
-    public abstract class RelayDispatcherBase<TService, TRequest, TResponse> : BackgroundService, IRelayDispatcher<TService, TRequest, TResponse>
-        where TService : IService<TRequest, TResponse>
-        where TRequest : AppRequestMessage
-        where TResponse : AppResponseMessage
+    public abstract class RelayDispatcherBase : BackgroundService, IRelayDispatcher
     {
         protected CancellationToken CT { get; private set; }
         public string ChannelName { get; private set; }
         public abstract string Abbr { get; }
 
         public abstract Task ConnectAsync(int timeoutMs, CancellationToken ct);
-        public abstract Task<TRequest> DeserializeRequest();
-        public abstract void SerializeResponse(string requestId, TResponse response);
+        public abstract Task<AppRequestMessage> DeserializeRequest();
+        public abstract void SerializeResponse(string requestId, AppResponseMessage response);
 
-        protected RelayDispatcherBase()
+        protected RelayDispatcherBase(string channelName)
         {
-            ChannelName = typeof(TService).Name;
+            this.ChannelName = channelName; // formerly TService.Name
         }
 
         private async Task SpinupConnection()
@@ -81,10 +78,10 @@ namespace hase.DevLib.Framework.Relay
             this.SerializeResponse(request.Headers.MessageId, response);
             //Console.WriteLine($"{this.Abbr}:Sent {ChannelName} response.");
         }
-        protected async virtual Task<TResponse> DispatchRequestAsync(TRequest request)
+        protected async virtual Task<AppResponseMessage> DispatchRequestAsync(AppRequestMessage request)
         {
-            var service = Service<TService, TRequest, TResponse>.NewLocal();
-            TResponse response = default(TResponse);
+            var service = ServiceFactory2.NewLocal(request.ServiceTypeName);
+            AppResponseMessage response = default(AppResponseMessage);
             try
             {
                 response = await service.Execute(request);

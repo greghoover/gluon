@@ -1,8 +1,16 @@
-﻿namespace hase.DevLib.Framework.Contract
+﻿using System.Threading.Tasks;
+
+namespace hase.DevLib.Framework.Contract
 {
-    public interface IService<TRequest, TResponse> : IRequestResponseCommand<TRequest, TResponse>
-        where TRequest : class
-        where TResponse : class
+    public interface IService
     {
+        Task<AppResponseMessage> Execute(AppRequestMessage request);
+    }
+
+    public interface IService<TRequest, TResponse> : IService
+        where TRequest : AppRequestMessage
+        where TResponse : AppResponseMessage
+    {
+        Task<TResponse> Execute(TRequest request);
     }
 }

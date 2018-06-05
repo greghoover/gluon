@@ -3,8 +3,8 @@
 namespace hase.DevLib.Framework.Relay
 {
     public interface IRelayProxy<TRequest, TResponse> : IService<TRequest, TResponse>
-        where TRequest : class
-        where TResponse : class
+        where TRequest : AppRequestMessage
+        where TResponse : AppResponseMessage
     {
         string Abbr { get; }
     }

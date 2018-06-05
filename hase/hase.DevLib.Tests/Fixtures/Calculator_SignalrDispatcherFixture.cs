@@ -11,14 +11,14 @@ namespace hase.DevLib.Tests.Fixtures
     public class Calculator_SignalrDispatcherFixture : IDisposable
     {
         private CancellationToken _ct = new CancellationToken();
-        private IRelayDispatcher<CalculatorService, CalculatorRequest, CalculatorResponse> _dispatcher = null;
+        private IRelayDispatcher _dispatcher = null;
 
         public Calculator_SignalrDispatcherFixture()
         {
             Console.WriteLine("Starting Service Dispatcher");
             Task.Run(async () =>
             {
-                _dispatcher = RelayDispatcher<SignalrRelayDispatcher<CalculatorService, CalculatorRequest, CalculatorResponse>, CalculatorService, CalculatorRequest, CalculatorResponse>.CreateInstance();
+                _dispatcher = new SignalrRelayDispatcher("CalculatorService");
                 await _dispatcher.StartAsync(_ct);
             });
             Console.WriteLine("Service Dispatcher started.");

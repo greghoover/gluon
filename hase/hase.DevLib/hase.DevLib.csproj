@@ -9,6 +9,24 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Framework\Client\_\**" />
+    <Compile Remove="Framework\Contract\_\**" />
+    <Compile Remove="Framework\Relay\_\**" />
+    <Compile Remove="Framework\Service\_\**" />
+    <Compile Remove="Services\_\**" />
+    <EmbeddedResource Remove="Framework\Client\_\**" />
+    <EmbeddedResource Remove="Framework\Contract\_\**" />
+    <EmbeddedResource Remove="Framework\Relay\_\**" />
+    <EmbeddedResource Remove="Framework\Service\_\**" />
+    <EmbeddedResource Remove="Services\_\**" />
+    <None Remove="Framework\Client\_\**" />
+    <None Remove="Framework\Contract\_\**" />
+    <None Remove="Framework\Relay\_\**" />
+    <None Remove="Framework\Service\_\**" />
+    <None Remove="Services\_\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.SignalR" Version="1.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="1.0.0" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="2.1.0" />

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace hase.DevLib.Services.Calculator.Client
 {
-    public class Calculator : ServiceClientBase<CalculatorService, CalculatorRequest, CalculatorResponse>, ICalculator
+    public class Calculator : ServiceClientBase<CalculatorRequest, CalculatorResponse>, ICalculator
     {
         /// <summary>
         /// Create local service instance.

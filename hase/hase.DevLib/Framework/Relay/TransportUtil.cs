@@ -43,6 +43,10 @@ namespace hase.DevLib.Framework.Relay
         {
             return JsonConvert.DeserializeObject<TRequest>(wrapper.Content);
         }
+        public static AppRequestMessage ToAppRequestMessage(this HttpRequestMessageWrapperEx wrapper, Type requestType)
+        {
+            return (AppRequestMessage)JsonConvert.DeserializeObject(wrapper.Content, requestType);
+        }
 
         public async static Task<HttpResponseMessageWrapperEx> ToTransportResponseAsync(this AppResponseMessage response)
         {

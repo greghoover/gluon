@@ -1,9 +1,8 @@
 ﻿namespace hase.DevLib.Framework.Contract
 {
-    public interface IServiceClient<TService, TRequest, TResponse>
-        where TService : IService<TRequest, TResponse>
-        where TRequest : class
-        where TResponse : class
+    public interface IServiceClient<TRequest, TResponse>
+        where TRequest : AppRequestMessage
+        where TResponse : AppResponseMessage
     {
         IService<TRequest, TResponse> Service { get; }
     }
