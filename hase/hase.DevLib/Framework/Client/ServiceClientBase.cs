@@ -4,7 +4,7 @@ using System;
 
 namespace hase.DevLib.Framework.Client
 {
-    public class ServiceClientBase<TService, TRequest, TResponse> : IServiceClient<TService, TRequest, TResponse>
+    public abstract class ServiceClientBase<TService, TRequest, TResponse> : IServiceClient<TService, TRequest, TResponse>
         where TService : IService<TRequest, TResponse>
         where TRequest : class
         where TResponse : class

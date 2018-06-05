@@ -56,21 +56,33 @@ namespace hase.DevLib.Framework.Relay.Signalr
 
         public async Task<HttpResponseMessageWrapperEx> ProcessProxyRequestAsync(HttpRequestMessageWrapperEx request)
         {
-            var requestId = request.GetRequestId();
-            var proxyChannel = request.GetSourceChannel();
-            var dispatcherChannel = ServiceTypesUtil.GetProxyServiceName(proxyChannel); // simpleton routing
+            try
+            {
+                var requestId = request.GetRequestId();
+                var proxyChannel = request.GetSourceChannel();
+                var dispatcherChannel = ServiceTypesUtil.GetProxyServiceName(proxyChannel); // simpleton routing
 
-            Console.WriteLine($"srrs:Request [{requestId}] received on proxy channel [{proxyChannel}].");
-            ProxyRequests.AddOrUpdate(requestId, Context.ConnectionId, (key, val) => { return val; });
+                Console.WriteLine($"srrs:Request [{requestId}] received on proxy channel [{proxyChannel}].");
+                ProxyRequests.AddOrUpdate(requestId, Context.ConnectionId, (key, val) => { return val; });
 
-            if (_cts.IsCancellationRequested)
+                if (_cts.IsCancellationRequested)
+                    return null;
+                await ForwardRequestToDispatcher(requestId, request, dispatcherChannel);
+
+                if (_cts.IsCancellationRequested)
+                    return null;
+                var response = await AwaitResponseFromDispatcher(requestId, dispatcherChannel);
+                return response;
+            }
+            catch (Exception ex)
+            {
+                var txt = ex.Message;
+                if (ex.InnerException != null)
+                    txt += Environment.NewLine + ex.InnerException ?? string.Empty;
+                Console.WriteLine(txt);
+
                 return null;
-            await ForwardRequestToDispatcher(requestId, request, dispatcherChannel);
-
-            if (_cts.IsCancellationRequested)
-                return null;
-            var response = await AwaitResponseFromDispatcher(requestId, dispatcherChannel);
-            return response;
+            }
         }
 
         private async Task ForwardRequestToDispatcher(string requestId, HttpRequestMessageWrapperEx request, string dispatcherChannel)
