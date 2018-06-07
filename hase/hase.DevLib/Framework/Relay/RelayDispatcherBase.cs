@@ -19,13 +19,14 @@ namespace hase.DevLib.Framework.Relay
 
         protected RelayDispatcherBase(string channelName)
         {
-            this.ChannelName = channelName; // formerly TService.Name
+            this.CT = new CancellationToken();
+            this.ChannelName = channelName; // e.g. some variation of the service name
         }
 
         private async Task SpinupConnection()
         {
             Console.WriteLine($"{this.Abbr}:{ChannelName} dispatcher connecting to relay.");
-            await this.ConnectAsync(timeoutMs: 5000, ct: CT);
+            await this.ConnectAsync(timeoutMs: 100000, ct: CT);
             Console.WriteLine($"{this.Abbr}:{ChannelName} dispatcher connected to relay.");
         }
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)

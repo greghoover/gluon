@@ -26,7 +26,7 @@ namespace hase.DevLib.Services.Calculator.Client
                 I2 = i2,
             };
 
-            var response = Task.Run(async () => await Service.Execute(request)).Result;
+            var response = Task.Run(async () => await this.Service.Execute(request)).Result;
             return response.Answer;
         }
 

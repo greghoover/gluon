@@ -23,9 +23,9 @@ namespace hase.ServiceApp.ConsoleHost
                 {
                     if (RelayUtil.RelayTypeDflt == RelayTypeEnum.SignalR)
                     {
-                        //Console.WriteLine($"{nameof(signalr.SignalrRelayDispatcher)}<{nameof(fileS.FileSystemQueryService)}>");
+                        Console.WriteLine($"{nameof(SignalrRelayDispatcher)}<{nameof(FileSystemQueryService)}>");
                         services.AddSingleton<IHostedService, SignalrRelayDispatcher>(isp => new SignalrRelayDispatcher("FileSystemQueryService"));
-                        //Console.WriteLine($"{nameof(SignalrRelayDispatcher<CalculatorService, CalculatorRequest, CalculatorResponse>)}<{nameof(CalculatorService)}>");
+                        Console.WriteLine($"{nameof(SignalrRelayDispatcher)}<{nameof(CalculatorService)}>");
                         services.AddSingleton<IHostedService, SignalrRelayDispatcher>(isp => new SignalrRelayDispatcher("CalculatorService"));
                     }
                     if (RelayUtil.RelayTypeDflt == RelayTypeEnum.NamedPipes)

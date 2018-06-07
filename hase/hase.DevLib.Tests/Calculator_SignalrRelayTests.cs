@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using hase.DevLib.Framework.Relay.Signalr;
 using hase.DevLib.Services.Calculator.Client;
 using hase.DevLib.Services.Calculator.Contract;

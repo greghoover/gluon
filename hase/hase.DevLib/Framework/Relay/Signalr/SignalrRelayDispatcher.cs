@@ -24,14 +24,13 @@ namespace hase.DevLib.Framework.Relay.Signalr
         //private SignalrClientStream pipe = null;
         HubConnection _hub = null;
 
-       // public override Task ConnectAsync(int timeoutMs, CancellationToken ct)
         public async override Task ConnectAsync(int timeoutMs, CancellationToken ct)
         {
-            var handler = new HttpClientHandler
-            {
-                ClientCertificateOptions = ClientCertificateOption.Manual,
-                ServerCertificateCustomValidationCallback = (httpRequestMessage, cert, cetChain, policyErrors) => { return true; }
-            };
+            //var handler = new HttpClientHandler
+            //{
+            //    ClientCertificateOptions = ClientCertificateOption.Manual,
+            //    ServerCertificateCustomValidationCallback = (httpRequestMessage, cert, cetChain, policyErrors) => { return true; }
+            //};
 
             _hub = new HubConnectionBuilder()
                 .WithUrl($"http://{RelayUtil.RelayHostName}:5000/route")
@@ -53,12 +52,21 @@ namespace hase.DevLib.Framework.Relay.Signalr
             try
             {
                 await _hub.StartAsync();
+            }
+            catch (Exception ex)
+            {
+                var e = ex;
+            }
+            finally { }
+            try
+            {
                 await _hub.InvokeAsync("RegisterServiceDispatcherAsync", ChannelName).ConfigureAwait(false);
             }
             catch (Exception ex)
             {
                 var e = ex;
             }
+            finally { }
         }
         private void StageRequest(HttpRequestMessageWrapperEx wrapper)
         {

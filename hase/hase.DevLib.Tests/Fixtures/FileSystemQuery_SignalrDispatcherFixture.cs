@@ -1,37 +1,43 @@
-﻿using hase.DevLib.Framework.Relay;
-using hase.DevLib.Framework.Relay.Signalr;
-using hase.DevLib.Services.FileSystemQuery.Contract;
+﻿using hase.DevLib.Framework.Relay.Signalr;
 using hase.DevLib.Services.FileSystemQuery.Service;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using System;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace hase.DevLib.Tests.Fixtures
 {
     public class FileSystemQuery_SignalrDispatcherFixture : IDisposable
     {
-        private CancellationToken _ct = new CancellationToken();
-        private IRelayDispatcher _dispatcher = null;
+        IHost _host = null;
 
         public FileSystemQuery_SignalrDispatcherFixture()
         {
-            Console.WriteLine("Starting Service Dispatcher");
-            Task.Run(async () =>
-            {
-                _dispatcher = new SignalrRelayDispatcher("FileSystemQueryService");
-                await _dispatcher.StartAsync(_ct);
-            });
-            Console.WriteLine("Service Dispatcher started.");
+            Task.Run(() => StartServiceDispatcher()).Wait();
         }
         public void Dispose()
         {
-            Console.WriteLine("Stopping Dispatcher.");
-            Task.Run(async () =>
-            {
-                if (_dispatcher != null)
-                    await _dispatcher.StopAsync(_ct);
-            });
-            Console.WriteLine("Dispatcher stopped.");
+            Task.Run(() => StopServiceDispatcher()).Wait(TimeSpan.FromSeconds(5));
         }
+        void StartServiceDispatcher()
+        {
+            Console.WriteLine("Building service dispatcher.");
+            _host = new HostBuilder()
+                .ConfigureServices((hostContext, services) =>
+                {
+                    Console.WriteLine($"{nameof(SignalrRelayDispatcher)}<{nameof(FileSystemQueryService)}>");
+                    services.AddSingleton<IHostedService, SignalrRelayDispatcher>(isp => new SignalrRelayDispatcher("FileSystemQueryService"));
+                }).Build();
+
+            Console.WriteLine("Starting service dispatcher:");
+            _host.StartAsync();
+        }
+        async void StopServiceDispatcher()
+        {
+            Console.WriteLine("Stopping SignalR relay server.");
+            await _host.StopAsync(TimeSpan.FromSeconds(5));
+            Console.WriteLine("SignalR relay server stopped.");
+        }
+
     }
 }

@@ -1,4 +1,5 @@
 ﻿using hase.DevLib.Framework.Relay.Signalr;
+using Microsoft.AspNetCore.Hosting;
 using System;
 using System.Threading.Tasks;
 
@@ -6,28 +7,35 @@ namespace hase.DevLib.Tests.Fixtures
 {
     public class SignalrRelayFixture : IDisposable
     {
-        //private SignalrRelayHub _signalrRelay = null;
+        IWebHost _relay = null;
 
         public SignalrRelayFixture()
         {
-            Console.WriteLine("Starting SignalR Relay Server...");
-            Task.Run(() =>
-            {
-                Startup.BuildAndRunWebHost(new string[] { });
-            //Task.Delay(2000).Wait();
-        });
-            Console.WriteLine("Signalr Relay started.");
+            Task.Run(() => StartRelayServer()).Wait();
         }
         public void Dispose()
         {
-            Console.WriteLine("Stopping SignalR Relay Server...");
-            Task.Run(() =>
-            {
-            //if (_signalrRelay != null)
-            //    _signalrRelay.StopAsync().Wait();
-            //Task.Delay(2000).Wait();
-        });
-            Console.WriteLine("Signalr Relay stopped.");
+            Task.Run(() => StopRelayServer()).Wait();
+        }
+
+        async void StartRelayServer()
+        {
+            Console.WriteLine("Building SignalR relay server.");
+            // todo: 06/07/18 gph. Get uri from configuration.
+            _relay = Startup.BuildWebHost(new string[]{ "http://127.0.0.1:5000" });
+
+            Console.WriteLine("Starting SignalR relay server.");
+            await _relay.StartAsync();
+            Console.WriteLine("SignalR relay server started.");
+
+            //Console.WriteLine("Waiting for Dispose to be called for shutdown.");
+            //await _relay.WaitForShutdownAsync();
+        }
+        async void StopRelayServer()
+        {
+            Console.WriteLine("Stopping SignalR relay server.");
+            await _relay.StopAsync(TimeSpan.FromSeconds(5));
+            Console.WriteLine("SignalR relay server stopped.");
         }
     }
 }

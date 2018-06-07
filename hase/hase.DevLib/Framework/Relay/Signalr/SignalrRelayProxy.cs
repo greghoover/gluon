@@ -20,25 +20,19 @@ namespace hase.DevLib.Framework.Relay.Signalr
 
         public async override Task ConnectAsync(int timeoutMs, CancellationToken ct)
         {
-            foreach (var addy in RelayUtil.RelayIPs)
+            try
             {
-                if (addy.AddressFamily == System.Net.Sockets.AddressFamily.InterNetworkV6)
-                    continue;
-                try
-                {
-                    _hub = new HubConnectionBuilder()
-                        .WithUrl($"http://{addy.ToString()}:5000/route")
-                        .Build();
+                _hub = new HubConnectionBuilder()
+                    .WithUrl($"http://{RelayUtil.RelayHostName}:5000/route")
+                    .Build();
 
-                    await _hub.StartAsync();
-                    break;
-                }
-                catch (Exception ex)
-                {
-                    var e = ex;
-                    if (_hub != null)
-                        await _hub.DisposeAsync();
-                }
+                await _hub.StartAsync();
+            }
+            catch (Exception ex)
+            {
+                var e = ex;
+                if (_hub != null)
+                    await _hub.DisposeAsync();
             }
         }
 
