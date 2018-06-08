@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace hase.DevLib.Framework.Contract
 {
@@ -9,11 +10,13 @@ namespace hase.DevLib.Framework.Contract
             public string MessageId { get; set; }
             public DateTimeOffset? CreatedOn { get; set; }
             public string SourceChannel { get; set; }
+            public Dictionary<string, string> Custom;
 
             public MessageHeaders()
             {
                 MessageId = Guid.NewGuid().ToString();
                 CreatedOn = DateTimeOffset.UtcNow;
+                Custom = new Dictionary<string, string>();
             }
         }
 

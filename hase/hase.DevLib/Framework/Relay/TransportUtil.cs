@@ -10,6 +10,9 @@ namespace hase.DevLib.Framework.Relay
 {
     public static class TransportUtil
     {
+        public static string CustomRequestHeaderPrefix => "custom-request-";
+        public static string CustomResponseHeaderPrefix => "custom-response-";
+
         //public static string RequestIdHeader => "pragma";
         public static string RequestIdHeader => "request-Id";
         public static string RequestDateHeader => "date";
@@ -32,6 +35,11 @@ namespace hase.DevLib.Framework.Relay
             http.Headers.Date = request.Headers.CreatedOn;
             //http.Headers.Add(RequestDateHeader, request.Headers.CreatedOn?.ToString());
             http.Headers.Add(RequestChannelHeader, request.Headers.SourceChannel);
+
+            foreach (var customHeader in request.Headers.Custom)
+            {
+                http.Headers.Add($"{CustomRequestHeaderPrefix}{customHeader.Key}", customHeader.Value);
+            }
 
             //var content = http.Content.ReadAsStringAsync().ConfigureAwait(false).GetAwaiter().GetResult();
             var content = await http.Content.ReadAsStringAsync();
@@ -60,6 +68,11 @@ namespace hase.DevLib.Framework.Relay
             http.Headers.Date = response.Headers.CreatedOn;
             //http.Headers.Add(ResponseDateHeader, response.Headers.CreatedOn?.ToString());
             http.Headers.Add(ResponseChannelHeader, response.Headers.SourceChannel);
+
+            foreach (var customHeader in response.Headers.Custom)
+            {
+                http.Headers.Add($"{CustomResponseHeaderPrefix}{customHeader.Key}", customHeader.Value);
+            }
 
             var content = await http.Content.ReadAsStringAsync();
             var wrapper = new HttpResponseMessageWrapperEx(http, content);
@@ -90,6 +103,14 @@ namespace hase.DevLib.Framework.Relay
         {
             return wrapper.Headers[RequestChannelHeader].FirstOrDefault();
         }
+        public static string GetCustomRequestHeaderKey(string headerName)
+        {
+            return $"{CustomRequestHeaderPrefix}{headerName}";
+        }
+        public static string GetCustomRequestHeader(this HttpRequestMessageWrapper wrapper, string headerName)
+        {
+            return wrapper.Headers[GetCustomRequestHeaderKey(headerName)].FirstOrDefault();
+        }
 
 
         public static string GetResponseId(this HttpResponseMessageWrapper wrapper)
@@ -106,6 +127,14 @@ namespace hase.DevLib.Framework.Relay
         public static string GetSourceChannel(this HttpResponseMessageWrapper wrapper)
         {
             return wrapper.Headers[ResponseChannelHeader].FirstOrDefault();
+        }
+        public static string GetCustomResponseHeaderKey(string headerName)
+        {
+            return $"{CustomResponseHeaderPrefix}{headerName}";
+        }
+        public static string GetCustomResponseHeader(this HttpResponseMessageWrapper wrapper, string headerName)
+        {
+            return wrapper.Headers[GetCustomResponseHeaderKey(headerName)].FirstOrDefault();
         }
     }
 }
