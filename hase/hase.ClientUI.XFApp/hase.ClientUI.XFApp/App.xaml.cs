@@ -10,7 +10,7 @@ namespace hase.ClientUI.XFApp
 		{
 			InitializeComponent();
 
-			MainPage = new ServiceClientsTabbedPage();
+			MainPage = new GenericServiceClientTabbedPage();
 		}
 
 		protected override void OnStart ()
