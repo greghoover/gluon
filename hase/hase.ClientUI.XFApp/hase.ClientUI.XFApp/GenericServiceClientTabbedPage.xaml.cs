@@ -15,21 +15,21 @@ namespace hase.ClientUI.XFApp
             AddClientTabs(ServiceDefinitions.GetAll());
         }
 
-        void AddClientTabs(IEnumerable<InputFormDef> list)
+        void AddClientTabs(IEnumerable<InputFormDef> formDefs)
         {
-            foreach (var definition in list)
+            foreach (var formDef in formDefs)
             {
-                AddGenericClientTab(definition);
+                AddGenericClientTab(formDef);
             }
         }
-        void AddGenericClientTab(InputFormDef definition)
+        void AddGenericClientTab(InputFormDef formDef)
         {
             var contentPage = new GenericServiceClientContentPage();
-            contentPage.InitializeComponent(definition);
+            contentPage.InitializeComponent(formDef);
 
             this.Children.Add(new NavigationPage(contentPage)
             {
-                Title = definition.NavigationTitle
+                Title = formDef.NavigationTitle ?? formDef.Name
             });
         }
     }

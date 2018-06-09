@@ -7,21 +7,21 @@ namespace hase.ClientUI.XFApp
 {
     public class GenericServiceClientContentPage : ContentPage
 	{
-		Button ResetButton;
-		Label InfoHeader;
-		Label EmptyHeader;
-		Picker ServiceLocationPicker;
-		Button SubmitButton;
-		Label ResultLabel;
-		List<Entry> EntryViews;
+		Button _resetButton;
+		Label _descHeader;
+		Label _emptyHeader;
+		Picker _serviceLocationPicker;
+		Button _submitButton;
+		Label _resultLabel;
+		List<Entry> _entryControls;
 
-		InputFormDef Definition;
+		InputFormDef _formDef;
 
 		public GenericServiceClientContentPage() { }
 
 		public void InitializeComponent(InputFormDef definition)
 		{
-			this.Definition = definition;
+			this._formDef = definition;
 			InitKnownControls();
 			this.Content = BuildPageContent();
 			ResetToInitialValues();
@@ -29,39 +29,39 @@ namespace hase.ClientUI.XFApp
 
 		void InitKnownControls()
 		{
-			EntryViews = new List<Entry>();
+			_entryControls = new List<Entry>();
 
-			ResetButton = new Button { Text = "Reset" };
-			ResetButton.Clicked += (sender, e) => {
+			_resetButton = new Button { Text = "Reset" };
+			_resetButton.Clicked += (sender, e) => {
 				ResetToInitialValues();
 			};
 
-			InfoHeader = new Label();
-			EmptyHeader = new Label();
+			_descHeader = new Label();
+			_emptyHeader = new Label();
 
-			ServiceLocationPicker = new Picker { Title = "Service location:" };
-			ServiceLocationPicker.ItemsSource = new List<string> { "Local", "Remote" };
+			_serviceLocationPicker = new Picker { Title = "Service location:" };
+			_serviceLocationPicker.ItemsSource = new List<string> { "Local", "Remote" };
 
-			SubmitButton = new Button { Text = "Submit" };
-			SubmitButton.Clicked += (sender, e) => {
+			_submitButton = new Button { Text = "Submit" };
+			_submitButton.Clicked += (sender, e) => {
 				PerformServiceCall();
 			};
 
-			ResultLabel = new Label();
+			_resultLabel = new Label();
 		}
 		private void ResetToInitialValues()
 		{
-			this.ServiceLocationPicker.SelectedIndex = 0;
+			this._serviceLocationPicker.SelectedIndex = 0;
 
-			foreach (var entry in EntryViews)
+			foreach (var entry in _entryControls)
 			{
 				entry.Text = entry.Placeholder;
 			}
-			this.ResultLabel.Text = string.Empty;
+			this._resultLabel.Text = string.Empty;
 		}
 		private void PerformServiceCall()
 		{
-			this.ResultLabel.Text = $"Service call submitted on {DateTime.Now.ToString("dd-MMM-yyyy HH:mm:ss")}.";
+			this._resultLabel.Text = $"Service call submitted on {DateTime.Now.ToString("dd-MMM-yyyy HH:mm:ss")}.";
 			//try
 			//{
 			//    var calc = default(Calculator);
@@ -95,26 +95,26 @@ namespace hase.ClientUI.XFApp
 
 		public View BuildPageContent()
 		{
-			this.Title = Definition.ContentTitle;
+			this.Title = _formDef.ContentTitle ?? _formDef.Name;
 
 			var view = new StackLayout();
-			view.Children.Add(ResetButton);
-			InfoHeader.Text = Definition.Description;
-			view.Children.Add(InfoHeader);
-			view.Children.Add(EmptyHeader);
-			view.Children.Add(ServiceLocationPicker);
-			view.Children.Add(EmptyHeader);
+			view.Children.Add(_resetButton);
+			_descHeader.Text = _formDef.Description;
+			view.Children.Add(_descHeader);
+			view.Children.Add(_emptyHeader);
+			view.Children.Add(_serviceLocationPicker);
+			view.Children.Add(_emptyHeader);
 
-			foreach (var field in Definition.InputFields)
+			foreach (var field in _formDef.InputFields)
 			{
 				view.Children.Add(new Label { Text = field.Caption });
 				var entry = new Entry { Text = field.DefaultValue, Placeholder = field.DefaultValue };
-				EntryViews.Add(entry);
+				_entryControls.Add(entry);
 				view.Children.Add(entry);
 			}
 
-			view.Children.Add(SubmitButton);
-			view.Children.Add(ResultLabel);
+			view.Children.Add(_submitButton);
+			view.Children.Add(_resultLabel);
 
 			return view;
 		}
