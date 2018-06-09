@@ -5,7 +5,7 @@ using Xamarin.Forms;
 
 namespace hase.ClientUI.XFApp
 {
-    public class GenericServiceClientContentPage : ContentPage
+	public class GenericServiceClientContentPage : ContentPage
 	{
 		Button _resetButton;
 		Label _descHeader;
@@ -19,9 +19,9 @@ namespace hase.ClientUI.XFApp
 
 		public GenericServiceClientContentPage() { }
 
-		public void InitializeComponent(InputFormDef definition)
+		public void InitializeComponent(InputFormDef formDef)
 		{
-			this._formDef = definition;
+			_formDef = formDef;
 			InitKnownControls();
 			this.Content = BuildPageContent();
 			ResetToInitialValues();
@@ -51,17 +51,17 @@ namespace hase.ClientUI.XFApp
 		}
 		private void ResetToInitialValues()
 		{
-			this._serviceLocationPicker.SelectedIndex = 0;
+			_serviceLocationPicker.SelectedIndex = 0;
 
 			foreach (var entry in _entryControls)
 			{
 				entry.Text = entry.Placeholder;
 			}
-			this._resultLabel.Text = string.Empty;
+			_resultLabel.Text = string.Empty;
 		}
 		private void PerformServiceCall()
 		{
-			this._resultLabel.Text = $"Service call submitted on {DateTime.Now.ToString("dd-MMM-yyyy HH:mm:ss")}.";
+			_resultLabel.Text = $"Service call submitted on {DateTime.Now.ToString("dd-MMM-yyyy HH:mm:ss")}.";
 			//try
 			//{
 			//    var calc = default(Calculator);
@@ -99,24 +99,32 @@ namespace hase.ClientUI.XFApp
 
 			var view = new StackLayout();
 			view.Children.Add(_resetButton);
+
+			// from formDef
 			_descHeader.Text = _formDef.Description;
+
 			view.Children.Add(_descHeader);
 			view.Children.Add(_emptyHeader);
 			view.Children.Add(_serviceLocationPicker);
 			view.Children.Add(_emptyHeader);
 
-			foreach (var field in _formDef.InputFields)
-			{
-				view.Children.Add(new Label { Text = field.Caption });
-				var entry = new Entry { Text = field.DefaultValue, Placeholder = field.DefaultValue };
-				_entryControls.Add(entry);
-				view.Children.Add(entry);
-			}
+			// from formDef fields
+			AddInputFieldsFromFormDef(view, _formDef.InputFields);
 
 			view.Children.Add(_submitButton);
 			view.Children.Add(_resultLabel);
 
 			return view;
+		}
+		void AddInputFieldsFromFormDef(StackLayout view, IEnumerable<InputFieldDef> inputFields)
+		{
+			foreach (var field in inputFields)
+			{
+				view.Children.Add(new Label { Text = field.Caption ?? field.Name });
+				var entry = new Entry { Text = field.DefaultValue, Placeholder = field.DefaultValue };
+				_entryControls.Add(entry);
+				view.Children.Add(entry);
+			}
 		}
 	}
 }

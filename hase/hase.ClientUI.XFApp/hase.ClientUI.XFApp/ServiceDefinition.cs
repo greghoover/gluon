@@ -1,4 +1,5 @@
 ﻿using hase.DevLib.Framework.Contract;
+using hase.DevLib.Services.Calculator.Client;
 using System.Collections.Generic;
 
 namespace hase.ClientUI.XFApp
@@ -6,6 +7,14 @@ namespace hase.ClientUI.XFApp
     public class ServiceDefinitions
     {
         public static IEnumerable<InputFormDef> GetAll()
+        {
+            var calcClient = new Calculator();
+            yield return calcClient.GenerateUntypedClientDef();
+
+            var fsqClient = new Calculator();
+            yield return fsqClient.GenerateUntypedClientDef();
+        }
+        public static IEnumerable<InputFormDef> GetAll2()
         {
             return new List<InputFormDef>
             {
