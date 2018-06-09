@@ -25,9 +25,9 @@ namespace hase.DevLib.Framework.Client
             }
             this.Service = ServiceFactory<TRequest, TResponse>.NewProxied(proxyType, proxyChannelName);
         }
-        //public ServiceClientBase(IService<TRequest, TResponse> service)
+        //public ServiceClientBase(IService<TRequest, TResponse> serviceOrProxyInstance)
         //{
-        //    this.Service = service;
+        //    this.Service = serviceOrProxyInstance;
         //}
     }
 }
