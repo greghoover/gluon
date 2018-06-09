@@ -1,10 +1,11 @@
-﻿using System;
+﻿using hase.DevLib.Framework.Contract;
+using System;
 using System.Collections.Generic;
 using Xamarin.Forms;
 
 namespace hase.ClientUI.XFApp
 {
-	public class GenericServiceClientContentPage : ContentPage
+    public class GenericServiceClientContentPage : ContentPage
 	{
 		Button ResetButton;
 		Label InfoHeader;
@@ -14,11 +15,11 @@ namespace hase.ClientUI.XFApp
 		Label ResultLabel;
 		List<Entry> EntryViews;
 
-		ServiceDefinition Definition;
+		InputFormDef Definition;
 
 		public GenericServiceClientContentPage() { }
 
-		public void InitializeComponent(ServiceDefinition definition)
+		public void InitializeComponent(InputFormDef definition)
 		{
 			this.Definition = definition;
 			InitKnownControls();
@@ -98,13 +99,13 @@ namespace hase.ClientUI.XFApp
 
 			var view = new StackLayout();
 			view.Children.Add(ResetButton);
-			InfoHeader.Text = Definition.InfoHeader;
+			InfoHeader.Text = Definition.Description;
 			view.Children.Add(InfoHeader);
 			view.Children.Add(EmptyHeader);
 			view.Children.Add(ServiceLocationPicker);
 			view.Children.Add(EmptyHeader);
 
-			foreach (var field in Definition.Fields)
+			foreach (var field in Definition.InputFields)
 			{
 				view.Children.Add(new Label { Text = field.Caption });
 				var entry = new Entry { Text = field.DefaultValue, Placeholder = field.DefaultValue };

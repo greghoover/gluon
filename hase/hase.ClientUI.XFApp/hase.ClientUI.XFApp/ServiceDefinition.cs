@@ -1,39 +1,26 @@
-﻿using System.Collections.Generic;
+﻿using hase.DevLib.Framework.Contract;
+using System.Collections.Generic;
 
 namespace hase.ClientUI.XFApp
 {
-    public class ServiceDefinition
-    {
-        public string NavigationTitle { get; set; }
-        public string ContentTitle { get; set; }
-        public string InfoHeader { get; set; }
-        public List<FieldDefinition> Fields { get; set; }
-    }
-    public class FieldDefinition
-    {
-        public string Name { get; set; }
-        public string Caption { get; set; }
-        public string DefaultValue { get; set; }
-    }
-
     public class ServiceDefinitions
     {
-        public static IEnumerable<ServiceDefinition> GetAll()
+        public static IEnumerable<InputFormDef> GetAll()
         {
-            return new List<ServiceDefinition>
+            return new List<InputFormDef>
             {
-                new ServiceDefinition {
+                new InputFormDef {
                     NavigationTitle = "Calculator",
                     ContentTitle = "Calculator Page",
-                    InfoHeader = "Add Two Numbers",
+                    Description = "Add Two Numbers",
 
-                    Fields = new List<FieldDefinition> {
-                        new FieldDefinition {
+                    InputFields = new List<InputFieldDef> {
+                        new InputFieldDef {
                             Caption = "FirstNumber:",
                             Name = "FirstNumber",
                             DefaultValue = "0"
                         },
-                        new FieldDefinition {
+                        new InputFieldDef {
                             Caption = "SecondNumber:",
                             Name = "SecondNumber",
                             DefaultValue = "0"
@@ -41,13 +28,13 @@ namespace hase.ClientUI.XFApp
                     }
                 },
 
-                new ServiceDefinition {
+                new InputFormDef {
                     NavigationTitle = "FileSystemQuery",
                     ContentTitle = "FileSystemQuery Page",
-                    InfoHeader = "Check File Path",
+                    Description = "Check File Path",
 
-                    Fields = new List<FieldDefinition> {
-                        new FieldDefinition {
+                    InputFields = new List<InputFieldDef> {
+                        new InputFieldDef {
                             Caption = "DoesDirectoryExist:",
                             Name = "DoesDirectoryExist",
                             DefaultValue = @"c:\"

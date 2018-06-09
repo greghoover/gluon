@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using hase.DevLib.Framework.Contract;
+using System.Collections.Generic;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -14,14 +15,14 @@ namespace hase.ClientUI.XFApp
             AddClientTabs(ServiceDefinitions.GetAll());
         }
 
-        void AddClientTabs(IEnumerable<ServiceDefinition> list)
+        void AddClientTabs(IEnumerable<InputFormDef> list)
         {
             foreach (var definition in list)
             {
                 AddGenericClientTab(definition);
             }
         }
-        void AddGenericClientTab(ServiceDefinition definition)
+        void AddGenericClientTab(InputFormDef definition)
         {
             var contentPage = new GenericServiceClientContentPage();
             contentPage.InitializeComponent(definition);
