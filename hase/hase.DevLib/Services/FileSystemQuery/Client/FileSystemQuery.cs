@@ -1,6 +1,5 @@
 ﻿using hase.DevLib.Framework.Client;
 using hase.DevLib.Services.FileSystemQuery.Contract;
-using hase.DevLib.Services.FileSystemQuery.Service;
 using System;
 using System.Threading.Tasks;
 
