@@ -22,32 +22,27 @@ namespace hase.DevLib.Framework.Service
 					var prop = typedRequest.GetType().GetProperty(field.Key);
 					if (prop != null)
 					{
-						// todo: 06/12/18 gph. make this more generic. 
-						// prob use object instead of string values in fields dictionary.
 						var propType = prop.PropertyType;
-						if (propType == typeof(string))
-							prop.SetValue(typedRequest, field.Value);
-						else if (propType == typeof(int))
-							prop.SetValue(typedRequest, int.Parse(field.Value));
-						else if (propType == typeof(int?))
-							prop.SetValue(typedRequest, int.Parse(field.Value));
-						else if (propType.IsEnum)
-							prop.SetValue(typedRequest, Enum.Parse(propType, field.Value));
+						if (propType.IsEnum)
+							prop.SetValue(typedRequest, Enum.Parse(propType, field.Value.ToString()));
+						else
+							prop.SetValue(typedRequest, Convert.ChangeType(field.Value, propType));
 					}
 				}
 			}
 			var typedResponse = this.Execute(typedRequest).Result;
 
-			// todo: 06/12/18 gph. make this more generic. no need to double serialize.
+			// todo: 06/12/18 gph. eliminate serializing multiple times.
 			foreach (var prop in typedResponse.GetType().GetProperties())
 			{
 				switch (prop.Name)
 				{
-					//case "AppRequestMessage":
-					case "Headers":
-					case "RequestTypeName":
-					case "ServiceTypeName":
-					case "Fields":
+					// todo: 06/12/18 gph. Use reflection to filter, not static list.
+					case "RequestTypeName": // request property
+					case "ServiceTypeName": // request property
+					case "AppRequestMessage": // response property
+					case "Headers": // shared property
+					case "Fields": // shared property
 						continue;
 				}
 				typedResponse.Fields.Add(prop.Name, prop.GetValue(typedResponse)?.ToString());

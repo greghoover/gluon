@@ -21,12 +21,12 @@ namespace hase.DevLib.Framework.Contract
 		}
 
 		public MessageHeaders Headers { get; set; }
-		public IDictionary<string, string> Fields { get; set; }
+		public IDictionary<string, object> Fields { get; set; }
 
 		public AppMessage()
 		{
 			Headers = new MessageHeaders();
-			Fields = new Dictionary<string, string>();
+			Fields = new Dictionary<string, object>();
 		}
 	}
 }

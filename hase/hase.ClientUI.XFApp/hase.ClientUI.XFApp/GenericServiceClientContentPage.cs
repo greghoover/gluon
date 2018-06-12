@@ -78,9 +78,9 @@ namespace hase.ClientUI.XFApp
 
 			this.resultLabel.Text = string.Empty;
 		}
-		IDictionary<string, string> ExtractInputValues()
+		IDictionary<string, object> ExtractInputValues()
 		{
-			var vals = new Dictionary<string, string>();
+			var vals = new Dictionary<string, object>();
 
 			foreach (var entry in this.entryControls)
 			{
@@ -113,7 +113,7 @@ namespace hase.ClientUI.XFApp
 						//		var fsq = new FileSystemQuery();
 						//		break;
 						//}
-						throw new ApplicationException("Untyped service client is not compatible with local service instances. Use remote service instance instead.");
+						throw new ApplicationException("Untyped service client cannot be used with a Local service. Use a Remote service instead.");
 						break;
 					case ServiceLocation.Remote:
 						client = new UntypedServiceClient(typeof(UntypedSignalrRelayProxy), proxyName);
@@ -131,10 +131,10 @@ namespace hase.ClientUI.XFApp
 				switch (this.formDef.Name)
 				{
 					case "Calculator":
-						responseText = response.Fields["Answer"];
+						responseText = response.Fields["Answer"].ToString();
 						break;
 					case "FileSystemQuery":
-						responseText = response.Fields["ResponseString"];
+						responseText = response.Fields["ResponseString"].ToString();
 						break;
 				}
 
