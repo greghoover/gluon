@@ -21,8 +21,8 @@ namespace hase.DevLib.Tests
 
             var request = new CalculatorRequest
             {
-                I1 = 5,
-                I2 = 10,
+                Number1 = 5,
+                Number2 = 10,
                 Operation = CalculatorOpEnum.Add,
             };
 

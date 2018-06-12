@@ -48,21 +48,21 @@
 //        [Fact]
 //        public void VerifyAddTwoNumbers_ClientApi_NamedPipeRelay()
 //        {
-//            var i1 = 5;
-//            var i2 = 10;
+//            var n1 = 5;
+//            var n2 = 10;
 //            var calc = new Calculator(typeof(NamedPipeRelayProxy<CalculatorRequest, CalculatorResponse>));
-//            var result = calc.Add(i1, i2);
-//            Xunit.Assert.True(result == i1 + i2);
+//            var result = calc.Add(n1, n2);
+//            Xunit.Assert.True(result == n1 + n2);
 //        }
 //        [Fact]
 //        public async void VerifyAddTwoNumbers_ServiceApi_NamedPipeRelay()
 //        {
-//            var i1 = 5;
-//            var i2 = 10;
-//            var request = new CalculatorRequest(CalculatorOpEnum.Add, i1, i2);
+//            var n1 = 5;
+//            var n2 = 10;
+//            var request = new CalculatorRequest(CalculatorOpEnum.Add, n1, n2);
 //            var calcService = new Calculator(typeof(NamedPipeRelayProxy<CalculatorRequest, CalculatorResponse>)).Service;
 //            var result = await calcService.Execute(request);
-//            Xunit.Assert.True(result.Answer == i1 + i2);
+//            Xunit.Assert.True(result.Answer == n1 + n2);
 //        }
 //    }
 //}

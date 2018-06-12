@@ -16,26 +16,26 @@ namespace hase.DevLib.Services.Calculator.Client
         /// </summary>
         public Calculator(Type proxyType) : base(proxyType) { }
 
-        public int? Add(int i1, int i2)
+        public int? Add(int n1, int n2)
         {
             var request = new CalculatorRequest
             {
                 Operation = CalculatorOpEnum.Add,
-                I1 = i1,
-                I2 = i2,
+                Number1 = n1,
+                Number2 = n2,
             };
 
             var response = Task.Run(async () => await this.Service.Execute(request)).Result;
             return response.Answer;
         }
 
-        public int? Sub(int i1, int i2)
+        public int? Subtract(int n1, int n2)
         {
             var request = new CalculatorRequest
             {
-                Operation = CalculatorOpEnum.Sub,
-                I1 = i1,
-                I2 = i2,
+                Operation = CalculatorOpEnum.Subtract,
+                Number1 = n1,
+                Number2 = n2,
             };
 
             var response = Task.Run<CalculatorResponse>(() => Service.Execute(request)).Result;

@@ -3,6 +3,6 @@
     public enum CalculatorOpEnum
     {
         Add = 1,
-        Sub = 2,
+        Subtract = 2,
     }
 }

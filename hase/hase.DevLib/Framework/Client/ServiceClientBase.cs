@@ -6,57 +6,78 @@ using System.Reflection;
 
 namespace hase.DevLib.Framework.Client
 {
-    public abstract class ServiceClientBase<TRequest, TResponse> : IServiceClient<TRequest, TResponse>
-        where TRequest : AppRequestMessage
-        where TResponse : AppResponseMessage
+	public abstract class ServiceClientBase<TRequest, TResponse> : IServiceClient<TRequest, TResponse>
+		where TRequest : AppRequestMessage
+		where TResponse : AppResponseMessage
 
-    {
-        public IService<TRequest, TResponse> Service { get; protected set; }
-        public string Name => this.GetType().Name;
+	{
+		public IService<TRequest, TResponse> Service { get; protected set; }
+		public string Name => this.GetType().Name;
+		public string RequestClrType => typeof(TRequest).FullName;
+		public string ResponseClrType => typeof(TResponse).FullName;
+		public string ServiceClrType => this.Service.GetType().FullName;
 
-        public ServiceClientBase()
-        {
-            var serviceTypeName = this.Name + "Service";
-            this.Service = ServiceFactory<TRequest, TResponse>.NewLocal(serviceTypeName);
-        }
-        public ServiceClientBase(Type proxyType, string proxyChannelName = null)
-        {
-            if (proxyChannelName == null)
-            {
-                //proxyChannelName = ServiceTypesUtil.GetServiceProxyName<TService>();
-                proxyChannelName = this.Name + "Proxy";
-            }
-            this.Service = ServiceFactory<TRequest, TResponse>.NewProxied(proxyType, proxyChannelName);
-        }
-        //public ServiceClientBase(IService<TRequest, TResponse> serviceOrProxyInstance)
-        //{
-        //    this.Service = serviceOrProxyInstance;
-        //}
-        public InputFormDef GenerateUntypedClientDef()
-        {
-            var form = new InputFormDef();
-            form.Name = this.Name;
-            form.InputFields = new List<InputFieldDef>();
+		public ServiceClientBase(string serviceTypeName = null)
+		{
+			this.Service = GetServiceInstance(serviceTypeName);
+		}
+		public ServiceClientBase(Type proxyType, string proxyChannelName = null)
+		{
+			proxyChannelName = proxyChannelName ?? ContractUtil.EnsureProxySuffix(this.Name);
+			this.Service = GetProxyInstance(proxyType, proxyChannelName);
+		}
+		public ServiceClientBase(IService<TRequest, TResponse> serviceOrProxyInstance)
+		{
+			this.Service = serviceOrProxyInstance;
+		}
 
-            var reqType = typeof(TRequest);
-            foreach (var prop in typeof(TRequest).GetProperties())
-            {
-                if (prop.Name == "Headers" || prop.Name == "ServiceTypeName")
-                    continue;
+		private IService<TRequest, TResponse> GetServiceInstance(string serviceTypeName = null)
+		{
+			serviceTypeName = serviceTypeName ?? ContractUtil.EnsureServiceSuffix(this.Name);
+			return ServiceFactory<TRequest, TResponse>.NewLocal(serviceTypeName);
+		}
+		private IService<TRequest, TResponse> GetProxyInstance(Type proxyType, string proxyChannelName = null)
+		{
+			//proxyChannelName = ServiceTypesUtil.GetServiceProxyName<TService>();
+			proxyChannelName = proxyChannelName ?? ContractUtil.EnsureProxySuffix(this.Name);
+			return ServiceFactory<TRequest, TResponse>.NewProxied(proxyType, proxyChannelName);
+		}
 
-                var propType = prop.GetType();
+		public InputFormDef GenerateUntypedClientDef()
+		{
+			var form = new InputFormDef();
+			form.Name = this.Name;
+			form.RequestClrType = this.RequestClrType;
+			form.ResponseClrType = this.ResponseClrType;
+			form.ServiceClrType = this.ServiceClrType;
+			form.InputFields = new List<InputFieldDef>();
 
-                var field = new InputFieldDef();
-                field.Name = prop.Name;
-                field.ClrType = propType.FullName;
+			var reqType = typeof(TRequest);
+			form.RequestClrType = reqType.FullName;
+			foreach (var prop in typeof(TRequest).GetProperties())
+			{
+				switch (prop.Name)
+				{
+					case "Headers":
+					case "RequestTypeName":
+					case "ServiceTypeName":
+					case "Fields":
+						continue;
+				}
 
-                if (prop.GetType().IsEnum)
-                    field.Choices = Enum.GetNames(propType);
+				var propType = prop.PropertyType;
 
-                form.InputFields.Add(field);
-            }
+				var field = new InputFieldDef();
+				field.Name = prop.Name;
+				field.ClrType = propType.FullName;
 
-            return form;
-        }
-    }
+				if (propType.IsEnum)
+					field.Choices = Enum.GetNames(propType);
+
+				form.InputFields.Add(field);
+			}
+
+			return form;
+		}
+	}
 }

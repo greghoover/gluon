@@ -16,34 +16,6 @@ namespace hase.DevLib.Framework.Service
                 yield return (id, desc);
             }
         }
-
-        //public static string GetServiceProxyName<TService>()
-        //{
-        //    return GetServiceProxyName(typeof(TService));
-        //}
-        //public static string GetServiceProxyName(Type serviceType)
-        //{
-        //    return GetServiceProxyName(serviceType.Name);
-        //}
-        //public static string GetServiceProxyName(string serviceName)
-        //{
-        //    if (serviceName.EndsWith("Service"))
-        //        return serviceName.Substring(0, serviceName.Length - 7) + "Proxy";
-        //    else if (serviceName.EndsWith("service"))
-        //        return serviceName.Substring(0, serviceName.Length - 7) + "proxy";
-        //    else
-        //        return serviceName + "proxy";
-        //}
-
-        public static string GetProxyServiceName(string proxyName)
-        {
-            if (proxyName.EndsWith("Proxy"))
-                return proxyName.Substring(0, proxyName.Length - 5) + "Service";
-            else if (proxyName.EndsWith("proxy"))
-                return proxyName.Substring(0, proxyName.Length - 5) + "service";
-            else
-                return proxyName + "service";
-        }
     }
 }
 

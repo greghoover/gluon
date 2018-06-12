@@ -75,20 +75,20 @@ namespace hase.ClientUI.ConsoleApp
         static void DoCalculator()
         {
             Console.WriteLine("For temporary simplicity, will always perform add.");
-            Console.Write("Enter I1: ");
+            Console.Write("Enter Number1: ");
             var input1 = Console.ReadLine().Trim();
             if (input1 == string.Empty)
                 return;
-            int i1;
-            if (!int.TryParse(input1, out i1))
+            int n1;
+            if (!int.TryParse(input1, out n1))
                 return;
 
-            Console.Write("Enter I2: ");
+            Console.Write("Enter Number2: ");
             var input2 = Console.ReadLine().Trim();
             if (input2 == string.Empty)
                 return;
-            int i2;
-            if (!int.TryParse(input2, out i2))
+            int n2;
+            if (!int.TryParse(input2, out n2))
                 return;
 
             var calc = default(ICalculator);
@@ -101,8 +101,8 @@ namespace hase.ClientUI.ConsoleApp
             {
                 //calc = new Calculator(typeof(NamedPipeRelayProxy<CalculatorRequest, CalculatorResponse>));
             }
-            var result = calc.Add(i1, i2);
-            Console.WriteLine($"[{i1} + {i2}] = [{result}].");
+            var result = calc.Add(n1, n2);
+            Console.WriteLine($"[{n1} + {n2}] = [{result}].");
         }
     }
 }

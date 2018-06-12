@@ -1,27 +1,36 @@
-﻿using hase.DevLib.Framework.Contract;
+﻿using hase.DevLib.Framework.Client;
+using hase.DevLib.Framework.Contract;
+using hase.DevLib.Framework.Relay.Signalr;
+using hase.DevLib.Services.Calculator.Client;
+using hase.DevLib.Services.Calculator.Contract;
+using hase.DevLib.Services.FileSystemQuery.Client;
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Xamarin.Forms;
+using static hase.DevLib.Framework.Client.ClientUtil;
 
 namespace hase.ClientUI.XFApp
 {
 	public class GenericServiceClientContentPage : ContentPage
 	{
-		Button _resetButton;
-		Label _descHeader;
-		Label _emptyHeader;
-		Picker _serviceLocationPicker;
-		Button _submitButton;
-		Label _resultLabel;
-		List<Entry> _entryControls;
+		Button resetButton;
+		Label descHeader;
+		Label emptyHeader;
+		Picker serviceLocationPicker;
+		Button submitButton;
+		Label resultLabel;
+		List<Entry> entryControls;
+		List<Picker> pickerControls;
 
-		InputFormDef _formDef;
+		InputFormDef formDef;
 
 		public GenericServiceClientContentPage() { }
 
 		public void InitializeComponent(InputFormDef formDef)
 		{
-			_formDef = formDef;
+			this.formDef = formDef;
 			InitKnownControls();
 			this.Content = BuildPageContent();
 			ResetToInitialValues();
@@ -29,90 +38,141 @@ namespace hase.ClientUI.XFApp
 
 		void InitKnownControls()
 		{
-			_entryControls = new List<Entry>();
+			this.entryControls = new List<Entry>();
+			this.pickerControls = new List<Picker>();
 
-			_resetButton = new Button { Text = "Reset" };
-			_resetButton.Clicked += (sender, e) => {
+			this.resetButton = new Button { Text = "Reset" };
+			this.resetButton.Clicked += (sender, e) => {
 				ResetToInitialValues();
 			};
 
-			_descHeader = new Label();
-			_emptyHeader = new Label();
+			this.descHeader = new Label();
+			this.emptyHeader = new Label();
 
-			_serviceLocationPicker = new Picker { Title = "Service location:" };
-			_serviceLocationPicker.ItemsSource = new List<string> { "Local", "Remote" };
+			this.serviceLocationPicker = new Picker { Title = "Service location:" };
+			//this.serviceLocationPicker.ItemsSource = new List<string> { "Local", "Remote" };
+			//this.serviceLocationPicker.ItemsSource = (IList)ClientUtil.GetReadableEnumNames<ServiceLocation>();
+			this.serviceLocationPicker.ItemsSource = Enum.GetNames(typeof(ServiceLocation));
 
-			_submitButton = new Button { Text = "Submit" };
-			_submitButton.Clicked += (sender, e) => {
+			this.submitButton = new Button { Text = "Submit" };
+			this.submitButton.Clicked += (sender, e) => {
 				PerformServiceCall();
 			};
 
-			_resultLabel = new Label();
+			this.resultLabel = new Label();
 		}
 		private void ResetToInitialValues()
 		{
-			_serviceLocationPicker.SelectedIndex = 0;
+			//this.serviceLocationPicker.SelectedIndex = 0;
+			SelectPickerItem(this.serviceLocationPicker, "Remote");
 
-			foreach (var entry in _entryControls)
+			foreach (var entry in this.entryControls)
 			{
 				entry.Text = entry.Placeholder;
 			}
-			_resultLabel.Text = string.Empty;
+
+			foreach (var picker in this.pickerControls)
+			{
+				SelectPickerItem(picker, picker.ClassId);
+			}
+
+			this.resultLabel.Text = string.Empty;
+		}
+		IDictionary<string, string> ExtractInputValues()
+		{
+			var vals = new Dictionary<string, string>();
+
+			foreach (var entry in this.entryControls)
+			{
+				vals.Add(entry.StyleId, entry.Text);
+			}
+			foreach (var picker in this.pickerControls)
+			{
+				vals.Add(picker.StyleId, picker.SelectedItem.ToString());
+			}
+			return vals;
 		}
 		private void PerformServiceCall()
 		{
-			_resultLabel.Text = $"Service call submitted on {DateTime.Now.ToString("dd-MMM-yyyy HH:mm:ss")}.";
-			//try
-			//{
-			//    var calc = default(Calculator);
-			//    switch (this.ServiceLocationPicker.SelectedItem.ToString().ToLower())
-			//    {
-			//        case "local":
-			//            calc = new Calculator();
-			//            break;
-			//        case "remote":
-			//            calc = new Calculator(typeof(SignalrRelayProxy<CalculatorRequest, CalculatorResponse>));
-			//            break;
-			//        default:
-			//            throw new ApplicationException("Service location must be either Local or Remote.");
-			//    }
-			//    var number1 = int.Parse(this.FirstNumber.Text);
-			//    var number2 = int.Parse(this.SecondNumber.Text);
-			//    var result = calc.Add(number1, number2);
-			//    this.ResultLabel.Text = $"[{number1}] + [{number2}] = [{result}].";
-			//}
-			//catch (Exception ex)
-			//{
-			//    var txt = ex.Message;
-			//    if (ex.InnerException != null)
-			//        txt += Environment.NewLine + ex.InnerException.Message;
-			//    this.ResultLabel.Text = txt;
-			//}
-			//finally
-			//{
-			//}
+			try
+			{
+				var serviceName = ContractUtil.EnsureServiceSuffix(this.formDef.Name);
+				var proxyName = ContractUtil.EnsureProxySuffix(this.formDef.Name);
+				var client = default(IServiceClient<AppRequestMessage, AppResponseMessage>);
+
+				var selectedItem = (ServiceLocation) Enum.Parse(typeof(ServiceLocation), this.serviceLocationPicker.SelectedItem.ToString());
+				switch (selectedItem)
+				{
+					case ServiceLocation.Local:
+						//switch (this.formDef.Name)
+						//{
+						//	case "Calculator":
+						//		var calc = new Calculator();
+						//		break;
+						//	case "FileSystemQuery":
+						//		var fsq = new FileSystemQuery();
+						//		break;
+						//}
+						throw new ApplicationException("Untyped service client is not compatible with local service instances. Use remote service instance instead.");
+						break;
+					case ServiceLocation.Remote:
+						client = new UntypedServiceClient(typeof(UntypedSignalrRelayProxy), proxyName);
+						break;
+				}
+
+				var request = new AppRequestMessage(this.formDef.RequestClrType, this.formDef.ServiceClrType);
+				request.Fields = ExtractInputValues();
+
+				var response = Task.Run(async () => await client.Service.Execute(request)).Result;
+
+				// todo: 06/12/18 gph. Non-standard field name. 
+				// Standardize or 'ExtractOutputValues' after adding response schema to formDef.
+				var responseText = default(string);
+				switch (this.formDef.Name)
+				{
+					case "Calculator":
+						responseText = response.Fields["Answer"];
+						break;
+					case "FileSystemQuery":
+						responseText = response.Fields["ResponseString"];
+						break;
+				}
+
+				this.resultLabel.Text = $"{selectedItem} service call submitted on {DateTime.Now.ToString("dd-MMM-yyyy HH:mm:ss")}. Response {responseText}.";
+			}
+			catch (Exception ex)
+			{
+				var txt = ex.Message;
+				if (ex.InnerException != null)
+					txt += Environment.NewLine + ex.InnerException.Message;
+				this.resultLabel.Text = txt;
+			}
+			finally
+			{
+			}
 		}
+
 
 		public View BuildPageContent()
 		{
-			this.Title = _formDef.ContentTitle ?? _formDef.Name;
+			this.Title = this.formDef.ContentTitle ?? this.formDef.Name;
 
 			var view = new StackLayout();
-			view.Children.Add(_resetButton);
+			view.Children.Add(this.resetButton);
 
 			// from formDef
-			_descHeader.Text = _formDef.Description;
+			this.descHeader.Text = this.formDef.Description;
 
-			view.Children.Add(_descHeader);
-			view.Children.Add(_emptyHeader);
-			view.Children.Add(_serviceLocationPicker);
-			view.Children.Add(_emptyHeader);
+			view.Children.Add(this.descHeader);
+			view.Children.Add(this.emptyHeader);
+			view.Children.Add(this.serviceLocationPicker);
+			view.Children.Add(this.emptyHeader);
 
 			// from formDef fields
-			AddInputFieldsFromFormDef(view, _formDef.InputFields);
+			AddInputFieldsFromFormDef(view, this.formDef.InputFields);
 
-			view.Children.Add(_submitButton);
-			view.Children.Add(_resultLabel);
+			view.Children.Add(this.submitButton);
+			view.Children.Add(this.resultLabel);
 
 			return view;
 		}
@@ -120,11 +180,55 @@ namespace hase.ClientUI.XFApp
 		{
 			foreach (var field in inputFields)
 			{
-				view.Children.Add(new Label { Text = field.Caption ?? field.Name });
-				var entry = new Entry { Text = field.DefaultValue, Placeholder = field.DefaultValue };
-				_entryControls.Add(entry);
-				view.Children.Add(entry);
+				if (field.Choices != null && field.Choices.Count > 0)
+					AddPickerView(view, field);
+				else
+					AddEntryView(view, field);
 			}
+		}
+		void SelectPickerItem(Picker picker, string itemText)
+		{
+			if (picker.Items == null || picker.Items.Count < 1)
+				return;
+
+			picker.SelectedIndex = 0;
+			if (itemText == null)
+				return;
+
+			foreach (var item in picker.Items)
+			{
+				if (item.ToString().ToLower() == itemText.ToLower())
+				{
+					picker.SelectedItem = item;
+					return;
+				}
+			}
+		}
+		void AddPickerView(StackLayout view, InputFieldDef field)
+		{
+			var picker = new Picker
+			{
+				StyleId = field.Name,
+				ItemsSource = (IList)field.Choices,
+				Title = field.Name,
+				ClassId = field.DefaultValue,
+			};
+			SelectPickerItem(picker, field.DefaultValue);
+
+			this.pickerControls.Add(picker);
+			view.Children.Add(picker);
+		}
+		void AddEntryView(StackLayout view, InputFieldDef field)
+		{
+			view.Children.Add(new Label { Text = field.Caption ?? field.Name });
+			var entry = new Entry
+			{
+				StyleId = field.Name,
+				Text = field.DefaultValue,
+				Placeholder = field.DefaultValue,
+			};
+			this.entryControls.Add(entry);
+			view.Children.Add(entry);
 		}
 	}
 }

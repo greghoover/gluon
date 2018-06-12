@@ -1,4 +1,5 @@
-﻿using hase.DevLib.Framework.Service;
+﻿using hase.DevLib.Framework.Contract;
+using hase.DevLib.Framework.Service;
 using Microsoft.AspNetCore.SignalR;
 using System;
 using System.Collections.Concurrent;
@@ -60,7 +61,7 @@ namespace hase.DevLib.Framework.Relay.Signalr
             {
                 var requestId = request.GetRequestId();
                 var proxyChannel = request.GetSourceChannel();
-                var dispatcherChannel = ServiceTypesUtil.GetProxyServiceName(proxyChannel); // simpleton routing
+                var dispatcherChannel = ContractUtil.GetProxyServiceName(proxyChannel); // simpleton routing
 
                 Console.WriteLine($"srrs:Request [{requestId}] received on proxy channel [{proxyChannel}].");
                 ProxyRequests.AddOrUpdate(requestId, Context.ConnectionId, (key, val) => { return val; });

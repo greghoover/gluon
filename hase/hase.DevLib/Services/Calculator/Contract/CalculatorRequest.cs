@@ -9,19 +9,19 @@ namespace hase.DevLib.Services.Calculator.Contract
         [ProtoMember(1)]
         public CalculatorOpEnum Operation { get; set; }
         [ProtoMember(2)]
-        public int I1 { get; set; }
+        public int Number1 { get; set; }
         [ProtoMember(3)]
-        public int I2 { get; set; }
+        public int Number2 { get; set; }
 
         public CalculatorRequest() { }
-        public CalculatorRequest(CalculatorOpEnum op, int i1, int i2)
+        public CalculatorRequest(CalculatorOpEnum op, int n1, int n2)
         {
             Operation = op;
-            I1 = i1;
-            I2 = i2;
+            Number1 = n1;
+            Number2 = n2;
         }
 
         public override string ToString() =>
-             $"I1[{this.I1}] Op[{this.Operation}] I2[{this.I2}]";
+             $"N1[{this.Number1}] Op[{this.Operation}] N2[{this.Number2}]";
     }
 }

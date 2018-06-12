@@ -13,10 +13,10 @@ namespace hase.DevLib.Services.Calculator.Service
             switch (request.Operation)
             {
                 case CalculatorOpEnum.Add:
-                    result = request.I1 + request.I2;
+                    result = request.Number1 + request.Number2;
                     break;
-                case CalculatorOpEnum.Sub:
-                    result = request.I1 - request.I2;
+                case CalculatorOpEnum.Subtract:
+                    result = request.Number1 - request.Number2;
                     break;
             }
 

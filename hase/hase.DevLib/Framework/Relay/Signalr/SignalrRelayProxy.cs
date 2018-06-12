@@ -11,7 +11,7 @@ namespace hase.DevLib.Framework.Relay.Signalr
         where TRequest : AppRequestMessage
         where TResponse : AppResponseMessage
     {
-        public override string Abbr => "srrpc";
+        public override string Abbr => "srrp";
         //private SignalrClientStream pipe = null;
         HubConnection _hub = null;
         private object _tmpResponse = null;
