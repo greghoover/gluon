@@ -1,9 +1,6 @@
 ﻿using hase.DevLib.Framework.Client;
 using hase.DevLib.Framework.Contract;
 using hase.DevLib.Framework.Relay.Signalr;
-using hase.DevLib.Services.Calculator.Client;
-using hase.DevLib.Services.Calculator.Contract;
-using hase.DevLib.Services.FileSystemQuery.Client;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -98,22 +95,14 @@ namespace hase.ClientUI.XFApp
 			{
 				var serviceName = ContractUtil.EnsureServiceSuffix(this.formDef.Name);
 				var proxyName = ContractUtil.EnsureProxySuffix(this.formDef.Name);
-				var client = default(IServiceClient<AppRequestMessage, AppResponseMessage>);
+				var client = default(UntypedServiceClient); //default(IServiceClient<AppRequestMessage, AppResponseMessage>);
 
 				var selectedItem = (ServiceLocation) Enum.Parse(typeof(ServiceLocation), this.serviceLocationPicker.SelectedItem.ToString());
 				switch (selectedItem)
 				{
 					case ServiceLocation.Local:
-						//switch (this.formDef.Name)
-						//{
-						//	case "Calculator":
-						//		var calc = new Calculator();
-						//		break;
-						//	case "FileSystemQuery":
-						//		var fsq = new FileSystemQuery();
-						//		break;
-						//}
-						throw new ApplicationException("Untyped service client cannot be used with a Local service. Use a Remote service instead.");
+						// todo: 06/13/18 gph. move the type argument to a type parameter if possible.
+						client = new UntypedServiceClient(typeof(UntypedSignalrRelayProxy), proxyName);
 						break;
 					case ServiceLocation.Remote:
 						client = new UntypedServiceClient(typeof(UntypedSignalrRelayProxy), proxyName);
