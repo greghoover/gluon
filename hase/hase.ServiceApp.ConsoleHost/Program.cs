@@ -1,8 +1,8 @@
 ﻿//using hase.DevLib.Framework.Relay.NamedPipe;
 using hase.AppServices.Calculator.Service;
+using hase.AppServices.FileSystemQuery.Service;
 using hase.DevLib.Framework.Relay;
 using hase.DevLib.Framework.Relay.Signalr;
-using hase.DevLib.Services.FileSystemQuery.Service;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;

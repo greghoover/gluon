@@ -9,6 +9,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Services\FileSystemQuery\**" />
+    <EmbeddedResource Remove="Services\FileSystemQuery\**" />
+    <None Remove="Services\FileSystemQuery\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.SignalR" Version="1.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="1.0.0" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="2.1.0" />

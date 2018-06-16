@@ -1,6 +1,6 @@
-﻿using hase.DevLib.Framework.Contract;
-using hase.AppServices.Calculator.Client;
-using hase.DevLib.Services.FileSystemQuery.Client;
+﻿using hase.AppServices.Calculator.Client;
+using hase.AppServices.FileSystemQuery.Client;
+using hase.DevLib.Framework.Contract;
 using System.Collections.Generic;
 
 namespace hase.ClientUI.XFApp

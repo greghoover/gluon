@@ -1,9 +1,9 @@
 //using hase.DevLib.Framework.Relay;
 //using hase.DevLib.Framework.Relay.NamedPipe;
 //using hase.DevLib.Framework.Service;
-//using hase.DevLib.Services.FileSystemQuery.Client;
-//using hase.DevLib.Services.FileSystemQuery.Contract;
-//using hase.DevLib.Services.FileSystemQuery.Service;
+//using hase.AppServices.FileSystemQuery.Client;
+//using hase.AppServices.FileSystemQuery.Contract;
+//using hase.AppServices.FileSystemQuery.Service;
 //using System;
 //using Xunit;
 
