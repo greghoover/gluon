@@ -1,8 +1,8 @@
 ﻿using hase.DevLib.Framework.Service;
-using hase.DevLib.Services.Calculator.Contract;
+using hase.AppServices.Calculator.Contract;
 using System.Threading.Tasks;
 
-namespace hase.DevLib.Services.Calculator.Service
+namespace hase.AppServices.Calculator.Service
 {
     public class CalculatorService : ServiceBase<CalculatorRequest, CalculatorResponse>
     {

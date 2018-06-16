@@ -82,7 +82,7 @@ namespace hase.DevLib.Framework.Relay
 		}
 		protected async virtual Task<AppResponseMessage> DispatchRequestAsync(AppRequestMessage request)
 		{
-			var service = ServiceFactory2.NewLocal(request.ServiceTypeName);
+			var service = ServiceFactory2.NewLocal(request.ServiceClrType);
 			AppResponseMessage response = default(AppResponseMessage);
 			try
 			{

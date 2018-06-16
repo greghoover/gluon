@@ -13,9 +13,9 @@ namespace hase.DevLib.Framework.Client
 	{
 		public IService<TRequest, TResponse> Service { get; protected set; }
 		public string Name => this.GetType().Name;
-		public string RequestClrType => typeof(TRequest).FullName;
-		public string ResponseClrType => typeof(TResponse).FullName;
-		public string ServiceClrType => this.Service.GetType().FullName;
+		public string RequestClrType => typeof(TRequest).AssemblyQualifiedName;
+		public string ResponseClrType => typeof(TResponse).AssemblyQualifiedName;
+		public string ServiceClrType => this.Service.GetType().AssemblyQualifiedName;
 
 		public ServiceClientBase(string serviceTypeName = null)
 		{
@@ -33,7 +33,7 @@ namespace hase.DevLib.Framework.Client
 
 		private IService<TRequest, TResponse> GetServiceInstance(string serviceTypeName = null)
 		{
-			serviceTypeName = serviceTypeName ?? ContractUtil.EnsureServiceSuffix(this.Name);
+			serviceTypeName = serviceTypeName ?? ContractUtil.GetServiceClrTypeFromClientType(this.GetType());
 			return ServiceFactory<TRequest, TResponse>.NewLocal(serviceTypeName);
 		}
 		private IService<TRequest, TResponse> GetProxyInstance(Type proxyType, string proxyChannelName = null)
@@ -53,23 +53,25 @@ namespace hase.DevLib.Framework.Client
 			form.InputFields = new List<InputFieldDef>();
 
 			var reqType = typeof(TRequest);
-			form.RequestClrType = reqType.FullName;
+			form.RequestClrType = reqType.AssemblyQualifiedName;
+
+			// add form def fields from request properties
 			foreach (var prop in typeof(TRequest).GetProperties())
 			{
 				switch (prop.Name)
 				{
+					// todo: 06/16/18 gph. Un-hardcode type.
 					case "Headers":
-					case "RequestTypeName":
-					case "ServiceTypeName":
+					case "RequestClrType":
+					case "ServiceClrType":
 					case "Fields":
 						continue;
 				}
-
 				var propType = prop.PropertyType;
 
 				var field = new InputFieldDef();
 				field.Name = prop.Name;
-				field.ClrType = propType.FullName;
+				field.ClrType = propType.AssemblyQualifiedName;
 
 				if (propType.IsEnum)
 					field.Choices = Enum.GetNames(propType);

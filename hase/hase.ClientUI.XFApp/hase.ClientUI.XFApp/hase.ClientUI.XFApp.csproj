@@ -9,6 +9,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\hase.AppServices.Calculator\hase.AppServices.Calculator.csproj" />
     <ProjectReference Include="..\..\hase.DevLib\hase.DevLib.csproj" />
   </ItemGroup>
 

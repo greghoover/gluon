@@ -1,5 +1,5 @@
 ﻿using hase.DevLib.Framework.Contract;
-using hase.DevLib.Services.Calculator.Client;
+using hase.AppServices.Calculator.Client;
 using hase.DevLib.Services.FileSystemQuery.Client;
 using System.Collections.Generic;
 

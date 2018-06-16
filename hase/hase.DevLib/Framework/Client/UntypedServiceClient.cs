@@ -1,8 +1,5 @@
-﻿using hase.DevLib.Framework.Client;
-using hase.DevLib.Framework.Contract;
-using hase.DevLib.Services.Calculator.Contract;
+﻿using hase.DevLib.Framework.Contract;
 using System;
-using System.Threading.Tasks;
 
 namespace hase.DevLib.Framework.Client
 {

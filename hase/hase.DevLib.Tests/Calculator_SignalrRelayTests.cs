@@ -1,7 +1,7 @@
 using System.Threading.Tasks;
 using hase.DevLib.Framework.Relay.Signalr;
-using hase.DevLib.Services.Calculator.Client;
-using hase.DevLib.Services.Calculator.Contract;
+using hase.AppServices.Calculator.Client;
+using hase.AppServices.Calculator.Contract;
 using hase.DevLib.Tests.Fixtures;
 using Xunit;
 

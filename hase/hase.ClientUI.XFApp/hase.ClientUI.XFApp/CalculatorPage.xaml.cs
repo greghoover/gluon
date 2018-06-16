@@ -1,6 +1,6 @@
 ﻿using hase.DevLib.Framework.Relay.Signalr;
-using hase.DevLib.Services.Calculator.Client;
-using hase.DevLib.Services.Calculator.Contract;
+using hase.AppServices.Calculator.Client;
+using hase.AppServices.Calculator.Contract;
 using System;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;

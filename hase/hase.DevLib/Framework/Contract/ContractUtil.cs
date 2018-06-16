@@ -1,30 +1,33 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace hase.DevLib.Framework.Contract
 {
 	public static class ContractUtil
 	{
-		//public static string EnsureRequestSuffix(string name)
-		//{
-		//	if (name.ToLower().EndsWith("request"))
-		//		return name;
-		//	else if (name.EndsWith("Proxy"))
-		//		return name.Substring(0, name.Length - 5) + "Request";
-		//	else if (name.EndsWith("proxy"))
-		//		return name.Substring(0, name.Length - 5) + "request";
-		//	else if (name.EndsWith("Service"))
-		//		return name.Substring(0, name.Length - 7) + "Request";
-		//	else if (name.EndsWith("service"))
-		//		return name.Substring(0, name.Length - 5) + "request";
-		//	else
-		//		return name + "Request";
-		//}
-		public static string EnsureServiceSuffix(string name)
+		public static string GetServiceClrTypeFromClientType(Type clientType)
+		{
+			var clientName = clientType.Name;
+			var serviceName = EnsureServiceSuffix(clientType.Name);
+			var clientAQN = clientType.AssemblyQualifiedName;
+			var serviceAQN = clientAQN.Replace($".Client.{clientName},", $".Service.{serviceName},");
+			return serviceAQN;
+		}
+		public static string GetServiceClrTypeFromRequestType(Type requestType)
+		{
+			var requestName = requestType.Name;
+			var serviceName = EnsureServiceSuffix(requestType.Name);
+			var requestAQN = requestType.AssemblyQualifiedName;
+			var serviceAQN = requestAQN.Replace($".Contract.{requestName},", $".Service.{serviceName},");
+			return serviceAQN;
+		}
+		private static string EnsureServiceSuffix(string name)
 		{
 			if (name.ToLower().EndsWith("service"))
 				return name;
+			else if (name.EndsWith("Request"))
+				return name.Substring(0, name.Length - 7) + "Service";
+			else if (name.EndsWith("request"))
+				return name.Substring(0, name.Length - 7) + "service";
 			else if (name.EndsWith("Proxy"))
 				return name.Substring(0, name.Length - 5) + "Service";
 			else if (name.EndsWith("proxy"))

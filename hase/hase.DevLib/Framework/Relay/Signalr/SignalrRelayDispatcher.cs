@@ -70,7 +70,7 @@ namespace hase.DevLib.Framework.Relay.Signalr
 		{
 			// todo: 06/05/18 gph. Revisit. Currently duplicating efforts.
 			var appReq = wrapper.ToAppRequestMessage<AppRequestMessage>();
-			var service = ServiceFactory2.NewLocal(appReq.ServiceTypeName);
+			var service = ServiceFactory2.NewLocal(appReq.ServiceClrType);
 			var requestType = service.GetType().BaseType.GenericTypeArguments[0];
 			var request = wrapper.ToAppRequestMessage(requestType);
 

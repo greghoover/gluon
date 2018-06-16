@@ -93,7 +93,6 @@ namespace hase.ClientUI.XFApp
 		{
 			try
 			{
-				var serviceName = ContractUtil.EnsureServiceSuffix(this.formDef.Name);
 				var proxyName = ContractUtil.EnsureProxySuffix(this.formDef.Name);
 				var client = default(UntypedServiceClient); //default(IServiceClient<AppRequestMessage, AppResponseMessage>);
 

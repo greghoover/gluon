@@ -1,9 +1,9 @@
 ﻿using hase.DevLib.Framework.Client;
-using hase.DevLib.Services.Calculator.Contract;
+using hase.AppServices.Calculator.Contract;
 using System;
 using System.Threading.Tasks;
 
-namespace hase.DevLib.Services.Calculator.Client
+namespace hase.AppServices.Calculator.Client
 {
     public class Calculator : ServiceClientBase<CalculatorRequest, CalculatorResponse>, ICalculator
     {

@@ -37,7 +37,7 @@ namespace hase.DevLib.Framework.Service
 			{
 				switch (prop.Name)
 				{
-					// todo: 06/12/18 gph. Use reflection to filter, not static list.
+					// todo: 06/12/18 gph. Un-hardcode this.
 					case "RequestTypeName": // request property
 					case "ServiceTypeName": // request property
 					case "AppRequestMessage": // response property

@@ -1,6 +1,6 @@
 ﻿using hase.DevLib.Framework.Contract;
 
-namespace hase.DevLib.Services.Calculator.Contract
+namespace hase.AppServices.Calculator.Contract
 {
     public interface ICalculator : IServiceClient<CalculatorRequest, CalculatorResponse>
     {

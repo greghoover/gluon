@@ -18,6 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\hase.AppServices.Calculator\hase.AppServices.Calculator.csproj" />
     <ProjectReference Include="..\hase.DevLib.Core20\hase.DevLib.Core20.csproj" />
   </ItemGroup>
 

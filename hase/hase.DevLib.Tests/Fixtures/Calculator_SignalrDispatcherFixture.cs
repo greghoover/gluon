@@ -1,5 +1,5 @@
 ﻿using hase.DevLib.Framework.Relay.Signalr;
-using hase.DevLib.Services.Calculator.Service;
+using hase.AppServices.Calculator.Service;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;

@@ -1,4 +1,4 @@
-﻿namespace hase.DevLib.Services.Calculator.Contract
+﻿namespace hase.AppServices.Calculator.Contract
 {
     public enum CalculatorOpEnum
     {

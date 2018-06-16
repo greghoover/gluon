@@ -1,7 +1,7 @@
 ﻿using hase.DevLib.Framework.Contract;
 using ProtoBuf;
 
-namespace hase.DevLib.Services.Calculator.Contract
+namespace hase.AppServices.Calculator.Contract
 {
     [ProtoContract]
     public class CalculatorRequest : AppRequestMessage

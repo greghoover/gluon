@@ -1,9 +1,9 @@
 //using hase.DevLib.Framework.Relay;
 //using hase.DevLib.Framework.Relay.NamedPipe;
 //using hase.DevLib.Framework.Service;
-//using hase.DevLib.Services.Calculator.Client;
-//using hase.DevLib.Services.Calculator.Contract;
-//using hase.DevLib.Services.Calculator.Service;
+//using hase.AppServices.Calculator.Client;
+//using hase.AppServices.Calculator.Contract;
+//using hase.AppServices.Calculator.Service;
 //using System;
 //using System.Threading.Tasks;
 //using Xunit;

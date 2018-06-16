@@ -12,14 +12,17 @@ namespace hase.DevLib.Framework.Service
 		{
 			// todo: 06/05/18 gph. Multiple convention assumptions. Need to revisit. 
 			var serviceType = default(Type);
-			foreach (var type in Assembly.GetExecutingAssembly().GetTypes())
-			{
-				if (type.Name == serviceTypeName)
-				{
-					serviceType = type;
-					break;
-				}
-			}
+
+			serviceType = Type.GetType(serviceTypeName);
+
+			//foreach (var type in Assembly.GetExecutingAssembly().GetTypes())
+			//{
+			//	if (type.Name == serviceTypeName)
+			//	{
+			//		serviceType = type;
+			//		break;
+			//	}
+			//}
 			return NewLocal(serviceType);
 		}
 		public static IService<TRequest, TResponse> NewLocal(Type serviceType)
