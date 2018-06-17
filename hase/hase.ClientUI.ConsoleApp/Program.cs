@@ -2,11 +2,10 @@
 using hase.AppServices.Calculator.Contract;
 using hase.AppServices.FileSystemQuery.Client;
 using hase.AppServices.FileSystemQuery.Contract;
+using hase.DevLib.Framework.Client;
 using hase.DevLib.Framework.Relay;
 //using hase.DevLib.Framework.Relay.NamedPipe;
 using hase.DevLib.Framework.Relay.Signalr;
-using hase.DevLib.Framework.Service;
-using hase.DevLib.Services;
 using System;
 
 namespace hase.ClientUI.ConsoleApp
