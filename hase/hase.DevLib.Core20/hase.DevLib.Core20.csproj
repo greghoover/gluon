@@ -27,6 +27,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\hase.DevLib\hase.DevLib.csproj" />
+    <ProjectReference Include="..\hase.Relays.Signalr.Server\hase.Relays.Signalr.Server.csproj" />
   </ItemGroup>
 
 </Project>
