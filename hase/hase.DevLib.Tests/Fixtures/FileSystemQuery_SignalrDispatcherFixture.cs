@@ -1,5 +1,5 @@
 ﻿using hase.AppServices.FileSystemQuery.Service;
-using hase.DevLib.Framework.Relay.Signalr;
+using hase.Relays.Signalr.Client;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;

@@ -5,7 +5,7 @@ using hase.AppServices.FileSystemQuery.Contract;
 using hase.DevLib.Framework.Client;
 using hase.DevLib.Framework.Relay;
 //using hase.DevLib.Framework.Relay.NamedPipe;
-using hase.DevLib.Framework.Relay.Signalr;
+using hase.Relays.Signalr.Client;
 using System;
 
 namespace hase.ClientUI.ConsoleApp

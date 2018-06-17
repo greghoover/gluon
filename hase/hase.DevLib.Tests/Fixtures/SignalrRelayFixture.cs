@@ -1,4 +1,4 @@
-﻿using hase.DevLib.Framework.Relay.Signalr;
+﻿using hase.Relays.Signalr.Client;
 using Microsoft.AspNetCore.Hosting;
 using System;
 using System.Threading.Tasks;

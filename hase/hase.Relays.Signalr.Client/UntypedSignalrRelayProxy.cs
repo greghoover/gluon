@@ -1,6 +1,6 @@
 ﻿using hase.DevLib.Framework.Contract;
 
-namespace hase.DevLib.Framework.Relay.Signalr
+namespace hase.Relays.Signalr.Client
 {
 	public class UntypedSignalrRelayProxy : SignalrRelayProxy<AppRequestMessage, AppResponseMessage>
 	{

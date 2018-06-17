@@ -1,6 +1,6 @@
 ﻿using hase.AppServices.FileSystemQuery.Client;
 using hase.AppServices.FileSystemQuery.Contract;
-using hase.DevLib.Framework.Relay.Signalr;
+using hase.Relays.Signalr.Client;
 using System;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;

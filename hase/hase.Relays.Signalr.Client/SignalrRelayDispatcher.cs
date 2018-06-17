@@ -1,4 +1,5 @@
 ﻿using hase.DevLib.Framework.Contract;
+using hase.DevLib.Framework.Relay;
 using hase.DevLib.Framework.Service;
 using Microsoft.AspNetCore.SignalR.Client;
 using Microsoft.Extensions.Logging;
@@ -7,7 +8,7 @@ using System.Collections.Concurrent;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace hase.DevLib.Framework.Relay.Signalr
+namespace hase.Relays.Signalr.Client
 {
 	public class SignalrRelayDispatcher : RelayDispatcherBase
 	{

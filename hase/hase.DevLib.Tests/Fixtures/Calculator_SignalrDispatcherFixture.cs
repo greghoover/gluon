@@ -1,4 +1,4 @@
-﻿using hase.DevLib.Framework.Relay.Signalr;
+﻿using hase.Relays.Signalr.Client;
 using hase.AppServices.Calculator.Service;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;

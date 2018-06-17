@@ -1,5 +1,5 @@
 using System.Threading.Tasks;
-using hase.DevLib.Framework.Relay.Signalr;
+using hase.Relays.Signalr.Client;
 using hase.AppServices.Calculator.Client;
 using hase.AppServices.Calculator.Contract;
 using hase.DevLib.Tests.Fixtures;

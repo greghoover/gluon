@@ -1,6 +1,6 @@
 ﻿using hase.DevLib.Framework.Relay;
 //using hase.DevLib.Framework.Relay.NamedPipe;
-using hase.DevLib.Framework.Relay.Signalr;
+using hase.Relays.Signalr.Client;
 using Microsoft.AspNetCore.Hosting;
 using System;
 using System.Threading.Tasks;

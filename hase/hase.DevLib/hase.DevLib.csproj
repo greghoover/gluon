@@ -9,8 +9,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Framework\Relay\NamedPipe\**" />
     <Compile Remove="Framework\Relay\Signalr - Copy\**" />
+    <EmbeddedResource Remove="Framework\Relay\NamedPipe\**" />
     <EmbeddedResource Remove="Framework\Relay\Signalr - Copy\**" />
+    <None Remove="Framework\Relay\NamedPipe\**" />
     <None Remove="Framework\Relay\Signalr - Copy\**" />
   </ItemGroup>
 

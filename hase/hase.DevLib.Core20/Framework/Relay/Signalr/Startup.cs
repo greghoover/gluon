@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace hase.DevLib.Framework.Relay.Signalr
+namespace hase.Relays.Signalr.Client
 {
     /// <summary>
     /// Startup Class
