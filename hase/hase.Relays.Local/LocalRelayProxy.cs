@@ -1,9 +1,10 @@
 ﻿using hase.DevLib.Framework.Contract;
+using hase.DevLib.Framework.Relay;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace hase.DevLib.Framework.Relay.Local
+namespace hase.Relays.Local
 {
 	public class LocalRelayProxy<TRequest, TResponse> : RelayProxyBase<TRequest, TResponse>
 		where TRequest : AppRequestMessage

@@ -1,11 +1,12 @@
 ﻿using hase.DevLib.Framework.Contract;
+using hase.DevLib.Framework.Relay;
 using hase.DevLib.Framework.Service;
 using System;
 using System.Collections.Concurrent;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace hase.DevLib.Framework.Relay.Local
+namespace hase.Relays.Local
 {
 	public class LocalRelayDispatcher : RelayDispatcherBase
 	{

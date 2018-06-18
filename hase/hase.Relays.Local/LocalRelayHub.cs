@@ -1,10 +1,11 @@
 ﻿using hase.DevLib.Framework.Contract;
+using hase.DevLib.Framework.Relay;
 using System;
 using System.Collections.Concurrent;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace hase.DevLib.Framework.Relay.Local
+namespace hase.Relays.Local
 {
 	public class LocalRelayHub
 	{

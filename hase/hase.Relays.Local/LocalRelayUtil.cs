@@ -1,4 +1,4 @@
-﻿namespace hase.DevLib.Framework.Relay.Local
+﻿namespace hase.Relays.Local
 {
 	public static class LocalRelayUtil
 	{

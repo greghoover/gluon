@@ -1,6 +1,6 @@
 ﻿using hase.DevLib.Framework.Contract;
 
-namespace hase.DevLib.Framework.Relay.Local
+namespace hase.Relays.Local
 {
 	public class UntypedLocalRelayProxy : LocalRelayProxy<AppRequestMessage, AppResponseMessage>
 	{

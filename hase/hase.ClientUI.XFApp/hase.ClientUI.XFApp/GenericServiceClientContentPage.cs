@@ -1,6 +1,6 @@
 ﻿using hase.DevLib.Framework.Client;
 using hase.DevLib.Framework.Contract;
-using hase.DevLib.Framework.Relay.Local;
+using hase.Relays.Local;
 using hase.Relays.Signalr.Client;
 using System;
 using System.Collections;
