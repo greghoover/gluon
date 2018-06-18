@@ -30,6 +30,10 @@ namespace hase.DevLib.Framework.Relay
 			await this.ConnectAsync(timeoutMs: 100000, ct: CT);
 			Console.WriteLine($"{this.Abbr}:{ChannelName} dispatcher connected to relay.");
 		}
+		public async Task ExecutePublicAsync(CancellationToken stoppingToken)
+		{
+			await ExecuteAsync(stoppingToken);
+		}
 		protected override async Task ExecuteAsync(CancellationToken stoppingToken)
 		{
 			CT = stoppingToken;

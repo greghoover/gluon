@@ -12,6 +12,21 @@ namespace hase.DevLib.Framework.Contract
 			var serviceAQN = clientAQN.Replace($".Client.{clientName},", $".Service.{serviceName},");
 			return serviceAQN;
 		}
+		public static string GetServiceNameFromClientType(Type clientType)
+		{
+			var clientName = clientType.Name;
+			var serviceName = EnsureServiceSuffix(clientType.Name);
+			return serviceName;
+		}
+		public static Type GetServiceTypeFromClientType(Type clientType)
+		{
+			var clientName = clientType.Name;
+			var serviceName = EnsureServiceSuffix(clientType.Name);
+			var clientAQN = clientType.AssemblyQualifiedName;
+			var serviceAQN = clientAQN.Replace($".Client.{clientName},", $".Service.{serviceName},");
+			var serviceType = Type.GetType(serviceAQN);
+			return serviceType;
+		}
 		public static string GetServiceClrTypeFromRequestType(Type requestType)
 		{
 			var requestName = requestType.Name;
@@ -20,7 +35,7 @@ namespace hase.DevLib.Framework.Contract
 			var serviceAQN = requestAQN.Replace($".Contract.{requestName},", $".Service.{serviceName},");
 			return serviceAQN;
 		}
-		private static string EnsureServiceSuffix(string name)
+		public static string EnsureServiceSuffix(string name)
 		{
 			if (name.ToLower().EndsWith("service"))
 				return name;

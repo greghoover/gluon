@@ -1,9 +1,11 @@
 ﻿using hase.DevLib.Framework.Client;
 using hase.DevLib.Framework.Contract;
+using hase.DevLib.Framework.Relay.Local;
 using hase.Relays.Signalr.Client;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 using static hase.DevLib.Framework.Client.ClientUtil;
@@ -101,7 +103,12 @@ namespace hase.ClientUI.XFApp
 				{
 					case ServiceLocation.Local:
 						// todo: 06/13/18 gph. move the type argument to a type parameter if possible.
-						client = new UntypedServiceClient(typeof(UntypedSignalrRelayProxy), proxyName);
+						client = new UntypedServiceClient(typeof(UntypedLocalRelayProxy), proxyName);
+						Task.Run(async () =>
+						{
+							var dispatcher = new LocalRelayDispatcher(ContractUtil.EnsureServiceSuffix(proxyName));
+							await dispatcher.ExecutePublicAsync(CancellationToken.None);
+						});
 						break;
 					case ServiceLocation.Remote:
 						client = new UntypedServiceClient(typeof(UntypedSignalrRelayProxy), proxyName);

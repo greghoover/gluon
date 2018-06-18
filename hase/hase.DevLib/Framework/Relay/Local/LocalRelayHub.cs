@@ -1,7 +1,6 @@
 ﻿using hase.DevLib.Framework.Contract;
 using System;
 using System.Collections.Concurrent;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -59,8 +58,7 @@ namespace hase.DevLib.Framework.Relay.Local
 				var dispatcherChannel = ContractUtil.GetProxyServiceName(proxyChannel); // simpleton routing
 
 				Console.WriteLine($"{Abbr}:Request [{requestId}] received on proxy channel [{proxyChannel}].");
-				var connectionId = request.Headers["request-connection-id"].FirstOrDefault()?.ToString();
-				//ProxyRequests.AddOrUpdate(requestId, Context.ConnectionId, (key, val) => { return val; });
+				var connectionId = request.GetCustomRequestHeader(LocalRelayUtil.ConnectionIdHeaderName);
 				ProxyRequests.AddOrUpdate(requestId, connectionId, (key, val) => { return val; });
 
 				if (_cts.IsCancellationRequested)
@@ -143,7 +141,7 @@ namespace hase.DevLib.Framework.Relay.Local
 		{
 			var dispatcher = default(RelayDispatcherBase);
 			if (!Dispatchers.TryGetValue(dispatcherChannel, out dispatcher))
-				throw new ApplicationException($"Could not Dispatcher object for unregistered dispatcher channel [{dispatcherChannel}] .");
+				throw new ApplicationException($"Could not get Dispatcher object for unregistered dispatcher channel [{dispatcherChannel}] .");
 
 			return dispatcher;
 		}

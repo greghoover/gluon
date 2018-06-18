@@ -1,5 +1,5 @@
 ﻿using hase.DevLib.Framework.Contract;
-using Newtonsoft.Json;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -28,6 +28,7 @@ namespace hase.DevLib.Framework.Relay.Local
 		public async override Task SerializeRequest(TRequest request)
 		{
 			request.Headers.SourceChannel = this.ChannelName;
+			request.Headers.Custom.Add(LocalRelayUtil.ConnectionIdHeaderName, Guid.NewGuid().ToString());
 
 			var wrapper = await request.ToTransportRequestAsync();
 
@@ -36,9 +37,19 @@ namespace hase.DevLib.Framework.Relay.Local
 
 		public override TResponse DeserializeResponse()
 		{
-			var wrapper = JsonConvert.DeserializeObject<HttpResponseMessageWrapperEx>(_tmpResponse.ToString());
-			var response = wrapper.ToAppResponseMessage<TResponse>();
-			return response;
+			try
+			{
+				var wrapper = (HttpResponseMessageWrapperEx)_tmpResponse;
+				var response = wrapper.ToAppResponseMessage<TResponse>();
+				return response;
+			}
+			catch (Exception ex)
+			{
+				var txt = ex.Message;
+				if (ex.InnerException != null)
+					txt += Environment.NewLine + ex.InnerException.Message;
+				throw;
+			}
 		}
 
 		public override void DisconnectAsync()
