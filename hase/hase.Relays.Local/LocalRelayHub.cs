@@ -88,7 +88,7 @@ namespace hase.Relays.Local
 			//var dispatcherConnectionId = GetDispatcherConnectionId(dispatcherChannel);
 			var dispatcher = GetDispatcher(dispatcherChannel);
 			//await Clients.Client(dispatcherConnectionId).SendAsync("dispatch", request);
-			await dispatcher.Dispatch(request);
+			await dispatcher.StageRequest(request);
 
 			return;
 		}

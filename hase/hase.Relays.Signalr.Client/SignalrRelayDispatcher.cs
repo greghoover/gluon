@@ -1,10 +1,8 @@
 ﻿using hase.DevLib.Framework.Contract;
 using hase.DevLib.Framework.Relay;
-using hase.DevLib.Framework.Service;
 using Microsoft.AspNetCore.SignalR.Client;
 using Microsoft.Extensions.Logging;
 using System;
-using System.Collections.Concurrent;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -12,12 +10,7 @@ namespace hase.Relays.Signalr.Client
 {
 	public class SignalrRelayDispatcher : RelayDispatcherBase
 	{
-		protected ConcurrentQueue<AppRequestMessage> Requests { get; private set; }
-
-		public SignalrRelayDispatcher(string channelName) : base(channelName)
-		{
-			Requests = new ConcurrentQueue<AppRequestMessage>();
-		}
+		public SignalrRelayDispatcher(string channelName) : base(channelName) { }
 
 		public override string Abbr => "srrdc";
 		//private SignalrClientStream pipe = null;
@@ -41,11 +34,10 @@ namespace hase.Relays.Signalr.Client
 				//.WithMessageHandler(h => handler)
 				.Build();
 
-			//_hub.On<object>("dispatch",
 			_hub.On<HttpRequestMessageWrapperEx>("dispatch",
-				async (req) =>
+				async (request) =>
 				{
-					await Dispatch(req);
+					await StageRequest(request);
 				});
 
 			try
@@ -67,32 +59,10 @@ namespace hase.Relays.Signalr.Client
 			}
 			finally { }
 		}
-		public override Task Dispatch(HttpRequestMessageWrapperEx wrapper)
-		{
-			// todo: 06/05/18 gph. Revisit. Currently duplicating efforts.
-			var appReq = wrapper.ToAppRequestMessage<AppRequestMessage>();
-			var service = DispatcherServiceFactory.NewLocal(appReq.ServiceClrType);
-			var requestType = service.GetType().BaseType.GenericTypeArguments[0];
-			var request = wrapper.ToAppRequestMessage(requestType);
-
-			var requestId = request.Headers.MessageId;
-
-			//Console.WriteLine($"{this.Abbr}:Enqueueing {ChannelName} request {requestId}.");
-			Requests.Enqueue(request);
-			Console.WriteLine($"{this.Abbr}:Enqueued {ChannelName} request {requestId}.");
-
-			return Task.CompletedTask;
-		}
-		//private void Dispatch(object req)
-		//{
-		//    var wrapper = JsonConvert.DeserializeObject<HttpRequestMessageWrapperEx>(req.ToString());
-		//    this.Dispatch(wrapper);
-		//}
 
 		public async override Task<AppRequestMessage> DeserializeRequest()
 		{
 			//return Serializer.DeserializeWithLengthPrefix<AppRequestMessage>(pipe, PrefixStyle.Base128);
-
 			AppRequestMessage request = null;
 			while(!this.CT.IsCancellationRequested && request == null)
 			{

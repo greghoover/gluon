@@ -2,6 +2,7 @@
 using hase.DevLib.Framework.Service;
 using Microsoft.Extensions.Hosting;
 using System;
+using System.Collections.Concurrent;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -9,17 +10,17 @@ namespace hase.DevLib.Framework.Relay
 {
 	public abstract class RelayDispatcherBase : BackgroundService, IRelayDispatcher
 	{
+		protected ConcurrentQueue<AppRequestMessage> Requests { get; private set; }
 		protected CancellationToken CT { get; private set; }
 		public string ChannelName { get; private set; }
 		public abstract string Abbr { get; }
 
 		public abstract Task ConnectAsync(int timeoutMs, CancellationToken ct);
-		public abstract Task Dispatch(HttpRequestMessageWrapperEx wrapper);
-		public abstract Task<AppRequestMessage> DeserializeRequest();
 		public abstract void SerializeResponse(string requestId, AppResponseMessage response);
 
 		protected RelayDispatcherBase(string channelName)
 		{
+			this.Requests = new ConcurrentQueue<AppRequestMessage>();
 			this.CT = new CancellationToken();
 			this.ChannelName = channelName; // e.g. some variation of the service name
 		}
@@ -66,6 +67,32 @@ namespace hase.DevLib.Framework.Relay
 			Console.WriteLine($"{this.Abbr}:{ChannelName} disconnected from relay.");
 		}
 
+		public virtual Task StageRequest(HttpRequestMessageWrapperEx wrapper)
+		{
+			// todo: 06/18/18 gph. Put the request clr type into a header
+			// so don't have to convert from wrapper twice.
+			var appReq = wrapper.ToAppRequestMessage<AppRequestMessage>();
+			var requestType = Type.GetType(appReq.RequestClrType);
+			var request = wrapper.ToAppRequestMessage(requestType);
+
+			var requestId = request.Headers.MessageId;
+
+			//Console.WriteLine($"{this.Abbr}:Enqueueing {ChannelName} request {requestId}.");
+			Requests.Enqueue(request);
+			Console.WriteLine($"{this.Abbr}:Enqueued {ChannelName} request {requestId}.");
+
+			return Task.CompletedTask;
+		}
+		public virtual async Task<AppRequestMessage> DeserializeRequest()
+		{
+			AppRequestMessage request = null;
+			while (!this.CT.IsCancellationRequested && request == null)
+			{
+				Requests.TryDequeue(out request);
+				await Task.Delay(150);
+			}
+			return request;
+		}
 		protected async virtual Task ProcessRequest(CancellationToken ct)
 		{
 			if (ct.IsCancellationRequested) return;
