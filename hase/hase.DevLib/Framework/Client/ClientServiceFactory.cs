@@ -1,28 +1,15 @@
 ﻿using hase.DevLib.Framework.Contract;
 using System;
-using System.Reflection;
 
-namespace hase.DevLib.Framework.Service
+namespace hase.DevLib.Framework.Client
 {
-	public static class ServiceFactory<TRequest, TResponse>
+	public static class ClientServiceFactory<TRequest, TResponse>
 		where TRequest : AppRequestMessage
 		where TResponse : AppResponseMessage
 	{
-		public static IService<TRequest, TResponse> NewLocal(string serviceTypeName)
+		public static IService<TRequest, TResponse> NewLocal(string serviceTypeAQN)
 		{
-			// todo: 06/05/18 gph. Multiple convention assumptions. Need to revisit. 
-			var serviceType = default(Type);
-
-			serviceType = Type.GetType(serviceTypeName);
-
-			//foreach (var type in Assembly.GetExecutingAssembly().GetTypes())
-			//{
-			//	if (type.Name == serviceTypeName)
-			//	{
-			//		serviceType = type;
-			//		break;
-			//	}
-			//}
+			var serviceType = Type.GetType(serviceTypeAQN);
 			return NewLocal(serviceType);
 		}
 		public static IService<TRequest, TResponse> NewLocal(Type serviceType)
@@ -31,9 +18,9 @@ namespace hase.DevLib.Framework.Service
 			var service = Activator.CreateInstance(serviceType);
 			return (IService<TRequest, TResponse>)service;
 		}
-		public static IService<TRequest, TResponse> NewProxied(string proxyTypeName, string proxyChannelName)
+		public static IService<TRequest, TResponse> NewProxied(string proxyTypeAQN, string proxyChannelName)
 		{
-			var proxyType = Type.GetType(proxyTypeName);
+			var proxyType = Type.GetType(proxyTypeAQN);
 			return NewProxied(proxyType, proxyChannelName);
 		}
 		public static IService<TRequest, TResponse> NewProxied(Type proxyType, string proxyChannelName)

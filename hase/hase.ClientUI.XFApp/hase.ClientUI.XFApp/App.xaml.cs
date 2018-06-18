@@ -10,6 +10,7 @@ namespace hase.ClientUI.XFApp
 		{
 			InitializeComponent();
 
+			//MainPage = new ServiceClientsTabbedPage();
 			MainPage = new GenericServiceClientTabbedPage();
 		}
 

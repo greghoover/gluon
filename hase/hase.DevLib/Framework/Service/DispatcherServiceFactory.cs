@@ -1,14 +1,13 @@
 ﻿using hase.DevLib.Framework.Contract;
 using System;
-using System.Reflection;
 
 namespace hase.DevLib.Framework.Service
 {
-	public static class ServiceFactory2
+	public static class DispatcherServiceFactory
 	{
-		public static IService NewLocal(string serviceTypeName)
+		public static IService NewLocal(string serviceTypeAQN)
 		{
-			var serviceType = Type.GetType(serviceTypeName);
+			var serviceType = Type.GetType(serviceTypeAQN);
 			return NewLocal(serviceType);
 		}
 		public static IService NewLocal(Type serviceType)
@@ -17,9 +16,9 @@ namespace hase.DevLib.Framework.Service
 			var service = Activator.CreateInstance(serviceType);
 			return (IService)service;
 		}
-		public static IService NewProxied(string proxyTypeName)
+		public static IService NewProxied(string proxyTypeAQN)
 		{
-			var proxyType = Type.GetType(proxyTypeName);
+			var proxyType = Type.GetType(proxyTypeAQN);
 			return NewProxied(proxyType);
 		}
 		public static IService NewProxied(Type proxyType)

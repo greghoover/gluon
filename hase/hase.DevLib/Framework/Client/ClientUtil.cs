@@ -31,15 +31,5 @@ namespace hase.DevLib.Framework.Client
 				"$1 $2"
 			);
 		}
-
-		// Experimental
-		//public static T WithLocal<T>(this T client)
-		//    where T : class, IServiceClient<IService<AppRequestMessage, AppResponseMessage>, AppRequestMessage, AppResponseMessage>
-		//{
-		//    //var local = Service.Service<>
-		//    //var local = Activator.CreateInstance<TService, IService<AppRequestMessage, AppResponseMessage>>();
-		//    //client.Service = default(IService<AppRequestMessage, AppResponseMessage>);
-		//    return client as T;
-		//}
 	}
 }

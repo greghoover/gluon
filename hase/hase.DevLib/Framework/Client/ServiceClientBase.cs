@@ -1,8 +1,6 @@
 ﻿using hase.DevLib.Framework.Contract;
-using hase.DevLib.Framework.Service;
 using System;
 using System.Collections.Generic;
-using System.Reflection;
 
 namespace hase.DevLib.Framework.Client
 {
@@ -34,13 +32,12 @@ namespace hase.DevLib.Framework.Client
 		private IService<TRequest, TResponse> GetServiceInstance(string serviceTypeName = null)
 		{
 			serviceTypeName = serviceTypeName ?? ContractUtil.GetServiceClrTypeFromClientType(this.GetType());
-			return ServiceFactory<TRequest, TResponse>.NewLocal(serviceTypeName);
+			return ClientServiceFactory<TRequest, TResponse>.NewLocal(serviceTypeName);
 		}
 		private IService<TRequest, TResponse> GetProxyInstance(Type proxyType, string proxyChannelName = null)
 		{
-			//proxyChannelName = ServiceTypesUtil.GetServiceProxyName<TService>();
 			proxyChannelName = proxyChannelName ?? ContractUtil.EnsureProxySuffix(this.Name);
-			return ServiceFactory<TRequest, TResponse>.NewProxied(proxyType, proxyChannelName);
+			return ClientServiceFactory<TRequest, TResponse>.NewProxied(proxyType, proxyChannelName);
 		}
 
 		public InputFormDef GenerateUntypedClientDef()
