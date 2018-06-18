@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 
 namespace hase.DevLib.Framework.Contract
 {
@@ -88,6 +89,12 @@ namespace hase.DevLib.Framework.Contract
 				return proxyName.Substring(0, proxyName.Length - 5) + "service";
 			else
 				return proxyName + "Service";
+		}
+
+		public static async Task<TBase> GeneralizeTask<TBase, TDerived>(Task<TDerived> task)
+			where TDerived : TBase
+		{
+			return (TBase)await task;
 		}
 	}
 }

@@ -1,7 +1,7 @@
 ﻿using Microsoft.Rest;
 using System.Net.Http;
 
-namespace hase.DevLib.Framework.Relay
+namespace hase.DevLib.Framework.Relay.Contract
 {
     /// <summary>
     /// Extended to add a paramaterless constructor for Json de-serialization, and for a property to store the original request.

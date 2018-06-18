@@ -1,5 +1,5 @@
 ﻿using hase.DevLib.Framework.Contract;
-using hase.DevLib.Framework.Relay;
+using hase.DevLib.Framework.Relay.Contract;
 using Microsoft.AspNetCore.SignalR;
 using System;
 using System.Collections.Concurrent;

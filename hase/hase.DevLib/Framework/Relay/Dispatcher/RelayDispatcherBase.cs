@@ -1,4 +1,5 @@
 ﻿using hase.DevLib.Framework.Contract;
+using hase.DevLib.Framework.Relay.Contract;
 using hase.DevLib.Framework.Service;
 using Microsoft.Extensions.Hosting;
 using System;
@@ -6,7 +7,7 @@ using System.Collections.Concurrent;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace hase.DevLib.Framework.Relay
+namespace hase.DevLib.Framework.Relay.Dispatcher
 {
 	public abstract class RelayDispatcherBase : BackgroundService, IRelayDispatcher
 	{

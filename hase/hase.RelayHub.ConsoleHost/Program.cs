@@ -1,4 +1,4 @@
-﻿using hase.DevLib.Framework.Relay;
+﻿using hase.DevLib.Framework.Relay.Contract;
 //using hase.DevLib.Framework.Relay.NamedPipe;
 using hase.Relays.Signalr.Client;
 using Microsoft.AspNetCore.Hosting;

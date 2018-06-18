@@ -3,7 +3,7 @@ using hase.AppServices.Calculator.Contract;
 using hase.AppServices.FileSystemQuery.Client;
 using hase.AppServices.FileSystemQuery.Contract;
 using hase.DevLib.Framework.Client;
-using hase.DevLib.Framework.Relay;
+using hase.DevLib.Framework.Relay.Contract;
 //using hase.DevLib.Framework.Relay.NamedPipe;
 using hase.Relays.Signalr.Client;
 using System;

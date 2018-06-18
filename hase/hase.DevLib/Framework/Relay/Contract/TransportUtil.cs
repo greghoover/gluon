@@ -6,7 +6,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 
-namespace hase.DevLib.Framework.Relay
+namespace hase.DevLib.Framework.Relay.Contract
 {
     public static class TransportUtil
     {

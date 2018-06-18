@@ -1,5 +1,6 @@
 ﻿using hase.DevLib.Framework.Contract;
-using hase.DevLib.Framework.Relay;
+using hase.DevLib.Framework.Relay.Contract;
+using hase.DevLib.Framework.Relay.Proxy;
 using System;
 using System.Threading;
 using System.Threading.Tasks;

@@ -1,5 +1,6 @@
 ﻿using hase.DevLib.Framework.Contract;
-using hase.DevLib.Framework.Relay;
+using hase.DevLib.Framework.Relay.Contract;
+using hase.DevLib.Framework.Relay.Dispatcher;
 using Microsoft.AspNetCore.SignalR.Client;
 using Microsoft.Extensions.Logging;
 using System;
@@ -25,7 +26,7 @@ namespace hase.Relays.Signalr.Client
 			//};
 
 			_hub = new HubConnectionBuilder()
-				.WithUrl($"http://{RelayUtil.RelayHostName}:5000/route")
+				.WithUrl($"http://localhost:5000/route")
 				.ConfigureLogging(logging => logging.SetMinimumLevel(LogLevel.Debug))
 				//.WithConsoleLogger(LogLevel.Debug)
 				//.WithJsonProtocol()

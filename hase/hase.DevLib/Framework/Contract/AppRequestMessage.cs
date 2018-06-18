@@ -1,7 +1,4 @@
-﻿using System;
-using System.Reflection;
-
-namespace hase.DevLib.Framework.Contract
+﻿namespace hase.DevLib.Framework.Contract
 {
 	public class AppRequestMessage : AppMessage
 	{

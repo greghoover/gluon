@@ -1,5 +1,6 @@
 ﻿using hase.DevLib.Framework.Contract;
-using hase.DevLib.Framework.Relay;
+using hase.DevLib.Framework.Relay.Contract;
+using hase.DevLib.Framework.Relay.Proxy;
 using Microsoft.AspNetCore.SignalR.Client;
 using Newtonsoft.Json;
 using System;
@@ -24,7 +25,7 @@ namespace hase.Relays.Signalr.Client
 			try
 			{
 				_hub = new HubConnectionBuilder()
-					.WithUrl($"http://{RelayUtil.RelayHostName}:5000/route")
+					.WithUrl($"http://localhost:5000/route")
 					.Build();
 
 				await _hub.StartAsync();

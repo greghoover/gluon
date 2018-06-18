@@ -1,5 +1,6 @@
 ﻿using hase.DevLib.Framework.Contract;
-using hase.DevLib.Framework.Relay;
+using hase.DevLib.Framework.Relay.Contract;
+using hase.DevLib.Framework.Relay.Dispatcher;
 using System;
 using System.Collections.Concurrent;
 using System.Threading;
