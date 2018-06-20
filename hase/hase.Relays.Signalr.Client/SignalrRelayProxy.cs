@@ -13,7 +13,7 @@ namespace hase.Relays.Signalr.Client
 		where TRequest : AppRequestMessage
 		where TResponse : AppResponseMessage
 	{
-		public override string Abbr => "srrp";
+		public override string Abbr => "signalrProxy";
 		//private SignalrClientStream pipe = null;
 		HubConnection _hub = null;
 		private object _tmpResponse = null;

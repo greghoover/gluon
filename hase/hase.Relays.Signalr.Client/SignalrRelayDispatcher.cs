@@ -13,7 +13,7 @@ namespace hase.Relays.Signalr.Client
 	{
 		public SignalrRelayDispatcher(string channelName) : base(channelName) { }
 
-		public override string Abbr => "srrdc";
+		public override string Abbr => "signalrDispatcher";
 		//private SignalrClientStream pipe = null;
 		HubConnection _hub = null;
 

@@ -12,7 +12,7 @@ namespace hase.Relays.Local
 		where TResponse : AppResponseMessage
 	{
 		protected static LocalRelayHub Hub { get; private set; }
-		public override string Abbr => "localRelayProxy";
+		public override string Abbr => "localProxy";
 		private object _tmpResponse = null;
 
 		static LocalRelayProxy()

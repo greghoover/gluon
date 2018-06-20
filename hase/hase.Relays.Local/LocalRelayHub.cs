@@ -10,7 +10,7 @@ namespace hase.Relays.Local
 {
 	public class LocalRelayHub
 	{
-		private string Abbr => "localRelayHub";
+		public string Abbr => "localHub";
 		private readonly CancellationTokenSource _cts = new CancellationTokenSource();
 
 		private static ConcurrentDictionary<string, RelayDispatcherBase> Dispatchers;

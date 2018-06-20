@@ -17,7 +17,7 @@ namespace hase.Relays.Local
 		}
 		public LocalRelayDispatcher(string channelName) : base(channelName) { }
 
-		public override string Abbr => "localRelayDispatcher";
+		public override string Abbr => "localDispatcher";
 
 		public async override Task ConnectAsync(int timeoutMs, CancellationToken ct)
 		{

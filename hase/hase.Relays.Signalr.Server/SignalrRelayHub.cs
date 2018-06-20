@@ -11,7 +11,7 @@ namespace hase.Relays.Signalr.Server
 {
 	public class SignalrRelayHub : Hub
 	{
-
+		public string Abbr => "signalrHub";
 		private readonly CancellationTokenSource _cts = new CancellationTokenSource();
 
 		private static ConcurrentDictionary<string, string> DispatcherConnections;
@@ -39,7 +39,7 @@ namespace hase.Relays.Signalr.Server
 		{
 			var connectionId = Context.ConnectionId;
 			DispatcherConnections.AddOrUpdate(dispatcherChannel, connectionId, (key, val) => { return val; });
-			Console.WriteLine($"srrs:Registered dispatcher [{dispatcherChannel}].");
+			Console.WriteLine($"{Abbr}:Registered dispatcher [{dispatcherChannel}].");
 			return Task.CompletedTask;
 		}
 		private Task UnRegisterServiceDispatcherAsync(string connectionId)
@@ -49,7 +49,7 @@ namespace hase.Relays.Signalr.Server
 			{
 				var dummy = default(string);
 				if (DispatcherConnections.TryRemove(dispatcherChannel, out dummy))
-					Console.WriteLine($"srrs:UnRegistered dispatcher [{dispatcherChannel}].");
+					Console.WriteLine($"{Abbr}:UnRegistered dispatcher [{dispatcherChannel}].");
 
 			}
 			return Task.CompletedTask;
@@ -63,7 +63,7 @@ namespace hase.Relays.Signalr.Server
 				var proxyChannel = request.GetSourceChannel();
 				var dispatcherChannel = ContractUtil.GetProxyServiceName(proxyChannel); // simpleton routing
 
-				Console.WriteLine($"srrs:Request [{requestId}] received on proxy channel [{proxyChannel}].");
+				Console.WriteLine($"{Abbr}:Request [{requestId}] received on proxy channel [{proxyChannel}].");
 				ProxyRequests.AddOrUpdate(requestId, Context.ConnectionId, (key, val) => { return val; });
 
 				if (_cts.IsCancellationRequested)
@@ -88,7 +88,7 @@ namespace hase.Relays.Signalr.Server
 
 		private async Task ForwardRequestToDispatcher(string requestId, HttpRequestMessageWrapperEx request, string dispatcherChannel)
 		{
-			Console.WriteLine($"srrs:Sending request to dispatcher [{dispatcherChannel}] [{requestId}].");
+			Console.WriteLine($"{Abbr}:Sending request to dispatcher [{dispatcherChannel}] [{requestId}].");
 			var dispatcherConnectionId = GetDispatcherConnectionId(dispatcherChannel);
 			await Clients.Client(dispatcherConnectionId).SendAsync("dispatch", request);
 
@@ -96,13 +96,13 @@ namespace hase.Relays.Signalr.Server
 		}
 		public Task DispatcherResponseAsync(string dispatcherChannel, string requestId, HttpResponseMessageWrapperEx response)
 		{
-			Console.WriteLine($"srrs:Received message from dispatcher [{dispatcherChannel}].");
+			Console.WriteLine($"{Abbr}:Received message from dispatcher [{dispatcherChannel}].");
 			DispatcherResponses.AddOrUpdate(requestId, response, (key, val) => { return val; });
 			return Task.CompletedTask;
 		}
 		private async Task<HttpResponseMessageWrapperEx> AwaitResponseFromDispatcher(string requestId, string dispatcherChannel)
 		{
-			Console.WriteLine($"srrs:Awaiting response from dispatcher [{dispatcherChannel}].");
+			Console.WriteLine($"{Abbr}:Awaiting response from dispatcher [{dispatcherChannel}].");
 			HttpResponseMessageWrapperEx response = null;
 			while (true)
 			{
@@ -119,8 +119,8 @@ namespace hase.Relays.Signalr.Server
 		public async Task StartAsync()
 		{
 			await Task.Delay(1); // hush compile warning
-			Console.WriteLine($"srrs:Listening for dispatcher connections.");
-			Console.WriteLine($"srrs:Listening for proxy connections.");
+			Console.WriteLine($"{Abbr}:Listening for dispatcher connections.");
+			Console.WriteLine($"{Abbr}:Listening for proxy connections.");
 		}
 		public async Task StopAsync()
 		{
