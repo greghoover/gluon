@@ -1,6 +1,6 @@
 ﻿using hase.Relays.Signalr.Client;
-using hase.AppServices.Calculator.Client;
-using hase.AppServices.Calculator.Contract;
+//using hase.AppServices.Calculator.Client;
+//using hase.AppServices.Calculator.Contract;
 using System;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
@@ -26,22 +26,22 @@ namespace hase.ClientUI.XFApp
 		{
 			try
 			{
-				var calc = default(Calculator);
+				//var calc = default(Calculator);
 				switch (this.ServiceLocationPicker.SelectedItem.ToString().ToLower())
 				{
 					case "local":
-						calc = new Calculator();
+						//calc = new Calculator();
 						break;
 					case "remote":
-						calc = new Calculator(typeof(SignalrRelayProxy<CalculatorRequest, CalculatorResponse>));
+						//calc = new Calculator(typeof(SignalrRelayProxy<CalculatorRequest, CalculatorResponse>));
 						break;
 					default:
 						throw new ApplicationException("Service location must be either Local or Remote.");
 				}
 				var number1 = int.Parse(this.FirstNumber.Text);
 				var number2 = int.Parse(this.SecondNumber.Text);
-				var result = calc.Add(number1, number2);
-				this.ResultLabel.Text = $"[{number1}] + [{number2}] = [{result}].";
+				//var result = calc.Add(number1, number2);
+				//this.ResultLabel.Text = $"[{number1}] + [{number2}] = [{result}].";
 			}
 			catch (Exception ex)
 			{

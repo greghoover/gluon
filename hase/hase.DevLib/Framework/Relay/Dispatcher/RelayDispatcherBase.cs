@@ -4,6 +4,8 @@ using hase.DevLib.Framework.Service;
 using Microsoft.Extensions.Hosting;
 using System;
 using System.Collections.Concurrent;
+using System.IO;
+using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -11,6 +13,7 @@ namespace hase.DevLib.Framework.Relay.Dispatcher
 {
 	public abstract class RelayDispatcherBase : BackgroundService, IRelayDispatcher
 	{
+		public string ServiceAssemblyRootPath { get; set; } = @"C:\ProgramData\hase\vhosts\default";
 		protected ConcurrentQueue<AppRequestMessage> Requests { get; private set; }
 		protected CancellationToken CT { get; private set; }
 		public string ChannelName { get; private set; }
@@ -74,6 +77,10 @@ namespace hase.DevLib.Framework.Relay.Dispatcher
 			// so don't have to convert from wrapper twice.
 			var appReq = wrapper.ToAppRequestMessage<AppRequestMessage>();
 			var requestType = Type.GetType(appReq.RequestClrType);
+			if (requestType == null)
+			{
+				requestType = LoadAssemblyAndGetRequestType(appReq.RequestClrType);
+			}
 			var request = wrapper.ToAppRequestMessage(requestType);
 
 			var requestId = request.Headers.MessageId;
@@ -84,6 +91,28 @@ namespace hase.DevLib.Framework.Relay.Dispatcher
 
 			return Task.CompletedTask;
 		}
+
+		private Type LoadAssemblyAndGetRequestType(string requestClrType)
+		{
+			var type = default(Type);
+			try
+			{
+				var asmName = requestClrType.Split(',')[1].Trim();
+				var asmPath = Path.Combine(ServiceAssemblyRootPath, asmName);
+				var asmFile = Path.Combine(asmPath, $"{asmName}.dll");
+				Assembly.LoadFrom(asmFile);
+				type = Type.GetType(requestClrType);
+			}
+			catch (Exception ex)
+			{
+				var txt = ex.Message;
+				if (ex.InnerException != null)
+					txt += Environment.NewLine + ex.InnerException.Message;
+				Console.WriteLine(txt);
+			}
+			return type;
+		}
+
 		public virtual async Task<AppRequestMessage> DeserializeRequest()
 		{
 			AppRequestMessage request = null;
