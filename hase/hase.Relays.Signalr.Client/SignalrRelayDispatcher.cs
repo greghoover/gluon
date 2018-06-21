@@ -76,7 +76,7 @@ namespace hase.Relays.Signalr.Client
 		{
 			//Serializer.SerializeWithLengthPrefix(pipe, response, PrefixStyle.Base128);
 			response.Headers.SourceChannel = this.ChannelName;
-			var wrapper = response.ToTransportResponseAsync().Result;
+			var wrapper = await response.ToTransportResponseAsync();
 			await _hub.InvokeAsync("DispatcherResponseAsync", ChannelName, requestId, wrapper);
 		}
 	}

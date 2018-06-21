@@ -24,7 +24,7 @@ namespace hase.AppServices.FileSystemQuery.Client
 				QueryType = FileSystemQueryTypeEnum.DirectoryExists
 			};
 
-			var response = Task.Run<FileSystemQueryResponse>(() => this.Service.Execute(request)).Result;
+			var response = Task.Run<FileSystemQueryResponse>(async () => await this.Service.Execute(request)).Result;
 			if (response?.ResponseString == null)
 				return null;
 			else

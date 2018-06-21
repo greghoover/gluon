@@ -10,7 +10,7 @@ namespace hase.DevLib.Framework.Service
 	{
 		public abstract Task<TResponse> Execute(TRequest request);
 
-		public Task<AppResponseMessage> Execute(AppRequestMessage request)
+		public async Task<AppResponseMessage> Execute(AppRequestMessage request)
 		{
 			var typedRequest = (TRequest)request;
 			if (request.Fields != null)
@@ -28,7 +28,18 @@ namespace hase.DevLib.Framework.Service
 					}
 				}
 			}
-			var typedResponse = this.Execute(typedRequest).Result;
+			var typedResponse = default(TResponse);
+			try
+			{
+				typedResponse = await this.Execute(typedRequest);
+			}
+			catch (Exception ex)
+			{
+				var txt = ex.Message;
+				if (ex.InnerException != null)
+					txt += Environment.NewLine + ex.InnerException.Message;
+				Console.WriteLine(txt);
+			}
 
 			// todo: 06/12/18 gph. eliminate serializing multiple times.
 			foreach (var prop in typedResponse.GetType().GetProperties())
@@ -46,7 +57,7 @@ namespace hase.DevLib.Framework.Service
 				typedResponse.Fields.Add(prop.Name, prop.GetValue(typedResponse)?.ToString());
 			}
 			var responseTask = Task.FromResult<TResponse>(typedResponse);
-			return ContractUtil.GeneralizeTask<AppResponseMessage, TResponse>(responseTask);
+			return await ContractUtil.GeneralizeTask<AppResponseMessage, TResponse>(responseTask);
 		}
 	}
 }

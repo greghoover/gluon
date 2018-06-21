@@ -32,7 +32,7 @@ namespace hase.Relays.Local
 		public async override void SerializeResponse(string requestId, AppResponseMessage response)
 		{
 			response.Headers.SourceChannel = this.ChannelName;
-			var wrapper = response.ToTransportResponseAsync().Result;
+			var wrapper = await response.ToTransportResponseAsync();
 			await Hub.DispatcherResponseAsync(ChannelName, requestId, wrapper);
 		}
 	}

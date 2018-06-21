@@ -1,5 +1,6 @@
 ﻿using hase.AppServices.Calculator.Client;
 using hase.AppServices.FileSystemQuery.Client;
+using hase.AppServices.FileSystemReader.Client;
 using hase.DevLib.Framework.Contract;
 using System.Collections.Generic;
 
@@ -15,6 +16,9 @@ namespace hase.ClientUI.XFApp
 
 			var fsqClient = new FileSystemQuery();
 			yield return fsqClient.GenerateUntypedClientDef();
+
+			var fsrClient = new FileSystemReader();
+			yield return fsrClient.GenerateUntypedClientDef();
 		}
 		// todo: 06/19/18 gph. Load form defs from a repository.
 		public static IEnumerable<InputFormDef> GetAll2()
