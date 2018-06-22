@@ -26,7 +26,8 @@ namespace hase.DevLib.Tests.Fixtures
 				.ConfigureServices((hostContext, services) =>
 				{
 					Console.WriteLine($"{nameof(SignalrRelayDispatcher)}<{nameof(FileSystemQueryService)}>");
-					services.AddSingleton<IHostedService, SignalrRelayDispatcher>(isp => new SignalrRelayDispatcher("FileSystemQueryService"));
+					// todo: 06/22/18 gph. Pass null to compile. Need to fix.
+					services.AddSingleton<IHostedService, SignalrRelayDispatcher>(isp => new SignalrRelayDispatcher("FileSystemQueryService", null));
 				}).Build();
 
 			Console.WriteLine("Starting service dispatcher:");
