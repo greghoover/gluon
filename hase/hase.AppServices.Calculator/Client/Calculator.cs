@@ -1,5 +1,6 @@
 ﻿using hase.AppServices.Calculator.Contract;
 using hase.DevLib.Framework.Client;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Threading.Tasks;
 
@@ -14,7 +15,7 @@ namespace hase.AppServices.Calculator.Client
 		/// <summary>
 		/// Create proxied service instance.
 		/// </summary>
-		public Calculator(Type proxyType) : base(proxyType) { }
+		public Calculator(Type proxyType, IConfigurationSection proxyConfig) : base(proxyType, proxyConfig) { }
 
 		public int? Add(int n1, int n2)
 		{

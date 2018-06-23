@@ -25,21 +25,9 @@ namespace hase.Relays.Signalr.Client
 
 		public async override Task ConnectAsync(int timeoutMs, CancellationToken ct)
 		{
-			//var handler = new HttpClientHandler
-			//{
-			//    ClientCertificateOptions = ClientCertificateOption.Manual,
-			//    ServerCertificateCustomValidationCallback = (httpRequestMessage, cert, cetChain, policyErrors) => { return true; }
-			//};
-
 			_hub = new HubConnectionBuilder()
-				//.WithUrl($"http://localhost:5000/route")
 				.WithUrl(this.Config.HubUrl)
 				.ConfigureLogging(logging => logging.SetMinimumLevel(LogLevel.Debug))
-				//.WithConsoleLogger(LogLevel.Debug)
-				//.WithJsonProtocol()
-				//.WithUseDefaultCredentials(true)
-				//.WithTransport(TransportType.LongPolling)
-				//.WithMessageHandler(h => handler)
 				.Build();
 
 			_hub.On<HttpRequestMessageWrapperEx>("dispatch",

@@ -2,6 +2,7 @@
 using hase.DevLib.Framework.Relay.Contract;
 using hase.DevLib.Framework.Relay.Proxy;
 using Microsoft.AspNetCore.SignalR.Client;
+using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using System;
 using System.Threading;
@@ -17,15 +18,19 @@ namespace hase.Relays.Signalr.Client
 		//private SignalrClientStream pipe = null;
 		HubConnection _hub = null;
 		private object _tmpResponse = null;
+		public SignalrRelayProxyConfig Config { get; private set; }
 
-		public SignalrRelayProxy(string proxyChannelName) : base(proxyChannelName) { }
+		public SignalrRelayProxy(string proxyChannelName, IConfigurationSection proxyConfig) : base(proxyChannelName)
+		{
+			this.Config = proxyConfig.Get<SignalrRelayProxyConfig>();
+		}
 
 		public async override Task ConnectAsync(int timeoutMs, CancellationToken ct)
 		{
 			try
 			{
 				_hub = new HubConnectionBuilder()
-					.WithUrl($"http://localhost:5000/route")
+					.WithUrl(this.Config.HubUrl)
 					.Build();
 
 				await _hub.StartAsync();

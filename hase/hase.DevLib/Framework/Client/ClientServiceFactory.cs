@@ -1,4 +1,5 @@
 ﻿using hase.DevLib.Framework.Contract;
+using Microsoft.Extensions.Configuration;
 using System;
 
 namespace hase.DevLib.Framework.Client
@@ -18,15 +19,15 @@ namespace hase.DevLib.Framework.Client
 			var service = Activator.CreateInstance(serviceType);
 			return (IService<TRequest, TResponse>)service;
 		}
-		public static IService<TRequest, TResponse> NewProxied(string proxyTypeAQN, string proxyChannelName)
+		public static IService<TRequest, TResponse> NewProxied(string proxyTypeAQN, IConfigurationSection proxyConfig, string proxyChannelName)
 		{
 			var proxyType = Type.GetType(proxyTypeAQN);
-			return NewProxied(proxyType, proxyChannelName);
+			return NewProxied(proxyType, proxyConfig, proxyChannelName);
 		}
-		public static IService<TRequest, TResponse> NewProxied(Type proxyType, string proxyChannelName)
+		public static IService<TRequest, TResponse> NewProxied(Type proxyType, IConfigurationSection proxyConfig, string proxyChannelName)
 		{
 			// todo: 06/04/18 gph. Constrain proxyType to be a legit service proxy type.
-			var proxy = Activator.CreateInstance(proxyType, proxyChannelName);
+			var proxy = Activator.CreateInstance(proxyType, proxyChannelName, proxyConfig);
 			return (IService<TRequest, TResponse>)proxy;
 		}
 	}

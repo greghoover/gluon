@@ -1,4 +1,5 @@
 ﻿using hase.DevLib.Framework.Contract;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 
@@ -19,10 +20,10 @@ namespace hase.DevLib.Framework.Client
 		{
 			this.Service = GetServiceInstance(serviceTypeName);
 		}
-		public ServiceClientBase(Type proxyType, string proxyChannelName = null)
+		public ServiceClientBase(Type proxyType, IConfigurationSection proxyConfig, string proxyChannelName = null)
 		{
 			proxyChannelName = proxyChannelName ?? ContractUtil.EnsureProxySuffix(this.Name);
-			this.Service = GetProxyInstance(proxyType, proxyChannelName);
+			this.Service = GetProxyInstance(proxyType, proxyConfig, proxyChannelName);
 		}
 		public ServiceClientBase(IService<TRequest, TResponse> serviceOrProxyInstance)
 		{
@@ -34,10 +35,10 @@ namespace hase.DevLib.Framework.Client
 			serviceTypeName = serviceTypeName ?? ContractUtil.GetServiceClrTypeFromClientType(this.GetType());
 			return ClientServiceFactory<TRequest, TResponse>.NewLocal(serviceTypeName);
 		}
-		private IService<TRequest, TResponse> GetProxyInstance(Type proxyType, string proxyChannelName = null)
+		private IService<TRequest, TResponse> GetProxyInstance(Type proxyType, IConfigurationSection proxyConfig = null, string proxyChannelName = null)
 		{
 			proxyChannelName = proxyChannelName ?? ContractUtil.EnsureProxySuffix(this.Name);
-			return ClientServiceFactory<TRequest, TResponse>.NewProxied(proxyType, proxyChannelName);
+			return ClientServiceFactory<TRequest, TResponse>.NewProxied(proxyType, proxyConfig, proxyChannelName);
 		}
 
 		public InputFormDef GenerateUntypedClientDef()

@@ -1,4 +1,5 @@
 ﻿using hase.DevLib.Framework.Contract;
+using Microsoft.Extensions.Configuration;
 using System;
 
 namespace hase.DevLib.Framework.Client
@@ -8,6 +9,6 @@ namespace hase.DevLib.Framework.Client
 		/// <summary>
 		/// Create proxied service instance.
 		/// </summary>
-		public UntypedServiceClient(Type proxyType, string proxyChannelName) : base(proxyType, proxyChannelName) { }
+		public UntypedServiceClient(Type proxyType, IConfigurationSection proxyConfig, string proxyChannelName) : base(proxyType, proxyConfig, proxyChannelName) { }
 	}
 }

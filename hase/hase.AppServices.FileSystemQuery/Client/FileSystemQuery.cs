@@ -1,5 +1,6 @@
 ﻿using hase.AppServices.FileSystemQuery.Contract;
 using hase.DevLib.Framework.Client;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Threading.Tasks;
 
@@ -14,7 +15,7 @@ namespace hase.AppServices.FileSystemQuery.Client
 		/// <summary>
 		/// Create proxied service instance.
 		/// </summary>
-		public FileSystemQuery(Type proxyType) : base(proxyType) { }
+		public FileSystemQuery(Type proxyType, IConfigurationSection proxyConfig) : base(proxyType, proxyConfig) { }
 
 		public bool? DoesDirectoryExist(string folderPath)
 		{

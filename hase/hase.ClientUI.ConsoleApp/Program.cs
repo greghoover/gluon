@@ -2,11 +2,13 @@
 using hase.AppServices.Calculator.Contract;
 using hase.AppServices.FileSystemQuery.Client;
 using hase.AppServices.FileSystemQuery.Contract;
-using hase.DevLib.Framework.Client;
 using hase.DevLib.Framework.Relay.Contract;
+using hase.DevLib.Framework.Relay.Proxy;
 //using hase.DevLib.Framework.Relay.NamedPipe;
 using hase.Relays.Signalr.Client;
+using Microsoft.Extensions.Configuration;
 using System;
+using System.Collections.Generic;
 
 namespace hase.ClientUI.ConsoleApp
 {
@@ -16,29 +18,41 @@ namespace hase.ClientUI.ConsoleApp
 		{
 			Console.WriteLine("Client Console Host");
 
+			Console.WriteLine("Getting Configuration");
+			var cb = new ConfigurationBuilder();
+			var cfg = cb.AddJsonFile("appsettings.json")
+				.AddCommandLine(args)
+				.Build();
+			var hostCfg = cfg.GetSection("ServiceProxy").Get<RelayProxyConfig>();
+			var proxyCfg = cfg.GetSection(hostCfg.ProxyConfigSection);
+
 			while (true)
 			{
 				{
-					foreach (var item in ServiceTypesUtil.GetServices())
+					var serviceTypes = hostCfg.ServiceTypeNames;
+					var options = new Dictionary<string, string>();
+					var i = 0;
+					foreach (var svcTyp in serviceTypes)
 					{
-						Console.WriteLine($"{item.Id}. {item.Desc}");
+						i++;
+						options.Add(i.ToString(), svcTyp);
+						Console.WriteLine($"{i}. {svcTyp}");
 					}
 					Console.Write("Enter choice: ");
 					var input = Console.ReadLine().Trim();
-					if (input == string.Empty)
+					if (input.ToLower() == "x")
 						break;
+					if (!options.ContainsKey(input))
+						continue;
 
-					ServiceTypesEnum choice;
-					if (!Enum.TryParse<ServiceTypesEnum>(input, out choice))
-						break;
-
+					var choice = options[input];
 					switch (choice)
 					{
-						case ServiceTypesEnum.FileSystemQuery:
-							DoFileSystemQuery();
+						case nameof(FileSystemQuery):
+							DoFileSystemQuery(proxyCfg);
 							break;
-						case ServiceTypesEnum.Calculator:
-							DoCalculator();
+						case nameof(Calculator):
+							DoCalculator(proxyCfg);
 							break;
 						default:
 							Console.WriteLine("Unrecognized number. Please try again.");
@@ -48,7 +62,7 @@ namespace hase.ClientUI.ConsoleApp
 			}
 		}
 
-		static void DoFileSystemQuery()
+		static void DoFileSystemQuery(IConfigurationSection proxyCfg)
 		{
 			Console.Write("Enter folder path to check if exists: ");
 			var folderPath = Console.ReadLine().Trim();
@@ -58,7 +72,7 @@ namespace hase.ClientUI.ConsoleApp
 				var fsq = default(IFileSystemQuery);
 				if (RelayUtil.RelayTypeDflt == RelayTypeEnum.SignalR)
 				{
-					fsq = new FileSystemQuery(typeof(SignalrRelayProxy<FileSystemQueryRequest, FileSystemQueryResponse>));
+					fsq = new FileSystemQuery(typeof(SignalrRelayProxy<FileSystemQueryRequest, FileSystemQueryResponse>), proxyCfg);
 				}
 				if (RelayUtil.RelayTypeDflt == RelayTypeEnum.NamedPipes)
 				{
@@ -67,7 +81,7 @@ namespace hase.ClientUI.ConsoleApp
 				var result = fsq.DoesDirectoryExist(folderPath);
 				Console.WriteLine($"Was folder path [{folderPath}] found? [{result}].");
 		}
-		static void DoCalculator()
+		static void DoCalculator(IConfigurationSection proxyCfg)
 		{
 			Console.WriteLine("For temporary simplicity, will always perform add.");
 			Console.Write("Enter Number1: ");
@@ -90,11 +104,11 @@ namespace hase.ClientUI.ConsoleApp
 			if (RelayUtil.RelayTypeDflt == RelayTypeEnum.SignalR)
 			{
 				var proxyType = typeof(SignalrRelayProxy<CalculatorRequest, CalculatorResponse>);
-				calc = new Calculator(proxyType);
+				calc = new Calculator(proxyType, proxyCfg);
 			}
 			if (RelayUtil.RelayTypeDflt == RelayTypeEnum.NamedPipes)
 			{
-				//calc = new Calculator(typeof(NamedPipeRelayProxy<CalculatorRequest, CalculatorResponse>));
+				//calc = new Calculator(typeof(NamedPipeRelayProxy<CalculatorRequest, CalculatorResponse>), proxyCfg);
 			}
 			var result = calc.Add(n1, n2);
 			Console.WriteLine($"[{n1} + {n2}] = [{result}].");

@@ -6,12 +6,13 @@ using Xunit;
 
 namespace hase.DevLib.Tests
 {
+	// 06/23/18 gph. Pass in real config.
 	public class FileSystemQuery_SignalrRelayTests : IClassFixture<SignalrRelayFixture>, IClassFixture<FileSystemQuery_SignalrDispatcherFixture>
 	{
 		[Fact]
 		public void VerifyCRootExists_ClientApi_SignalrRelay()
 		{
-			var client = new FileSystemQuery(typeof(SignalrRelayProxy<FileSystemQueryRequest, FileSystemQueryResponse>));
+			var client = new FileSystemQuery(typeof(SignalrRelayProxy<FileSystemQueryRequest, FileSystemQueryResponse>), null);
 
 			var result = client.DoesDirectoryExist(@"c:");
 			Xunit.Assert.True(result);
@@ -19,7 +20,7 @@ namespace hase.DevLib.Tests
 		[Fact]
 		public async void VerifyCRootExists_ServiceApi_SignalrRelay()
 		{
-			var service = new FileSystemQuery(typeof(SignalrRelayProxy<FileSystemQueryRequest, FileSystemQueryResponse>)).Service;
+			var service = new FileSystemQuery(typeof(SignalrRelayProxy<FileSystemQueryRequest, FileSystemQueryResponse>), null).Service;
 
 			var request = new FileSystemQueryRequest
 			{
@@ -34,7 +35,7 @@ namespace hase.DevLib.Tests
 		[Fact]
 		public void VerifyBogusPathNotExist_ClientApi_SignalrRelay()
 		{
-			var client = new FileSystemQuery(typeof(SignalrRelayProxy<FileSystemQueryRequest, FileSystemQueryResponse>));
+			var client = new FileSystemQuery(typeof(SignalrRelayProxy<FileSystemQueryRequest, FileSystemQueryResponse>), null);
 
 			var result = client.DoesDirectoryExist("slkdjfslkdflsdfjlsdkjf");
 			Xunit.Assert.False(result);
@@ -42,7 +43,7 @@ namespace hase.DevLib.Tests
 		[Fact]
 		public async void VerifyBogusPathNotExist_ServiceApi_SignalrRelay()
 		{
-			var service = new FileSystemQuery(typeof(SignalrRelayProxy<FileSystemQueryRequest, FileSystemQueryResponse>)).Service;
+			var service = new FileSystemQuery(typeof(SignalrRelayProxy<FileSystemQueryRequest, FileSystemQueryResponse>), null).Service;
 
 			var request = new FileSystemQueryRequest
 			{
