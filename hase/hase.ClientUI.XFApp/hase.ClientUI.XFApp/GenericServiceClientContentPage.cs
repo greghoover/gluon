@@ -1,10 +1,13 @@
 ﻿using hase.DevLib.Framework.Client;
 using hase.DevLib.Framework.Contract;
+using hase.DevLib.Framework.Relay.Proxy;
 using hase.Relays.Local;
 using hase.Relays.Signalr.Client;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using Xamarin.Forms;
@@ -23,12 +26,23 @@ namespace hase.ClientUI.XFApp
 		List<Entry> entryControls;
 		List<Picker> pickerControls;
 
-		InputFormDef formDef;
+		InputFormDef formDef { get; set; }
+		RelayProxyConfig hostConfig { get; set; }
+		IConfigurationSection proxyConfig { get; set; }
 
 		public GenericServiceClientContentPage() { }
 
 		public void InitializeComponent(InputFormDef formDef)
 		{
+
+			Console.WriteLine("Getting Configuration");
+			var cb = new ConfigurationBuilder();
+			var cfg = cb.AddJsonFile("appsettings.json")
+				//.AddCommandLine(args)
+				.Build();
+			hostConfig = cfg.GetSection("ServiceProxy").Get<RelayProxyConfig>();
+			proxyConfig = cfg.GetSection(hostConfig.ProxyConfigSection);
+
 			this.formDef = formDef;
 			InitKnownControls();
 			this.Content = BuildPageContent();
@@ -103,7 +117,7 @@ namespace hase.ClientUI.XFApp
 				{
 					case ServiceLocation.Local:
 						// todo: 06/13/18 gph. move the type argument to a type parameter if possible.
-						client = new UntypedServiceClient(typeof(UntypedLocalRelayProxy), proxyName);
+						client = new UntypedServiceClient(typeof(UntypedLocalRelayProxy), proxyConfig, proxyName);
 						Task.Run(async () =>
 						{
 							var dispatcher = new LocalRelayDispatcher(ContractUtil.EnsureServiceSuffix(proxyName));
@@ -111,7 +125,7 @@ namespace hase.ClientUI.XFApp
 						});
 						break;
 					case ServiceLocation.Remote:
-						client = new UntypedServiceClient(typeof(UntypedSignalrRelayProxy), proxyName);
+						client = new UntypedServiceClient(typeof(UntypedSignalrRelayProxy), proxyConfig, proxyName);
 						break;
 				}
 

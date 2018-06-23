@@ -35,7 +35,7 @@ namespace hase.DevLib.Framework.Client
 			serviceTypeName = serviceTypeName ?? ContractUtil.GetServiceClrTypeFromClientType(this.GetType());
 			return ClientServiceFactory<TRequest, TResponse>.NewLocal(serviceTypeName);
 		}
-		private IService<TRequest, TResponse> GetProxyInstance(Type proxyType, IConfigurationSection proxyConfig = null, string proxyChannelName = null)
+		private IService<TRequest, TResponse> GetProxyInstance(Type proxyType, IConfigurationSection proxyConfig, string proxyChannelName = null)
 		{
 			proxyChannelName = proxyChannelName ?? ContractUtil.EnsureProxySuffix(this.Name);
 			return ClientServiceFactory<TRequest, TResponse>.NewProxied(proxyType, proxyConfig, proxyChannelName);
