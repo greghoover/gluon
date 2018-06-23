@@ -14,6 +14,7 @@ namespace hase.Relays.Signalr.Client
 		where TRequest : AppRequestMessage
 		where TResponse : AppResponseMessage
 	{
+		public const string ProxyTypeName = "SignalrRelayProxy";
 		public override string Abbr => "signalrProxy";
 		//private SignalrClientStream pipe = null;
 		HubConnection _hub = null;
