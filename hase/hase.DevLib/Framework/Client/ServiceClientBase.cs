@@ -41,7 +41,8 @@ namespace hase.DevLib.Framework.Client
 			return ClientServiceFactory<TRequest, TResponse>.NewProxied(proxyType, proxyConfig, proxyChannelName);
 		}
 
-		public InputFormDef GenerateUntypedClientDef()
+
+		public InputFormDef GenerateFormDefinitionFromRequestType()
 		{
 			var form = new InputFormDef();
 			form.Name = this.Name;

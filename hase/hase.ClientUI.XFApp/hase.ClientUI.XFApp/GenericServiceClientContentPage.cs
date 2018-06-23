@@ -110,14 +110,14 @@ namespace hase.ClientUI.XFApp
 			try
 			{
 				var proxyName = ContractUtil.EnsureProxySuffix(this.formDef.Name);
-				var client = default(UntypedServiceClient); //default(IServiceClient<AppRequestMessage, AppResponseMessage>);
+				var client = default(ServiceClient); //default(IServiceClient<AppRequestMessage, AppResponseMessage>);
 
 				var selectedItem = (ServiceLocation) Enum.Parse(typeof(ServiceLocation), this.serviceLocationPicker.SelectedItem.ToString());
 				switch (selectedItem)
 				{
 					case ServiceLocation.Local:
 						// todo: 06/13/18 gph. move the type argument to a type parameter if possible.
-						client = new UntypedServiceClient(typeof(UntypedLocalRelayProxy), proxyConfig, proxyName);
+						client = new ServiceClient(typeof(LocalRelayProxy), proxyConfig, proxyName);
 						Task.Run(async () =>
 						{
 							var dispatcher = new LocalRelayDispatcher(ContractUtil.EnsureServiceSuffix(proxyName));
@@ -125,7 +125,7 @@ namespace hase.ClientUI.XFApp
 						});
 						break;
 					case ServiceLocation.Remote:
-						client = new UntypedServiceClient(typeof(UntypedSignalrRelayProxy), proxyConfig, proxyName);
+						client = new ServiceClient(typeof(SignalrRelayProxy), proxyConfig, proxyName);
 						break;
 				}
 

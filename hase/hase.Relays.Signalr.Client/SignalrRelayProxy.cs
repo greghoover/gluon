@@ -10,11 +10,15 @@ using System.Threading.Tasks;
 
 namespace hase.Relays.Signalr.Client
 {
+	public class SignalrRelayProxy : SignalrRelayProxy<AppRequestMessage, AppResponseMessage>
+	{
+		public SignalrRelayProxy(string proxyChannelName, IConfigurationSection proxyConfig) : base(proxyChannelName, proxyConfig) { }
+	}
+
 	public class SignalrRelayProxy<TRequest, TResponse> : RelayProxyBase<TRequest, TResponse>
 		where TRequest : AppRequestMessage
 		where TResponse : AppResponseMessage
 	{
-		public const string ProxyTypeName = "SignalrRelayProxy";
 		public override string Abbr => "signalrProxy";
 		//private SignalrClientStream pipe = null;
 		HubConnection _hub = null;

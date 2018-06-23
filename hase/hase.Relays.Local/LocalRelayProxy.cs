@@ -7,6 +7,11 @@ using System.Threading.Tasks;
 
 namespace hase.Relays.Local
 {
+	public class LocalRelayProxy : LocalRelayProxy<AppRequestMessage, AppResponseMessage>
+	{
+		public LocalRelayProxy(string proxyChannelName) : base(proxyChannelName) { }
+	}
+
 	public class LocalRelayProxy<TRequest, TResponse> : RelayProxyBase<TRequest, TResponse>
 		where TRequest : AppRequestMessage
 		where TResponse : AppResponseMessage

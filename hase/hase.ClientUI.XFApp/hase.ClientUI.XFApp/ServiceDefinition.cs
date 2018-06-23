@@ -12,13 +12,13 @@ namespace hase.ClientUI.XFApp
 		public static IEnumerable<InputFormDef> GetAll()
 		{
 			var calcClient = new Calculator();
-			yield return calcClient.GenerateUntypedClientDef();
+			yield return calcClient.GenerateFormDefinitionFromRequestType();
 
 			var fsqClient = new FileSystemQuery();
-			yield return fsqClient.GenerateUntypedClientDef();
+			yield return fsqClient.GenerateFormDefinitionFromRequestType();
 
 			var fsrClient = new FileSystemReader();
-			yield return fsrClient.GenerateUntypedClientDef();
+			yield return fsrClient.GenerateFormDefinitionFromRequestType();
 		}
 		// todo: 06/19/18 gph. Load form defs from a repository.
 		public static IEnumerable<InputFormDef> GetAll2()

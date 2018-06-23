@@ -71,7 +71,7 @@ namespace hase.ClientUI.ConsoleApp
 			var fsq = default(IFileSystemQuery);
 			switch (hostCfg.ProxyTypeName)
 			{
-				case UntypedSignalrRelayProxy.ProxyTypeName:
+				case nameof(SignalrRelayProxy):
 					var proxyType = typeof(SignalrRelayProxy<FileSystemQueryRequest, FileSystemQueryResponse>);
 					fsq = new FileSystemQuery(proxyType, proxyCfg);
 					break;
@@ -106,7 +106,7 @@ namespace hase.ClientUI.ConsoleApp
 			var calc = default(ICalculator);
 			switch (hostCfg.ProxyTypeName)
 			{
-				case UntypedSignalrRelayProxy.ProxyTypeName:
+				case nameof(SignalrRelayProxy):
 					var proxyType = typeof(SignalrRelayProxy<CalculatorRequest, CalculatorResponse>);
 					calc = new Calculator(proxyType, proxyCfg);
 					break;
