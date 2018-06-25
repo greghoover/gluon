@@ -5,7 +5,7 @@ namespace hase.DevLib.Framework.Relay.Dispatcher
 {
 	public class RelayDispatcherConfig : ConfigBase<RelayDispatcherConfig>
 	{
-		public override string SectionName => "ServiceDispatcher";
+		public override string DefaultSectionName => "ServiceDispatcher";
 
 		public string DispatcherTypeName { get; set; }
 		public string DispatcherConfigSection { get; set; }

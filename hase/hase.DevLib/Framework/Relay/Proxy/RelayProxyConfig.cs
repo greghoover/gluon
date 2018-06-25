@@ -5,7 +5,7 @@ namespace hase.DevLib.Framework.Relay.Proxy
 {
 	public class RelayProxyConfig : ConfigBase<RelayProxyConfig>
 	{
-		public override string SectionName => "ServiceProxy";
+		public override string DefaultSectionName => "ServiceProxy";
 
 		public string ProxyTypeName { get; set; }
 		public string ProxyConfigSection { get; set; }

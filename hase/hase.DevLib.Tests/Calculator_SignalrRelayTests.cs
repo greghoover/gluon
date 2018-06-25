@@ -1,8 +1,8 @@
-using System.Threading.Tasks;
-using hase.Relays.Signalr.Client;
 using hase.AppServices.Calculator.Client;
 using hase.AppServices.Calculator.Contract;
+using hase.DevLib.Framework.Relay.Proxy;
 using hase.DevLib.Tests.Fixtures;
+using hase.Relays.Signalr.Client;
 using Xunit;
 
 namespace hase.DevLib.Tests
@@ -13,7 +13,9 @@ namespace hase.DevLib.Tests
 		[Fact]
 		public void VerifyAddTwoNumbers_ClientApi_SignalrRelay()
 		{
-			var client = new Calculator(typeof(SignalrRelayProxy<CalculatorRequest, CalculatorResponse>), null);
+			var hostCfg = new RelayProxyConfig().GetConfigSection(nameof(Calculator));
+			var proxyCfg = hostCfg.GetConfigRoot().GetSection(hostCfg.ProxyConfigSection);
+			var client = new Calculator(typeof(SignalrRelayProxy<CalculatorRequest, CalculatorResponse>), proxyCfg);
 
 			var result = client.Add(5, 10);
 			Xunit.Assert.True(result == 15);
@@ -21,7 +23,9 @@ namespace hase.DevLib.Tests
 		[Fact]
 		public async void VerifyAddTwoNumbers_ServiceApi_SignalrRelay()
 		{
-			var service = new Calculator(typeof(SignalrRelayProxy<CalculatorRequest, CalculatorResponse>), null).Service;
+			var hostCfg = new RelayProxyConfig().GetConfigSection(nameof(Calculator));
+			var proxyCfg = hostCfg.GetConfigRoot().GetSection(hostCfg.ProxyConfigSection);
+			var service = new Calculator(typeof(SignalrRelayProxy<CalculatorRequest, CalculatorResponse>), proxyCfg).Service;
 
 			var request = new CalculatorRequest
 			{

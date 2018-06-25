@@ -1,4 +1,5 @@
 ﻿using hase.AppServices.FileSystemQuery.Service;
+using hase.DevLib.Framework.Relay.Dispatcher;
 using hase.Relays.Signalr.Client;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -26,8 +27,9 @@ namespace hase.DevLib.Tests.Fixtures
 				.ConfigureServices((hostContext, services) =>
 				{
 					Console.WriteLine($"{nameof(SignalrRelayDispatcher)}<{nameof(FileSystemQueryService)}>");
-					// todo: 06/22/18 gph. Pass null to compile. Need to fix.
-					services.AddSingleton<IHostedService, SignalrRelayDispatcher>(isp => new SignalrRelayDispatcher("FileSystemQueryService", null));
+					var hostCfg = new RelayDispatcherConfig().GetConfigSection(nameof(FileSystemQueryService));
+					var dispatcherCfg = hostCfg.GetConfigRoot().GetSection(hostCfg.DispatcherConfigSection);
+					services.AddSingleton<IHostedService, SignalrRelayDispatcher>(isp => new SignalrRelayDispatcher(nameof(FileSystemQueryService), dispatcherCfg));
 				}).Build();
 
 			Console.WriteLine("Starting service dispatcher:");

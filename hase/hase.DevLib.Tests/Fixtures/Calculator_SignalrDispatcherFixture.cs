@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
 using System.Threading.Tasks;
+using hase.DevLib.Framework.Relay.Dispatcher;
 
 namespace hase.DevLib.Tests.Fixtures
 {
@@ -26,8 +27,9 @@ namespace hase.DevLib.Tests.Fixtures
 				.ConfigureServices((hostContext, services) =>
 				{
 					Console.WriteLine($"{nameof(SignalrRelayDispatcher)}<{nameof(CalculatorService)}>");
-					// todo: 06/22/18 gph. Pass null to compile. Need to fix.
-					services.AddSingleton<IHostedService, SignalrRelayDispatcher>(isp => new SignalrRelayDispatcher("CalculatorService", null));
+					var hostCfg = new RelayDispatcherConfig().GetConfigSection(nameof(CalculatorService));
+					var dispatcherCfg = hostCfg.GetConfigRoot().GetSection(hostCfg.DispatcherConfigSection);
+					services.AddSingleton<IHostedService, SignalrRelayDispatcher>(isp => new SignalrRelayDispatcher(nameof(CalculatorService), dispatcherCfg));
 				}).Build();
 
 			Console.WriteLine("Starting service dispatcher:");
