@@ -4,7 +4,6 @@
 using hase.DevLib.Framework.Contract;
 using hase.DevLib.Framework.Relay.Dispatcher;
 using hase.Relays.Signalr.Client;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
@@ -19,12 +18,8 @@ namespace hase.ServiceApp.ConsoleHost
 			Console.WriteLine("Starting ServiceApp Dispatcher Console Host...");
 
 			Console.WriteLine("Getting Configuration");
-			var cb = new ConfigurationBuilder();
-			var cfg = cb.AddJsonFile("appsettings.json")
-				.AddCommandLine(args)
-				.Build();
-			var hostCfg = cfg.GetSection("ServiceDispatcher").Get<RelayDispatcherConfig>();
-			var dispatcherCfg = cfg.GetSection(hostCfg.DispatcherConfigSection);
+			var hostCfg = new RelayDispatcherConfig().GetConfigSection();
+			var dispatcherCfg = hostCfg.GetConfigRoot().GetSection(hostCfg.DispatcherConfigSection);
 
 			Console.WriteLine("Building service dispatchers.");
 			var hb = new HostBuilder()

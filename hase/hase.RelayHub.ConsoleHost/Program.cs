@@ -3,7 +3,6 @@
 using hase.Relays.Signalr.Client;
 using hase.Relays.Signalr.Server;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
 using System;
 using System.Threading.Tasks;
 
@@ -16,12 +15,8 @@ namespace hase.RelayHub.ConsoleHost
 			Console.WriteLine("Starting Relay Server Console Host...");
 
 			Console.WriteLine("Getting Configuration");
-			var cb = new ConfigurationBuilder();
-			var cfg = cb.AddJsonFile("appsettings.json")
-				.AddCommandLine(args)
-				.Build();
-			var hostCfg = cfg.GetSection("RelayHub").Get<RelayHubConfig>();
-			var hubCfg = cfg.GetSection(hostCfg.HubConfigSection);
+			var hostCfg = new RelayHubConfig().GetConfigSection();
+			var hubCfg = hostCfg.GetConfigRoot().GetSection(hostCfg.HubConfigSection);
 
 			switch (hostCfg.HubTypeName)
 			{

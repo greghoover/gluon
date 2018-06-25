@@ -7,7 +7,6 @@ using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using Xamarin.Forms;
@@ -36,12 +35,8 @@ namespace hase.ClientUI.XFApp
 		{
 
 			Console.WriteLine("Getting Configuration");
-			var cb = new ConfigurationBuilder();
-			var cfg = cb.AddJsonFile("appsettings.json")
-				//.AddCommandLine(args)
-				.Build();
-			hostConfig = cfg.GetSection("ServiceProxy").Get<RelayProxyConfig>();
-			proxyConfig = cfg.GetSection(hostConfig.ProxyConfigSection);
+			hostConfig = new RelayProxyConfig().GetConfigSection();
+			proxyConfig = hostConfig.GetConfigRoot().GetSection(hostConfig.ProxyConfigSection);
 
 			this.formDef = formDef;
 			InitKnownControls();

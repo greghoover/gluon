@@ -18,12 +18,8 @@ namespace hase.ClientUI.ConsoleApp
 			Console.WriteLine("Client Console Host");
 
 			Console.WriteLine("Getting Configuration");
-			var cb = new ConfigurationBuilder();
-			var cfg = cb.AddJsonFile("appsettings.json")
-				.AddCommandLine(args)
-				.Build();
-			var hostCfg = cfg.GetSection("ServiceProxy").Get<RelayProxyConfig>();
-			var proxyCfg = cfg.GetSection(hostCfg.ProxyConfigSection);
+			var hostCfg = new RelayProxyConfig().GetConfigSection();
+			var proxyCfg = hostCfg.GetConfigRoot().GetSection(hostCfg.ProxyConfigSection);
 
 			while (true)
 			{
