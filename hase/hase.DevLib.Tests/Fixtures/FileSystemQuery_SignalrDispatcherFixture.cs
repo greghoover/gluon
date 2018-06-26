@@ -28,7 +28,9 @@ namespace hase.DevLib.Tests.Fixtures
 				{
 					Console.WriteLine($"{nameof(SignalrRelayDispatcher)}<{nameof(FileSystemQueryService)}>");
 					var hostCfg = new RelayDispatcherConfig().GetConfigSection(nameof(FileSystemQueryService));
-					var dispatcherCfg = hostCfg.GetConfigRoot().GetSection(hostCfg.DispatcherConfigSection);
+					//var dispatcherCfg = hostCfg.GetConfigRoot().GetSection(hostCfg.DispatcherConfigSection);
+					var dispatcherCfg = new SignalrRelayDispatcherConfig();
+					dispatcherCfg.HubUrl = new Uri("http://localhost:5151/route");
 					services.AddSingleton<IHostedService, SignalrRelayDispatcher>(isp => new SignalrRelayDispatcher(nameof(FileSystemQueryService), dispatcherCfg));
 				}).Build();
 

@@ -12,10 +12,13 @@ namespace hase.Relays.Signalr.Client
 {
 	public class SignalrRelayDispatcher : RelayDispatcherBase
 	{
-		// todo: 06/21/18 gph. Inject a complete configuration object instead of a single service type / channel name.
 		public SignalrRelayDispatcher(string channelName, IConfigurationSection dispatcherConfig) : base(channelName)
 		{
-			this.Config = dispatcherConfig.Get<SignalrRelayDispatcherConfig>();
+			// todo: 06/26/18. Generalize into base class.
+			if (dispatcherConfig is SignalrRelayDispatcherConfig)
+				this.Config = (SignalrRelayDispatcherConfig)dispatcherConfig;
+			else
+				this.Config = dispatcherConfig.Get<SignalrRelayDispatcherConfig>();
 		}
 
 		public override string Abbr => "signalrDispatcher";

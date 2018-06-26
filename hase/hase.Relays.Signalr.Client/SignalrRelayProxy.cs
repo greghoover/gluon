@@ -27,7 +27,11 @@ namespace hase.Relays.Signalr.Client
 
 		public SignalrRelayProxy(string proxyChannelName, IConfigurationSection proxyConfig) : base(proxyChannelName)
 		{
-			this.Config = proxyConfig.Get<SignalrRelayProxyConfig>();
+			// todo: 06/26/18. Generalize into base class.
+			if (proxyConfig is SignalrRelayProxyConfig)
+				this.Config = (SignalrRelayProxyConfig)proxyConfig;
+			else
+				this.Config = proxyConfig.Get<SignalrRelayProxyConfig>();
 		}
 
 		public async override Task ConnectAsync(int timeoutMs, CancellationToken ct)
