@@ -8,13 +8,15 @@ using Xunit;
 
 namespace hase.DevLib.Tests
 {
-	// todo: 06/26/18 gph. Maybe use ICollectionFixture instead.
 	public class Calculator_SignalrRelayTests : IClassFixture<SignalrRelayFixture>, IClassFixture<Calculator_SignalrDispatcherFixture>
 	{
 		public Calculator_SignalrRelayTests(SignalrRelayFixture signalrRelayFixture)
 		{
-			var signalrHubCfg = new SignalrRelayHubConfig().GetConfigSection(nameof(Calculator));
-			signalrRelayFixture.StartRelayServer(signalrHubCfg);
+			if (signalrRelayFixture.Relay == null)
+			{
+				var signalrHubCfg = new SignalrRelayHubConfig().GetConfigSection(nameof(Calculator));
+				signalrRelayFixture.StartRelayServer(signalrHubCfg);
+			}
 		}
 
 		[Fact]

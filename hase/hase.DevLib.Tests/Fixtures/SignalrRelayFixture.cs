@@ -9,7 +9,7 @@ namespace hase.DevLib.Tests.Fixtures
 {
 	public class SignalrRelayFixture : IDisposable
 	{
-		IWebHost _relay = null;
+		public IWebHost Relay { get; private set; } = null;
 
 		public SignalrRelayFixture() { }
 
@@ -24,15 +24,18 @@ namespace hase.DevLib.Tests.Fixtures
 		}
 		public async void StartRelayServer(SignalrRelayHubConfig signalrHubCfg)
 		{
+			if (Relay != null)
+				return; // has been started already
+
 			try
 			{
 				var urls = signalrHubCfg.HubUrl.Select(x => (new Uri(x.GetLeftPart(UriPartial.Authority))).ToString()).ToArray();
 
 				Console.WriteLine("Building SignalR relay server.");
-				_relay = Startup.BuildWebHost(urls);
+				Relay = Startup.BuildWebHost(urls);
 
 				Console.WriteLine("Starting SignalR relay server.");
-				await _relay.StartAsync();
+				await Relay.StartAsync();
 				Console.WriteLine("SignalR relay server started.");
 			}
 			catch { }
@@ -42,7 +45,7 @@ namespace hase.DevLib.Tests.Fixtures
 			try
 			{
 				Console.WriteLine("Stopping SignalR relay server.");
-				await _relay.StopAsync(TimeSpan.FromSeconds(5));
+				await Relay.StopAsync(TimeSpan.FromSeconds(5));
 				Console.WriteLine("SignalR relay server stopped.");
 			}
 			catch { }
