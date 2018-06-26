@@ -2,7 +2,6 @@
 using hase.Relays.Signalr.Server;
 using Microsoft.AspNetCore.Hosting;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -12,10 +11,8 @@ namespace hase.DevLib.Tests.Fixtures
 	{
 		IWebHost _relay = null;
 
-		public SignalrRelayFixture()
-		{
-			Task.Run(() => StartRelayServer()).Wait();
-		}
+		public SignalrRelayFixture() { }
+
 		public void Dispose()
 		{
 			Task.Run(() => StopRelayServer()).Wait();
@@ -25,25 +22,30 @@ namespace hase.DevLib.Tests.Fixtures
 		{
 			return new Uri($"{url.GetLeftPart(UriPartial.Authority)}");
 		}
-		async void StartRelayServer()
+		public async void StartRelayServer(SignalrRelayHubConfig signalrHubCfg)
 		{
-			Console.WriteLine("Building SignalR relay server.");
-			var hubCfg = new SignalrRelayHubConfig().GetConfigSection();
-			var hubUrls = new List<Uri>(hubCfg.HubUrl.Select((uri) => GetBaseUri(uri)));
-			_relay = Startup.BuildWebHost(hubUrls.Select(x => x.ToString()).ToArray());
+			try
+			{
+				var urls = signalrHubCfg.HubUrl.Select(x => (new Uri(x.GetLeftPart(UriPartial.Authority))).ToString()).ToArray();
 
-			Console.WriteLine("Starting SignalR relay server.");
-			await _relay.StartAsync();
-			Console.WriteLine("SignalR relay server started.");
+				Console.WriteLine("Building SignalR relay server.");
+				_relay = Startup.BuildWebHost(urls);
 
-			//Console.WriteLine("Waiting for Dispose to be called for shutdown.");
-			//await _relay.WaitForShutdownAsync();
+				Console.WriteLine("Starting SignalR relay server.");
+				await _relay.StartAsync();
+				Console.WriteLine("SignalR relay server started.");
+			}
+			catch { }
 		}
 		async void StopRelayServer()
 		{
-			Console.WriteLine("Stopping SignalR relay server.");
-			await _relay.StopAsync(TimeSpan.FromSeconds(5));
-			Console.WriteLine("SignalR relay server stopped.");
+			try
+			{
+				Console.WriteLine("Stopping SignalR relay server.");
+				await _relay.StopAsync(TimeSpan.FromSeconds(5));
+				Console.WriteLine("SignalR relay server stopped.");
+			}
+			catch { }
 		}
 	}
 }
