@@ -5,13 +5,14 @@
     <Platform Condition=" '$(Platform)' == '' ">iPhoneSimulator</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{A58FCEBB-8521-4A05-981F-7B91F8DDA84E}</ProjectGuid>
+    <ProjectGuid>{47A741F8-5CE4-45CD-832B-1F45ECA6B76D}</ProjectGuid>
     <ProjectTypeGuids>{FEACFBD2-3405-455C-9665-78FE426C6842};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <TemplateGuid>{6143fdea-f3c2-4a09-aafa-6e230626515e}</TemplateGuid>
     <OutputType>Exe</OutputType>
     <RootNamespace>hase.ClientUI.XFApp.iOS</RootNamespace>
     <IPhoneResourcePrefix>Resources</IPhoneResourcePrefix>
     <AssemblyName>hase.ClientUI.XFApp.iOS</AssemblyName>
+    <MtouchHttpClientHandler>NSUrlSessionHandler</MtouchHttpClientHandler>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
   </PropertyGroup>
@@ -147,12 +148,13 @@
     <Reference Include="Xamarin.iOS" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Xamarin.Forms" Version="3.1.0.469394-pre1" />
+    <PackageReference Include="Xamarin.Forms" Version="3.1.0.583944" />
+    <PackageReference Include="Xamarin.Essentials" Version="0.7.0.17-preview" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
   <ItemGroup>
     <ProjectReference Include="..\hase.ClientUI.XFApp\hase.ClientUI.XFApp.csproj">
-      <Project>{2227CF42-739A-4F05-BF19-0F205EE5B6D7}</Project>
+      <Project>{E0ACB1C5-6241-4902-BB85-1B53D8C39A9F}</Project>
       <Name>hase.ClientUI.XFApp</Name>
     </ProjectReference>
   </ItemGroup>

@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
-    <ProjectGuid>{B60ABCCD-E24D-42C6-8147-95B0398E9F47}</ProjectGuid>
+    <ProjectGuid>{4A0D8043-BD04-4F49-B0C1-F74A9E37F056}</ProjectGuid>
     <OutputType>AppContainerExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>hase.ClientUI.XFApp.UWP</RootNamespace>
@@ -143,12 +143,13 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Xamarin.Forms" Version="3.1.0.469394-pre1" />
+    <PackageReference Include="Xamarin.Forms" Version="3.1.0.583944" />
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform" Version="6.2.0-Preview1-26502-02" />
+    <PackageReference Include="Xamarin.Essentials" Version="0.7.0.17-preview" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\hase.ClientUI.XFApp\hase.ClientUI.XFApp.csproj">
-      <Project>{2227CF42-739A-4F05-BF19-0F205EE5B6D7}</Project>
+      <Project>{E0ACB1C5-6241-4902-BB85-1B53D8C39A9F}</Project>
       <Name>hase.ClientUI.XFApp</Name>
     </ProjectReference>
   </ItemGroup>
