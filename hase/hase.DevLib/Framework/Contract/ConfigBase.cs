@@ -2,6 +2,8 @@
 using Microsoft.Extensions.Primitives;
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Runtime.InteropServices;
 
 namespace hase.DevLib.Framework.Contract
 {
@@ -32,12 +34,52 @@ namespace hase.DevLib.Framework.Contract
 		{
 			if (_configRoot == null)
 			{
-				// todo: 06/25/18 gph. Pass in a configuration Action parameter instead of hard-coding the buider.
-				Console.WriteLine("Building Configuration");
-				var cb = new ConfigurationBuilder();
-				_configRoot = cb.AddJsonFile("appsettings.json")
-					//.AddCommandLine(args)
-					.Build();
+				try
+				{
+					// todo: 06/25/18 gph. Pass in a configuration Action parameter instead of hard-coding the buider.
+					Console.WriteLine("Building Configuration");
+					var cb = new ConfigurationBuilder();
+					var cd = Directory.GetCurrentDirectory();
+					//cb.SetBasePath(cd);
+
+					var osDesc = RuntimeInformation.OSDescription;
+					var fwDesc = RuntimeInformation.FrameworkDescription;
+					var isLinux = RuntimeInformation.IsOSPlatform(OSPlatform.Linux);
+					var isOsx = RuntimeInformation.IsOSPlatform(OSPlatform.OSX);
+					var isWindows = RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
+					var isIos = RuntimeInformation.IsOSPlatform(OSPlatform.Create("IOS"));
+					var isAndroid = RuntimeInformation.IsOSPlatform(OSPlatform.Create("ANDROID"));
+
+					if (isWindows)
+					{
+						cb.AddJsonFile("appsettings.json");
+						//cb.AddCommandLine(args);
+						_configRoot = cb.Build();
+						//var subs = Directory.GetDirectories(cd);
+					}
+					if (isLinux || isAndroid)
+					{
+						// todo: 06/28/18 gph. Put configuration on the device and read it back.
+						var dict = new Dictionary<string, string>
+						{
+							{"ServiceProxy:ProxyTypeName", "SignalrRelayProxy"},
+							{"ServiceProxy:ProxyConfigSection", "SignalrRelayProxy"},
+							{"ServiceProxy:ServiceTypeNames", "FileSystemQuery"},
+							{"SignalrRelayProxy:HubUrl", "http://localhost:5000/route"},
+						};
+						cb.AddInMemoryCollection(dict);
+						//cb.AddJsonFile(Environment.GetFolderPath(Environment.SpecialFolder.Personal) + @"/appsettings.json");
+						_configRoot = cb.Build();
+					}
+					if (isOsx || isIos)
+					{
+
+					}
+				}
+				catch (Exception ex)
+				{
+					var e = ex;
+				}
 			}
 			return _configRoot;
 		}

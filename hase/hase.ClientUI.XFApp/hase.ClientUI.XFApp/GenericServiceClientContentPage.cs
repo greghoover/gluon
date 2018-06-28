@@ -40,7 +40,7 @@ namespace hase.ClientUI.XFApp
 
 			this.formDef = formDef;
 			InitKnownControls();
-			this.Content = BuildPageContent();
+			this.Content = new ScrollView() { Content = BuildPageContent() };
 			ResetToInitialValues();
 		}
 
@@ -168,9 +168,9 @@ namespace hase.ClientUI.XFApp
 			this.descHeader.Text = this.formDef.Description;
 
 			view.Children.Add(this.descHeader);
-			view.Children.Add(this.emptyHeader);
+			//view.Children.Add(this.emptyHeader);
 			view.Children.Add(this.serviceLocationPicker);
-			view.Children.Add(this.emptyHeader);
+			//view.Children.Add(this.emptyHeader);
 
 			// from formDef fields
 			AddInputFieldsFromFormDef(view, this.formDef.InputFields);

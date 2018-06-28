@@ -51,7 +51,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "hase.ClientUI.XFApp.iOS", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "hase.ClientUI.XFApp.UWP", "hase.ClientUI.XFApp\hase.ClientUI.XFApp.UWP\hase.ClientUI.XFApp.UWP.csproj", "{4A0D8043-BD04-4F49-B0C1-F74A9E37F056}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "hase.ClientUI.XFApp", "hase.ClientUI.XFApp\hase.ClientUI.XFApp\hase.ClientUI.XFApp.csproj", "{7C1162B0-EC0F-4288-82A7-E99BD505199C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "hase.ClientUI.XFApp", "hase.ClientUI.XFApp\hase.ClientUI.XFApp\hase.ClientUI.XFApp.csproj", "{7C1162B0-EC0F-4288-82A7-E99BD505199C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -846,6 +846,8 @@ Global
 		{4A0D8043-BD04-4F49-B0C1-F74A9E37F056}.AppStore|x86.Build.0 = Release|x86
 		{4A0D8043-BD04-4F49-B0C1-F74A9E37F056}.AppStore|x86.Deploy.0 = Release|x86
 		{4A0D8043-BD04-4F49-B0C1-F74A9E37F056}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{4A0D8043-BD04-4F49-B0C1-F74A9E37F056}.Debug|Any CPU.Build.0 = Debug|x86
+		{4A0D8043-BD04-4F49-B0C1-F74A9E37F056}.Debug|Any CPU.Deploy.0 = Debug|x86
 		{4A0D8043-BD04-4F49-B0C1-F74A9E37F056}.Debug|ARM.ActiveCfg = Debug|ARM
 		{4A0D8043-BD04-4F49-B0C1-F74A9E37F056}.Debug|ARM.Build.0 = Debug|ARM
 		{4A0D8043-BD04-4F49-B0C1-F74A9E37F056}.Debug|ARM.Deploy.0 = Debug|ARM

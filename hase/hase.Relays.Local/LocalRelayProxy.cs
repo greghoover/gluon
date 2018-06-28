@@ -1,6 +1,7 @@
 ﻿using hase.DevLib.Framework.Contract;
 using hase.DevLib.Framework.Relay.Contract;
 using hase.DevLib.Framework.Relay.Proxy;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
@@ -9,7 +10,7 @@ namespace hase.Relays.Local
 {
 	public class LocalRelayProxy : LocalRelayProxy<AppRequestMessage, AppResponseMessage>
 	{
-		public LocalRelayProxy(string proxyChannelName) : base(proxyChannelName) { }
+		public LocalRelayProxy(string proxyChannelName, IConfigurationSection proxyConfig) : base(proxyChannelName, proxyConfig) { }
 	}
 
 	public class LocalRelayProxy<TRequest, TResponse> : RelayProxyBase<TRequest, TResponse>
@@ -25,7 +26,7 @@ namespace hase.Relays.Local
 			if (Hub == null)
 				Hub = new LocalRelayHub();
 		}
-		public LocalRelayProxy(string proxyChannelName) : base(proxyChannelName) { }
+		public LocalRelayProxy(string proxyChannelName, IConfigurationSection proxyConfig) : base(proxyChannelName) { }
 
 		public override Task ConnectAsync(int timeoutMs, CancellationToken ct)
 		{
