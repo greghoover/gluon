@@ -98,7 +98,7 @@ namespace hase.DevLib.Framework.Relay.Dispatcher
 			try
 			{
 				var asmName = requestClrType.Split(',')[1].Trim();
-				var asmPath = Path.Combine(ServiceAssemblyRootPath, asmName);
+				var asmPath = Path.Combine(ServiceAssemblyRootPath, asmName, "lib", "netstandard2.0");
 				var asmFile = Path.Combine(asmPath, $"{asmName}.dll");
 				Assembly.LoadFrom(asmFile);
 				type = Type.GetType(requestClrType);
