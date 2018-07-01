@@ -53,6 +53,15 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "hase.ClientUI.XFApp.UWP", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "hase.ClientUI.XFApp", "hase.ClientUI.XFApp\hase.ClientUI.XFApp\hase.ClientUI.XFApp.csproj", "{7C1162B0-EC0F-4288-82A7-E99BD505199C}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget-commands", ".nuget-commands", "{2B4C6E3C-7DFE-4773-BE63-57259C03216F}"
+	ProjectSection(SolutionItems) = preProject
+		.nuget\hase-local-install.cmd = .nuget\hase-local-install.cmd
+		..\..\..\..\..\..\ProgramData\hase\.nuget\hase-local-install.cmd = ..\..\..\..\..\..\ProgramData\hase\.nuget\hase-local-install.cmd
+		.nuget\hase-local-list.cmd = .nuget\hase-local-list.cmd
+		.nuget\hase-local-set-package-source.cmd = .nuget\hase-local-set-package-source.cmd
+		.nuget\nuget.exe = .nuget\nuget.exe
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Ad-Hoc|Any CPU = Ad-Hoc|Any CPU
