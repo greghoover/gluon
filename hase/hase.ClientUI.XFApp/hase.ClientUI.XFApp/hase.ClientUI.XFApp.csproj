@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
@@ -10,25 +10,18 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="appsettings.json" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Content Include="appsettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="hase.DevLib" Version="1.0.0-rc01" />
     <PackageReference Include="Xamarin.Forms" Version="3.1.0.583944" />
     <PackageReference Include="Xamarin.Essentials" Version="0.7.0.17-preview" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\hase.AppServices.Calculator\hase.AppServices.Calculator.csproj" />
-    <ProjectReference Include="..\..\hase.AppServices.FileSystemQuery\hase.AppServices.FileSystemQuery.csproj" />
-    <ProjectReference Include="..\..\hase.AppServices.FileSystemReader\hase.AppServices.FileSystemReader.csproj" />
-    <ProjectReference Include="..\..\hase.DevLib\hase.DevLib.csproj" />
     <ProjectReference Include="..\..\hase.Relays.Local\hase.Relays.Local.csproj" />
     <ProjectReference Include="..\..\hase.Relays.Signalr.Client\hase.Relays.Signalr.Client.csproj" />
   </ItemGroup>

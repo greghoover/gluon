@@ -11,17 +11,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="hase.AppServices.Calculator" Version="1.0.0-rc01" />
+    <PackageReference Include="hase.AppServices.FileSystemQuery" Version="1.0.0-rc01" />
+    <PackageReference Include="hase.DevLib.Core20" Version="1.0.0-rc01" />
+    <PackageReference Include="hase.Relays.Signalr.Client" Version="1.0.0-rc01" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.8.0-preview-20180610-02" />
     <PackageReference Include="xunit" Version="2.4.0-beta.2.build4010" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.4.0-beta.2.build4010" />
     <DotNetCliToolReference Include="dotnet-xunit" Version="2.3.1" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\hase.AppServices.Calculator\hase.AppServices.Calculator.csproj" />
-    <ProjectReference Include="..\hase.AppServices.FileSystemQuery\hase.AppServices.FileSystemQuery.csproj" />
-    <ProjectReference Include="..\hase.DevLib.Core20\hase.DevLib.Core20.csproj" />
-    <ProjectReference Include="..\hase.Relays.Signalr.Client\hase.Relays.Signalr.Client.csproj" />
   </ItemGroup>
 
   <ItemGroup>

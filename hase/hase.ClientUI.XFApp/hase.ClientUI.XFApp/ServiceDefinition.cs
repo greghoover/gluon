@@ -1,6 +1,6 @@
-﻿using hase.AppServices.Calculator.Client;
-using hase.AppServices.FileSystemQuery.Client;
-using hase.AppServices.FileSystemReader.Client;
+﻿//using hase.AppServices.Calculator.Client;
+//using hase.AppServices.FileSystemQuery.Client;
+//using hase.AppServices.FileSystemReader.Client;
 using hase.DevLib.Framework.Contract;
 using System.Collections.Generic;
 
@@ -9,19 +9,19 @@ namespace hase.ClientUI.XFApp
 	public class ServiceDefinitions
 	{
 		// todo: 06/19/18 gph. Serialize and publish form defs to a repository as part of service development. Not here.
-		public static IEnumerable<InputFormDef> GetAll()
-		{
-			var calcClient = new Calculator();
-			yield return calcClient.GenerateFormDefinitionFromRequestType();
+		//public static IEnumerable<InputFormDef> GetAll()
+		//{
+		//	var calcClient = new Calculator();
+		//	yield return calcClient.GenerateFormDefinitionFromRequestType();
 
-			var fsqClient = new FileSystemQuery();
-			yield return fsqClient.GenerateFormDefinitionFromRequestType();
+		//	var fsqClient = new FileSystemQuery();
+		//	yield return fsqClient.GenerateFormDefinitionFromRequestType();
 
-			var fsrClient = new FileSystemReader();
-			yield return fsrClient.GenerateFormDefinitionFromRequestType();
-		}
+		//	var fsrClient = new FileSystemReader();
+		//	yield return fsrClient.GenerateFormDefinitionFromRequestType();
+		//}
 		// todo: 06/19/18 gph. Load form defs from a repository.
-		public static IEnumerable<InputFormDef> GetAll2()
+		public static IEnumerable<InputFormDef> GetAll()
 		{
 			return new List<InputFormDef>
 			{

@@ -13,7 +13,7 @@ namespace hase.DevLib.Framework.Relay.Dispatcher
 {
 	public abstract class RelayDispatcherBase : BackgroundService, IRelayDispatcher
 	{
-		public string ServiceAssemblyRootPath { get; set; } = @"C:\ProgramData\hase\vhosts\default";
+		public string ServiceAssemblyRootPath { get; set; } = Path.Combine(Environment.GetEnvironmentVariable("USERPROFILE"), ".nuget", "packages");
 		protected ConcurrentQueue<AppRequestMessage> Requests { get; private set; }
 		protected CancellationToken CT { get; private set; }
 		public string ChannelName { get; private set; }
@@ -98,7 +98,7 @@ namespace hase.DevLib.Framework.Relay.Dispatcher
 			try
 			{
 				var asmName = requestClrType.Split(',')[1].Trim();
-				var asmPath = Path.Combine(ServiceAssemblyRootPath, asmName, "lib", "netstandard2.0");
+				var asmPath = Path.Combine(ServiceAssemblyRootPath, asmName, "1.0.0-rc01", "lib", "netstandard2.0");
 				var asmFile = Path.Combine(asmPath, $"{asmName}.dll");
 				Assembly.LoadFrom(asmFile);
 				type = Type.GetType(requestClrType);

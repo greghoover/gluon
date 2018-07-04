@@ -65,7 +65,7 @@ namespace hase.DevLib.Framework.Contract
 							{"ServiceProxy:ProxyTypeName", "SignalrRelayProxy"},
 							{"ServiceProxy:ProxyConfigSection", "SignalrRelayProxy"},
 							{"ServiceProxy:ServiceTypeNames", "FileSystemQuery"},
-							{"SignalrRelayProxy:HubUrl", "http://localhost:5000/route"},
+							{"SignalrRelayProxy:HubUrl", "http://172.27.211.17:5000/route"},
 						};
 						cb.AddInMemoryCollection(dict);
 						//cb.AddJsonFile(Environment.GetFolderPath(Environment.SpecialFolder.Personal) + @"/appsettings.json");

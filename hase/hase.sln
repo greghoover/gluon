@@ -56,7 +56,6 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget-commands", ".nuget-commands", "{2B4C6E3C-7DFE-4773-BE63-57259C03216F}"
 	ProjectSection(SolutionItems) = preProject
 		.nuget\hase-local-install.cmd = .nuget\hase-local-install.cmd
-		..\..\..\..\..\..\ProgramData\hase\.nuget\hase-local-install.cmd = ..\..\..\..\..\..\ProgramData\hase\.nuget\hase-local-install.cmd
 		.nuget\hase-local-list.cmd = .nuget\hase-local-list.cmd
 		.nuget\hase-local-set-package-source.cmd = .nuget\hase-local-set-package-source.cmd
 		.nuget\nuget.exe = .nuget\nuget.exe

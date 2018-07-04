@@ -10,15 +10,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="hase.AppServices.Calculator" Version="1.0.0-rc01" />
+    <PackageReference Include="hase.AppServices.FileSystemQuery" Version="1.0.0-rc01" />
+    <PackageReference Include="hase.Relays.Signalr.Client" Version="1.0.0-rc01" />
     <PackageReference Include="Microsoft.Extensions.Configuration.CommandLine" Version="2.1.1" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="2.1.1" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\hase.AppServices.Calculator\hase.AppServices.Calculator.csproj" />
-    <ProjectReference Include="..\hase.AppServices.FileSystemQuery\hase.AppServices.FileSystemQuery.csproj" />
-    <ProjectReference Include="..\hase.DevLib.Core20\hase.DevLib.Core20.csproj" />
-    <ProjectReference Include="..\hase.Relays.Signalr.Client\hase.Relays.Signalr.Client.csproj" />
   </ItemGroup>
 
   <ItemGroup>
