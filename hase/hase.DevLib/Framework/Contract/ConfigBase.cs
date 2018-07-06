@@ -59,7 +59,7 @@ namespace hase.DevLib.Framework.Contract
 						_configRoot = cb.Build();
 						//var subs = Directory.GetDirectories(cd);
 					}
-					if (isLinux || isAndroid)
+					else if (isLinux || isAndroid)
 					{
 						// todo: 06/28/18 gph. Read configuration from device.
 						var dict = new Dictionary<string, string>
@@ -73,7 +73,7 @@ namespace hase.DevLib.Framework.Contract
 						//cb.AddJsonFile(Environment.GetFolderPath(Environment.SpecialFolder.Personal) + @"/appsettings.json");
 						_configRoot = cb.Build();
 					}
-					if (isOsx || isIos)
+					else //if (isOsx || isIos)
 					{
 						// todo: 07/06/18 gph. Read configuration from device.
 						var dict = new Dictionary<string, string>
@@ -81,7 +81,7 @@ namespace hase.DevLib.Framework.Contract
 							{"ServiceProxy:ProxyTypeName", "SignalrRelayProxy"},
 							{"ServiceProxy:ProxyConfigSection", "SignalrRelayProxy"},
 							{"ServiceProxy:ServiceTypeNames", "FileSystemQuery"},
-							{"SignalrRelayProxy:HubUrl", "http://172.27.211.17:5000/route"},
+							{"SignalrRelayProxy:HubUrl", "http://192.168.1.14:5000/route"},
 						};
 						cb.AddInMemoryCollection(dict);
 						_configRoot = cb.Build();
