@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Primitives;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Runtime.InteropServices;
 
@@ -32,6 +33,7 @@ namespace hase.DevLib.Framework.Contract
 		private IConfigurationRoot _configRoot { get; set; }
 		public IConfigurationRoot GetConfigRoot()
 		{
+			Debugger.Break();
 			if (_configRoot == null)
 			{
 				try
@@ -59,7 +61,7 @@ namespace hase.DevLib.Framework.Contract
 					}
 					if (isLinux || isAndroid)
 					{
-						// todo: 06/28/18 gph. Put configuration on the device and read it back.
+						// todo: 06/28/18 gph. Read configuration from device.
 						var dict = new Dictionary<string, string>
 						{
 							{"ServiceProxy:ProxyTypeName", "SignalrRelayProxy"},
@@ -73,7 +75,16 @@ namespace hase.DevLib.Framework.Contract
 					}
 					if (isOsx || isIos)
 					{
-
+						// todo: 07/06/18 gph. Read configuration from device.
+						var dict = new Dictionary<string, string>
+						{
+							{"ServiceProxy:ProxyTypeName", "SignalrRelayProxy"},
+							{"ServiceProxy:ProxyConfigSection", "SignalrRelayProxy"},
+							{"ServiceProxy:ServiceTypeNames", "FileSystemQuery"},
+							{"SignalrRelayProxy:HubUrl", "http://172.27.211.17:5000/route"},
+						};
+						cb.AddInMemoryCollection(dict);
+						_configRoot = cb.Build();
 					}
 				}
 				catch (Exception ex)

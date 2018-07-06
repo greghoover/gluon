@@ -19,7 +19,6 @@
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="2.1.1" />
     <PackageReference Include="Microsoft.Rest.ClientRuntime" Version="2.3.11" />
     <PackageReference Include="protobuf-net" Version="2.3.14-alpha1" />
-    <PackageReference Include="System.IO.Pipes" Version="4.3.0" />
   </ItemGroup>
 
 </Project>

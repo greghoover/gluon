@@ -35,7 +35,8 @@ namespace hase.ClientUI.XFApp
 		{
 
 			Console.WriteLine("Getting Configuration");
-			hostConfig = new RelayProxyConfig().GetConfigSection();
+			var proxyCfg = new RelayProxyConfig();
+			hostConfig = proxyCfg.GetConfigSection();
 			proxyConfig = hostConfig.GetConfigRoot().GetSection(hostConfig.ProxyConfigSection);
 
 			this.formDef = formDef;
