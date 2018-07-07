@@ -25,19 +25,7 @@
   </ItemGroup>
   
   <ItemGroup>
-    <None Include="appsettings.json">
-      <Pack>true</Pack>
-      <PackagePath>lib/netcoreapp2.1</PackagePath>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="$(OutDir)$(TargetName).deps.json">
-      <Pack>true</Pack>
-      <PackagePath>lib/netcoreapp2.1</PackagePath>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="$(OutDir)$(TargetName).runtimeconfig.dev.json">
+    <None Include="appsettings.json;$(OutDir)$(TargetName).deps.json;$(OutDir)$(TargetName).runtimeconfig.dev.json">
       <Pack>true</Pack>
       <PackagePath>lib/netcoreapp2.1</PackagePath>
     </None>
