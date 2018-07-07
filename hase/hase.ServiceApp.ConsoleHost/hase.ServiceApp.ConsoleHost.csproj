@@ -1,8 +1,10 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp2.1</TargetFramework>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Version>1.0.0-rc01</Version>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -19,6 +21,25 @@
   <ItemGroup>
     <None Update="appsettings.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  
+  <ItemGroup>
+    <None Include="appsettings.json">
+      <Pack>true</Pack>
+      <PackagePath>lib/netcoreapp2.1</PackagePath>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="$(OutDir)$(TargetName).deps.json">
+      <Pack>true</Pack>
+      <PackagePath>lib/netcoreapp2.1</PackagePath>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="$(OutDir)$(TargetName).runtimeconfig.dev.json">
+      <Pack>true</Pack>
+      <PackagePath>lib/netcoreapp2.1</PackagePath>
     </None>
   </ItemGroup>
 
