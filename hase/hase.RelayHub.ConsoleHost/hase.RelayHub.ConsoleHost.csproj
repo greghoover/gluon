@@ -10,10 +10,15 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="hase.DevLib.Core20" Version="1.0.0-rc01" />
-    <PackageReference Include="hase.Relays.Signalr.Client" Version="1.0.0-rc01" />
     <PackageReference Include="Microsoft.Extensions.Configuration.CommandLine" Version="2.1.1" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="2.1.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\hase.DevLib.Core20\hase.DevLib.Core20.csproj" />
+    <ProjectReference Include="..\hase.DevLib\hase.DevLib.csproj" />
+    <ProjectReference Include="..\hase.Relays.Signalr.Client\hase.Relays.Signalr.Client.csproj" />
+    <ProjectReference Include="..\hase.Relays.Signalr.Server\hase.Relays.Signalr.Server.csproj" />
   </ItemGroup>
 
   <ItemGroup>

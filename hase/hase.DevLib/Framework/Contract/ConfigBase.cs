@@ -33,7 +33,7 @@ namespace hase.DevLib.Framework.Contract
 		private IConfigurationRoot _configRoot { get; set; }
 		public IConfigurationRoot GetConfigRoot()
 		{
-			Debugger.Break();
+			//Debugger.Break();
 			if (_configRoot == null)
 			{
 				try

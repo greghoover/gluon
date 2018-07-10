@@ -16,7 +16,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="hase.DevLib" Version="1.0.0-rc01" />
     <PackageReference Include="Xamarin.Forms" Version="3.1.0.583944" />
     <PackageReference Include="Xamarin.Essentials" Version="0.8.0-preview" />
   </ItemGroup>
