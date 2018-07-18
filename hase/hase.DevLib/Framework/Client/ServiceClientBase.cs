@@ -1,7 +1,12 @@
 ﻿using hase.DevLib.Framework.Contract;
 using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace hase.DevLib.Framework.Client
 {
@@ -79,6 +84,23 @@ namespace hase.DevLib.Framework.Client
 			}
 
 			return form;
+		}
+
+		public async Task PublishFormDefinition(string baseUri)
+		{
+			if (!baseUri.EndsWith(@"/"))
+				baseUri += @"/";
+			var requestUri = baseUri + $"api/values/{this.Name}";
+
+			var formDef = this.GenerateFormDefinitionFromRequestType();
+			var json = JsonConvert.SerializeObject(formDef);
+			var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+			HttpClient http = new HttpClient();
+			var response = await http.PutAsync(requestUri, content);
+
+			var getDef = await http.GetAsync(requestUri);
+			var getTxt = await getDef.Content.ReadAsStringAsync();
 		}
 	}
 }
