@@ -5,6 +5,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Tenant0\**" />
+    <Content Remove="Tenant0\**" />
+    <EmbeddedResource Remove="Tenant0\**" />
+    <None Remove="Tenant0\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="wwwroot\" />
   </ItemGroup>
 

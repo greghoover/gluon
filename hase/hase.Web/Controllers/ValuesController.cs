@@ -1,7 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using hase.Web.Util;
+using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
-using System.IO;
 
 namespace hase.Web.Controllers
 {
@@ -9,20 +9,18 @@ namespace hase.Web.Controllers
 	[ApiController]
 	public class ValuesController : ControllerBase
 	{
-		public string DefaultTenant => "Tenant0";
-
 		// GET api/values
 		[HttpGet]
-		public ActionResult<IEnumerable<string>> Get()
+		public ActionResult<IEnumerable<JObject>> Get()
 		{
-			return new string[] { "value1", "value2" };
+			return FormDefRepo.GetAllFormDefinitions();
 		}
 
 		// GET api/values/5
 		[HttpGet("{id}")]
-		public ActionResult<string> Get(string id)
+		public ActionResult<JObject> Get(string id)
 		{
-			return System.IO.File.ReadAllText(Path.Combine(DefaultTenant, id + ".json"));
+			return FormDefRepo.GetFormDefinition(id);
 		}
 
 		// POST api/values
@@ -35,14 +33,14 @@ namespace hase.Web.Controllers
 		[HttpPut("{id}")]
 		public void Put(string id, [FromBody] JObject value)
 		{
-			System.IO.Directory.CreateDirectory(DefaultTenant);
-			System.IO.File.WriteAllText(Path.Combine(DefaultTenant, id + ".json"), value.ToString());
+			FormDefRepo.SaveFormDefinition(id, value);
 		}
 
 		// DELETE api/values/5
 		[HttpDelete("{id}")]
 		public void Delete(string id)
 		{
+			FormDefRepo.DeleteFormDefinition(id);
 		}
 	}
 }
