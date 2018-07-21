@@ -17,6 +17,11 @@ namespace hase.ServiceApp.ConsoleHost
 		{
 			Console.WriteLine("Starting ServiceApp Dispatcher Console Host...");
 
+			// todo: 07/21/18 gph. Use a retry loop or Polly, so instead of artificial wait.
+			var secondsToWait = 3;
+			Console.WriteLine($"Waiting {secondsToWait} seconds for relay to initialize.");
+			await Task.Delay(TimeSpan.FromSeconds(secondsToWait));
+
 			Console.WriteLine("Getting Configuration");
 			var hostCfg = new RelayDispatcherConfig().GetConfigSection();
 			var dispatcherCfg = hostCfg.GetConfigRoot().GetSection(hostCfg.DispatcherConfigSection);
