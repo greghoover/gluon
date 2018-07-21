@@ -46,6 +46,7 @@ namespace hase.Relays.Signalr.Client
 			catch (Exception ex)
 			{
 				var e = ex;
+				throw;
 			}
 			finally { }
 			try
@@ -55,6 +56,7 @@ namespace hase.Relays.Signalr.Client
 			catch (Exception ex)
 			{
 				var e = ex;
+				throw;
 			}
 			finally { }
 		}

@@ -13,7 +13,7 @@ namespace hase.DevLib.Tests
 			try
 			{
 				var client = new Calculator();
-				await client.PublishFormDefinition(@"http://localhost:5008");
+				await client.PublishFormDefinition(@"http://172.27.211.17:5000");
 
 				Xunit.Assert.True(true);
 			}
@@ -29,7 +29,7 @@ namespace hase.DevLib.Tests
 			try
 			{
 				var client = new FileSystemQuery();
-				await client.PublishFormDefinition(@"http://localhost:5008");
+				await client.PublishFormDefinition(@"http://172.27.211.17:5000");
 
 				Xunit.Assert.True(true);
 			}

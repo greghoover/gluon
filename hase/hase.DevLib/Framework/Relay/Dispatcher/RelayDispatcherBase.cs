@@ -32,7 +32,7 @@ namespace hase.DevLib.Framework.Relay.Dispatcher
 		private async Task SpinupConnection()
 		{
 			Console.WriteLine($"{this.Abbr}:{ChannelName} dispatcher connecting to relay.");
-			await this.ConnectAsync(timeoutMs: 100000, ct: CT);
+			await this.ConnectAsync(timeoutMs: 5000, ct: CT);
 			Console.WriteLine($"{this.Abbr}:{ChannelName} dispatcher connected to relay.");
 		}
 		public async Task ExecutePublicAsync(CancellationToken stoppingToken)

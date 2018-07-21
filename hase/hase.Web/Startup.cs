@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using hase.Relays.Signalr.Server;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -26,6 +27,15 @@ namespace hase.Web
 		public void ConfigureServices(IServiceCollection services)
 		{
 			services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+
+			services.AddCors(options =>
+				options.AddPolicy("AllowCors",
+					builder => builder.AllowAnyOrigin()
+					.AllowCredentials()
+					.AllowAnyHeader()
+					.AllowAnyMethod()));
+
+			services.AddSignalR();
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -42,6 +52,13 @@ namespace hase.Web
 
 			//app.UseHttpsRedirection();
 			app.UseMvc();
+
+			app.UseCors("AllowCors");
+			app.UseWebSockets();
+			app.UseSignalR(routes =>
+			{
+				routes.MapHub<SignalrRelayHub>("/route");
+			});
 		}
 	}
 }

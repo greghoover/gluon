@@ -15,7 +15,7 @@ namespace hase.ClientUI.XFApp
 		{
 			InitializeComponent();
 
-			AddClientTabs(GetFormDefinitions(@"http://localhost:5008"));
+			AddClientTabs(GetFormDefinitions(@"http://172.27.211.17:5000"));
 		}
 		public IEnumerable<InputFormDef> GetFormDefinitions(string baseUri)
 		{
