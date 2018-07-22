@@ -17,15 +17,21 @@ namespace hase.DevLib.Framework.Service
 			{
 				foreach (var field in request.Fields)
 				{
-					var prop = typedRequest.GetType().GetProperty(field.Key);
-					if (prop != null)
+					// todo: 07/22/18 gph. Check for specific error conditions.
+					// e.g. if a property is not nullable and the value to assign is null, etc.
+					try
 					{
-						var propType = prop.PropertyType;
-						if (propType.IsEnum)
-							prop.SetValue(typedRequest, Enum.Parse(propType, field.Value.ToString()));
-						else
-							prop.SetValue(typedRequest, Convert.ChangeType(field.Value, propType));
+						var prop = typedRequest.GetType().GetProperty(field.Key);
+						if (prop != null)
+						{
+							var propType = prop.PropertyType;
+							if (propType.IsEnum)
+								prop.SetValue(typedRequest, Enum.Parse(propType, field.Value.ToString()));
+							else
+								prop.SetValue(typedRequest, Convert.ChangeType(field.Value, propType));
+						}
 					}
+					catch { }
 				}
 			}
 			var typedResponse = default(TResponse);
