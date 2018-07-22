@@ -161,6 +161,7 @@ namespace hase.ClientUI.XFApp
 		public View BuildPageContent()
 		{
 			this.Title = this.formDef.ContentTitle ?? this.formDef.Name;
+			this.BackgroundColor = Color.LightSkyBlue;
 
 			var view = new StackLayout();
 			view.Children.Add(this.resetButton);
