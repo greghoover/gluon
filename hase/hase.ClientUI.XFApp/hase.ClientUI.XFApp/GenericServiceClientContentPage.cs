@@ -1,4 +1,6 @@
-﻿using hase.DevLib.Framework.Client;
+﻿using hase.AppServices.Calculator.Client;
+using hase.AppServices.FileSystemQuery.Client;
+using hase.DevLib.Framework.Client;
 using hase.DevLib.Framework.Contract;
 using hase.DevLib.Framework.Relay.Proxy;
 using hase.Relays.Local;
@@ -7,6 +9,7 @@ using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
 using Xamarin.Forms;
@@ -16,6 +19,7 @@ namespace hase.ClientUI.XFApp
 {
 	public class GenericServiceClientContentPage : ContentPage
 	{
+		bool CanRunLocally = false;
 		Button resetButton;
 		Label descHeader;
 		Label emptyHeader;
@@ -29,7 +33,18 @@ namespace hase.ClientUI.XFApp
 		RelayProxyConfig hostConfig { get; set; }
 		IConfigurationSection proxyConfig { get; set; }
 
-		public GenericServiceClientContentPage() { }
+		public GenericServiceClientContentPage()
+		{
+			var osDesc = RuntimeInformation.OSDescription;
+			var fwDesc = RuntimeInformation.FrameworkDescription;
+			//var isOsx = RuntimeInformation.IsOSPlatform(OSPlatform.OSX);
+			//var isWindows = RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
+			//var isIos = RuntimeInformation.IsOSPlatform(OSPlatform.Create("IOS"));
+			var isAndroid = RuntimeInformation.IsOSPlatform(OSPlatform.Create("ANDROID"));
+			var isLinux = RuntimeInformation.IsOSPlatform(OSPlatform.Linux);
+
+			CanRunLocally = isAndroid || isLinux;
+		}
 
 		public void InitializeComponent(InputFormDef formDef)
 		{
@@ -58,10 +73,13 @@ namespace hase.ClientUI.XFApp
 			this.descHeader = new Label();
 			this.emptyHeader = new Label();
 
-			this.serviceLocationPicker = new Picker { Title = "Service location:" };
-			//this.serviceLocationPicker.ItemsSource = new List<string> { "Local", "Remote" };
-			//this.serviceLocationPicker.ItemsSource = (IList)ClientUtil.GetReadableEnumNames<ServiceLocation>();
-			this.serviceLocationPicker.ItemsSource = Enum.GetNames(typeof(ServiceLocation));
+			if (CanRunLocally)
+			{
+				this.serviceLocationPicker = new Picker { Title = "Service location:" };
+				//this.serviceLocationPicker.ItemsSource = new List<string> { "Local", "Remote" };
+				//this.serviceLocationPicker.ItemsSource = (IList)ClientUtil.GetReadableEnumNames<ServiceLocation>();
+				this.serviceLocationPicker.ItemsSource = Enum.GetNames(typeof(ServiceLocation));
+			}
 
 			this.submitButton = new Button { Text = "Submit" };
 			this.submitButton.Clicked += (sender, e) => {
@@ -72,8 +90,11 @@ namespace hase.ClientUI.XFApp
 		}
 		private void ResetToInitialValues()
 		{
-			//this.serviceLocationPicker.SelectedIndex = 0;
-			SelectPickerItem(this.serviceLocationPicker, "Remote");
+			if (CanRunLocally)
+			{
+				//this.serviceLocationPicker.SelectedIndex = 0;
+				SelectPickerItem(this.serviceLocationPicker, "Remote");
+			}
 
 			foreach (var entry in this.entryControls)
 			{
@@ -108,7 +129,10 @@ namespace hase.ClientUI.XFApp
 				var proxyName = ContractUtil.EnsureProxySuffix(this.formDef.Name);
 				var client = default(ServiceClient); //default(IServiceClient<AppRequestMessage, AppResponseMessage>);
 
-				var selectedItem = (ServiceLocation) Enum.Parse(typeof(ServiceLocation), this.serviceLocationPicker.SelectedItem.ToString());
+				var selectedItem = ServiceLocation.Remote; // if not andriod
+				if (CanRunLocally)
+					selectedItem = (ServiceLocation)Enum.Parse(typeof(ServiceLocation), this.serviceLocationPicker.SelectedItem.ToString());
+
 				switch (selectedItem)
 				{
 					case ServiceLocation.Local:
@@ -171,7 +195,8 @@ namespace hase.ClientUI.XFApp
 
 			view.Children.Add(this.descHeader);
 			//view.Children.Add(this.emptyHeader);
-			view.Children.Add(this.serviceLocationPicker);
+			if (this.serviceLocationPicker != null)
+				view.Children.Add(this.serviceLocationPicker);
 			//view.Children.Add(this.emptyHeader);
 
 			// from formDef fields

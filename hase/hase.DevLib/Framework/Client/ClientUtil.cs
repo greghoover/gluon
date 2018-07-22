@@ -9,8 +9,9 @@ namespace hase.DevLib.Framework.Client
 	{
 		public enum ServiceLocation
 		{
-			Local = 0,
-			Remote = 1,
+			//LocalService = 0,
+			Local = 1,
+			Remote = 2
 		}
 
 		public static IList<string> GetReadableEnumNames<EnumType>()

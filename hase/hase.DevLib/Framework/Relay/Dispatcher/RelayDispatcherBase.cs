@@ -6,6 +6,7 @@ using System;
 using System.Collections.Concurrent;
 using System.IO;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -13,7 +14,8 @@ namespace hase.DevLib.Framework.Relay.Dispatcher
 {
 	public abstract class RelayDispatcherBase : BackgroundService, IRelayDispatcher
 	{
-		public string ServiceAssemblyRootPath { get; set; } = Path.Combine(Environment.GetEnvironmentVariable("USERPROFILE"), ".nuget", "packages");
+		public string ServiceAssemblyRootPath { get; set; } = @"C:\ProgramData\hase\vhosts\default";
+		//public string ServiceAssemblyRootPath { get; set; } = Path.Combine(Environment.GetEnvironmentVariable("USERPROFILE"), ".nuget", "packages");
 		protected ConcurrentQueue<AppRequestMessage> Requests { get; private set; }
 		protected CancellationToken CT { get; private set; }
 		public string ChannelName { get; private set; }
@@ -97,9 +99,22 @@ namespace hase.DevLib.Framework.Relay.Dispatcher
 			var type = default(Type);
 			try
 			{
+				var isAndroid = RuntimeInformation.IsOSPlatform(OSPlatform.Create("ANDROID"));
+				var isLinux = RuntimeInformation.IsOSPlatform(OSPlatform.Linux);
+
 				var asmName = requestClrType.Split(',')[1].Trim();
-				var asmPath = Path.Combine(ServiceAssemblyRootPath, asmName, "1.0.0-rc01", "lib", "netstandard2.0");
-				var asmFile = Path.Combine(asmPath, $"{asmName}.dll");
+				var asmFile = default(string);
+				if (isAndroid || isLinux)
+				{
+					// currently not working. how to load dll on android?
+					asmFile = $"{asmName}.dll";
+				}
+				else
+				{
+					var asmPath = Path.Combine(ServiceAssemblyRootPath, asmName);
+					//var asmPath = Path.Combine(ServiceAssemblyRootPath, asmName, "1.0.0-rc01", "lib", "netstandard2.0");
+					asmFile = Path.Combine(asmPath, $"{asmName}.dll");
+				}
 				Assembly.LoadFrom(asmFile);
 				type = Type.GetType(requestClrType);
 			}

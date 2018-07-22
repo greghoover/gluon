@@ -21,6 +21,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\hase.AppServices.Calculator\hase.AppServices.Calculator.csproj" />
+    <ProjectReference Include="..\..\hase.AppServices.FileSystemQuery\hase.AppServices.FileSystemQuery.csproj" />
     <ProjectReference Include="..\..\hase.Relays.Local\hase.Relays.Local.csproj" />
     <ProjectReference Include="..\..\hase.Relays.Signalr.Client\hase.Relays.Signalr.Client.csproj" />
   </ItemGroup>
