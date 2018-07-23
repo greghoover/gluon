@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using System.Net.Http;
+using System.Runtime.InteropServices;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -15,7 +16,12 @@ namespace hase.ClientUI.XFApp
 		{
 			InitializeComponent();
 
-			AddClientTabs(GetFormDefinitions(@"http://172.27.211.17:5000"));
+			var isOsx = RuntimeInformation.IsOSPlatform(OSPlatform.OSX);
+			var isIos = RuntimeInformation.IsOSPlatform(OSPlatform.Create("IOS"));
+			if (isOsx || isIos)
+				AddClientTabs(GetFormDefinitions(@"http://192.168.1.14:5000"));
+			else
+				AddClientTabs(GetFormDefinitions(@"http://172.27.211.17:5000"));
 		}
 		public IEnumerable<InputFormDef> GetFormDefinitions(string baseUri)
 		{
