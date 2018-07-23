@@ -5,6 +5,7 @@
     <Version>1.0.0-rc01</Version>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageTags>hase</PackageTags>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'"><!--<IncludeBuildOutput>true</IncludeBuildOutput>-->
@@ -19,9 +20,5 @@
   <ItemGroup>
     <ProjectReference Include="..\hase.DevLib\hase.DevLib.csproj" />
   </ItemGroup>
-
-  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="rem xcopy $(ProjectDir)$(OutDir)*.* C:\ProgramData\hase\vhosts\default\$(TargetName) /i /s /h /r /y" />
-  </Target>
 
 </Project>
