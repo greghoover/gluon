@@ -14,7 +14,7 @@ namespace hase.DevLib.Framework.Relay.Dispatcher
 {
 	public abstract class RelayDispatcherBase : BackgroundService, IRelayDispatcher
 	{
-		public string ServiceAssemblyRootPath { get; set; } = @"C:\ProgramData\hase\vhosts\default";
+		public static string ServiceAssemblyRootPath { get; set; } = @"C:\ProgramData\hase\vhosts\default";
 		//public string ServiceAssemblyRootPath { get; set; } = Path.Combine(Environment.GetEnvironmentVariable("USERPROFILE"), ".nuget", "packages");
 		protected ConcurrentQueue<AppRequestMessage> Requests { get; private set; }
 		protected CancellationToken CT { get; private set; }
@@ -81,7 +81,7 @@ namespace hase.DevLib.Framework.Relay.Dispatcher
 			var requestType = Type.GetType(appReq.RequestClrType);
 			if (requestType == null)
 			{
-				requestType = LoadAssemblyAndGetRequestType(appReq.RequestClrType);
+				requestType = LoadAssemblyAndGetType(appReq.RequestClrType);
 			}
 			var request = wrapper.ToAppRequestMessage(requestType);
 
@@ -94,7 +94,7 @@ namespace hase.DevLib.Framework.Relay.Dispatcher
 			return Task.CompletedTask;
 		}
 
-		private Type LoadAssemblyAndGetRequestType(string requestClrType)
+		public static Type LoadAssemblyAndGetType(string assemblyQualifiedTypeName)
 		{
 			var type = default(Type);
 			try
@@ -102,7 +102,7 @@ namespace hase.DevLib.Framework.Relay.Dispatcher
 				var isAndroid = RuntimeInformation.IsOSPlatform(OSPlatform.Create("ANDROID"));
 				var isLinux = RuntimeInformation.IsOSPlatform(OSPlatform.Linux);
 
-				var asmName = requestClrType.Split(',')[1].Trim();
+				var asmName = assemblyQualifiedTypeName.Split(',')[1].Trim();
 				var asmFile = default(string);
 				if (isAndroid || isLinux)
 				{
@@ -116,7 +116,7 @@ namespace hase.DevLib.Framework.Relay.Dispatcher
 					asmFile = Path.Combine(asmPath, $"{asmName}.dll");
 				}
 				Assembly.LoadFrom(asmFile);
-				type = Type.GetType(requestClrType);
+				type = Type.GetType(assemblyQualifiedTypeName);
 			}
 			catch (Exception ex)
 			{

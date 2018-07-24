@@ -12,6 +12,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="bin\**" />
+    <EmbeddedResource Remove="bin\**" />
+    <None Remove="bin\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.Configuration.CommandLine" Version="2.1.1" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="2.1.1" />
   </ItemGroup>
@@ -23,7 +29,7 @@
   </ItemGroup>
   
   <ItemGroup>
-    <None Include="appsettings.json;$(OutDir)$(TargetName).deps.json;$(OutDir)$(TargetName).runtimeconfig.dev.json">
+    <None Include="appsettings.json">
       <Pack>true</Pack>
       <PackagePath>lib/netcoreapp2.1</PackagePath>
     </None>
@@ -31,7 +37,6 @@
   
   <ItemGroup>
     <ProjectReference Include="..\hase.DevLib\hase.DevLib.csproj" />
-    <ProjectReference Include="..\hase.Relays.Signalr.Client\hase.Relays.Signalr.Client.csproj" />
   </ItemGroup>
 
 </Project>

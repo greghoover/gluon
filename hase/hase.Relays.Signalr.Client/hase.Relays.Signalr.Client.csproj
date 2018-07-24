@@ -10,4 +10,8 @@
     <ProjectReference Include="..\hase.DevLib\hase.DevLib.csproj" />
   </ItemGroup>
 
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="xcopy $(ProjectDir)$(OutDir)*.* C:\ProgramData\hase\vhosts\default\$(TargetName) /i /s /h /r /y" />
+  </Target>
+
 </Project>
