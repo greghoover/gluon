@@ -81,7 +81,7 @@ namespace hase.DevLib.Framework.Relay.Dispatcher
 			var requestType = Type.GetType(appReq.RequestClrType);
 			if (requestType == null)
 			{
-				requestType = LoadAssemblyAndGetType(appReq.RequestClrType);
+				requestType = GetTypeFromAssembly(appReq.RequestClrType);
 			}
 			var request = wrapper.ToAppRequestMessage(requestType);
 
@@ -93,29 +93,21 @@ namespace hase.DevLib.Framework.Relay.Dispatcher
 
 			return Task.CompletedTask;
 		}
-
-		public static Type LoadAssemblyAndGetType(string assemblyQualifiedTypeName)
+		/// <summary>
+		/// Assume assembly is already loaded and try to get the type. If that fails, attempt to load the assembly and try getting the type again.
+		/// </summary>
+		public static Type GetTypeFromAssembly(string assemblyQualifiedTypeName)
 		{
 			var type = default(Type);
 			try
 			{
-				var isAndroid = RuntimeInformation.IsOSPlatform(OSPlatform.Create("ANDROID"));
-				var isLinux = RuntimeInformation.IsOSPlatform(OSPlatform.Linux);
+				type = Type.GetType(assemblyQualifiedTypeName);
+				if (type != null)
+					return type;
 
 				var asmName = assemblyQualifiedTypeName.Split(',')[1].Trim();
-				var asmFile = default(string);
-				if (isAndroid || isLinux)
-				{
-					// currently not working. how to load dll on android?
-					asmFile = $"{asmName}.dll";
-				}
-				else
-				{
-					var asmPath = Path.Combine(ServiceAssemblyRootPath, asmName);
-					//var asmPath = Path.Combine(ServiceAssemblyRootPath, asmName, "1.0.0-rc01", "lib", "netstandard2.0");
-					asmFile = Path.Combine(asmPath, $"{asmName}.dll");
-				}
-				Assembly.LoadFrom(asmFile);
+				LoadAssembly(asmName);
+
 				type = Type.GetType(assemblyQualifiedTypeName);
 			}
 			catch (Exception ex)
@@ -126,6 +118,37 @@ namespace hase.DevLib.Framework.Relay.Dispatcher
 				Console.WriteLine(txt);
 			}
 			return type;
+		}
+		public static Assembly LoadAssembly(string assemblyName)
+		{
+			var asm = default(Assembly);
+			try
+			{
+				var asmFile = default(string);
+
+				var isAndroid = RuntimeInformation.IsOSPlatform(OSPlatform.Create("ANDROID"));
+				var isLinux = RuntimeInformation.IsOSPlatform(OSPlatform.Linux);
+				if (isAndroid || isLinux)
+				{
+					// currently not working. how to load dll on android?
+					asmFile = $"{assemblyName}.dll";
+				}
+				else
+				{
+					var asmPath = Path.Combine(ServiceAssemblyRootPath, assemblyName);
+					//var asmPath = Path.Combine(ServiceAssemblyRootPath, asmName, "1.0.0-rc01", "lib", "netstandard2.0");
+					asmFile = Path.Combine(asmPath, $"{assemblyName}.dll");
+				}
+				asm = Assembly.LoadFrom(asmFile);
+			}
+			catch (Exception ex)
+			{
+				var txt = ex.Message;
+				if (ex.InnerException != null)
+					txt += Environment.NewLine + ex.InnerException.Message;
+				Console.WriteLine(txt);
+			}
+			return asm;
 		}
 
 		public virtual async Task<AppRequestMessage> DeserializeRequest()

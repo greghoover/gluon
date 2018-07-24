@@ -37,6 +37,7 @@
   
   <ItemGroup>
     <ProjectReference Include="..\hase.DevLib\hase.DevLib.csproj" />
+    <ProjectReference Include="..\hase.Relays.Signalr.Client\hase.Relays.Signalr.Client.csproj" />
   </ItemGroup>
 
 </Project>

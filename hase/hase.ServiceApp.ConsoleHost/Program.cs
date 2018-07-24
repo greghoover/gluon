@@ -26,7 +26,7 @@ namespace hase.ServiceApp.ConsoleHost
 			var hb = new HostBuilder()
 				.ConfigureServices((hostContext, services) =>
 				{
-					var dispatcherType = RelayDispatcherBase.LoadAssemblyAndGetType(hostCfg.DispatcherClrType); 
+					var dispatcherType = RelayDispatcherBase.GetTypeFromAssembly(hostCfg.DispatcherClrType); 
 
 					foreach (var name in hostCfg.ServiceTypeNames)
 					{
