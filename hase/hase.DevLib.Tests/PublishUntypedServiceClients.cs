@@ -1,5 +1,9 @@
 ﻿using hase.AppServices.Calculator.Client;
 using hase.AppServices.FileSystemQuery.Client;
+using hase.DevLib.Framework.Repository.Client;
+using hase.DevLib.Framework.Repository.Client.Extensions;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using Xunit;
 
@@ -8,12 +12,14 @@ namespace hase.DevLib.Tests
 	public class PublishUntypedServiceClients
 	{
 		[Fact]
-		public async void PublishCalculator()
+		public void PublishCalculator()
 		{
 			try
 			{
 				var client = new Calculator();
-				await client.PublishFormDefinition(@"http://172.27.211.17:5000");
+				var form = client.GenerateFormDefinitionFromRequestType();
+				var jo = JObject.Parse(JsonConvert.SerializeObject(form));
+				FormDefRepo.SaveFormDefinition(client.GetType().Name, jo);
 
 				Xunit.Assert.True(true);
 			}
@@ -24,12 +30,14 @@ namespace hase.DevLib.Tests
 		}
 
 		[Fact]
-		public async void PublishFileSystemQuery()
+		public void PublishFileSystemQuery()
 		{
 			try
 			{
 				var client = new FileSystemQuery();
-				await client.PublishFormDefinition(@"http://172.27.211.17:5000");
+				var form = client.GenerateFormDefinitionFromRequestType();
+				var jo = JObject.Parse(JsonConvert.SerializeObject(form));
+				FormDefRepo.SaveFormDefinition(client.GetType().Name, jo);
 
 				Xunit.Assert.True(true);
 			}

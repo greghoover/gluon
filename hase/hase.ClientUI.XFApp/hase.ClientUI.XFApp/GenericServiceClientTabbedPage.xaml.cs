@@ -1,4 +1,4 @@
-﻿using hase.DevLib.Framework.Contract;
+﻿using hase.DevLib.Framework.Repository.Contract;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
@@ -27,7 +27,7 @@ namespace hase.ClientUI.XFApp
 		{
 			if (!baseUri.EndsWith(@"/"))
 				baseUri += @"/";
-			var requestUri = baseUri + $"api/values";
+			var requestUri = baseUri + $"api/formdefs";
 
 			HttpClient http = new HttpClient();
 			var httpResponse = http.GetAsync(requestUri).Result;

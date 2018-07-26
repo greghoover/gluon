@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace hase.DevLib.Framework.Contract
+namespace hase.DevLib.Framework.Repository.Contract
 {
 	public class InputFormDef
 	{

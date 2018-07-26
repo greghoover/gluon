@@ -1,4 +1,5 @@
 ﻿using hase.DevLib.Framework.Contract;
+using hase.DevLib.Framework.Utility;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
@@ -47,7 +48,7 @@ namespace hase.DevLib.Framework.Relay.Proxy
 		public Task<AppResponseMessage> Execute(AppRequestMessage request)
 		{
 			var responseTask = this.Execute((TRequest)request);
-			return ContractUtil.GeneralizeTask<AppResponseMessage, TResponse>(responseTask);
+			return Util.GeneralizeTask<AppResponseMessage, TResponse>(responseTask);
 		}
 	}
 }

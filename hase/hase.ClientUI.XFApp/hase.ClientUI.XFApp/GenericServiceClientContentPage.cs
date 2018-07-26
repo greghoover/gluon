@@ -1,8 +1,7 @@
-﻿using hase.AppServices.Calculator.Client;
-using hase.AppServices.FileSystemQuery.Client;
-using hase.DevLib.Framework.Client;
+﻿using hase.DevLib.Framework.Client;
 using hase.DevLib.Framework.Contract;
 using hase.DevLib.Framework.Relay.Proxy;
+using hase.DevLib.Framework.Repository.Contract;
 using hase.Relays.Local;
 using hase.Relays.Signalr.Client;
 using Microsoft.Extensions.Configuration;

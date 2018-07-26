@@ -12,14 +12,14 @@
     "IIS Express": {
       "commandName": "IISExpress",
       "launchBrowser": true,
-      "launchUrl": "api/values",
+      "launchUrl": "api/formdefs",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
     "hase.Web": {
       "commandName": "Project",
-      "launchUrl": "api/values",
+      "launchUrl": "api/formdefs",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },

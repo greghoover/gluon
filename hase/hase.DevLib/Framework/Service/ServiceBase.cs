@@ -1,4 +1,5 @@
 ﻿using hase.DevLib.Framework.Contract;
+using hase.DevLib.Framework.Utility;
 using System;
 using System.Threading.Tasks;
 
@@ -63,7 +64,7 @@ namespace hase.DevLib.Framework.Service
 				typedResponse.Fields.Add(prop.Name, prop.GetValue(typedResponse)?.ToString());
 			}
 			var responseTask = Task.FromResult<TResponse>(typedResponse);
-			return await ContractUtil.GeneralizeTask<AppResponseMessage, TResponse>(responseTask);
+			return await Util.GeneralizeTask<AppResponseMessage, TResponse>(responseTask);
 		}
 	}
 }
