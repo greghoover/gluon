@@ -1,4 +1,5 @@
-﻿using hase.DevLib.Framework.Repository.Service;
+﻿using hase.DevLib.Framework.Repository.Contract;
+using hase.DevLib.Framework.Repository.Service;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 
@@ -12,14 +13,16 @@ namespace hase.Web.Controllers
 		[HttpGet]
 		public ActionResult<IEnumerable<string>> Get()
 		{
-			return FileRepo.GetAllFileNames();
+			//return FileRepo.GetAllFileNames();
+			return default(List<string>);
 		}
 
 		// GET api/files/fred.dll
 		[HttpGet("{fileName}")]
 		public ActionResult<byte[]> Get(string fileName)
 		{
-			return FileRepo.GetFile(fileName);
+			//return FileRepo.GetFile(fileName);
+			return default(byte[]);
 		}
 
 		// POST api/files
@@ -32,14 +35,14 @@ namespace hase.Web.Controllers
 		[HttpPut("{id}")]
 		public void Put(string fileName, [FromBody] byte[] fileBytes)
 		{
-			FileRepo.SaveFile(fileName, fileBytes);
+			//FileRepo.SaveFile(fileName, fileBytes);
 		}
 
 		// DELETE api/files/fred.dll
 		[HttpDelete("{id}")]
 		public void Delete(string fileName)
 		{
-			FileRepo.DeleteFile(fileName);
+			//FileRepo.DeleteFile(fileName);
 		}
 	}
 }

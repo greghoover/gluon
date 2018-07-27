@@ -1,6 +1,7 @@
 ﻿using hase.DevLib.Framework.Client;
 using hase.DevLib.Framework.Contract;
 using hase.DevLib.Framework.Relay.Proxy;
+using hase.DevLib.Framework.Repository.Client;
 using hase.DevLib.Framework.Repository.Contract;
 using hase.Relays.Local;
 using hase.Relays.Signalr.Client;

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace hase.DevLib.Framework.Utility
+namespace hase.DevLib.Framework.Repository.Service
 {
 	public class CreateDocumentModel
 	{

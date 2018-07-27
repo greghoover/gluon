@@ -9,19 +9,14 @@ namespace hase.DevLib.Framework.Repository.Client
 	{
 		public const string FormDefExtension = "json";
 
-		public static DirectoryInfo GetFolderPath(string tenantId = Repo.TenantIdDflt)
+		public static string GetFilePath(string serviceClientName, string tenantId = TenantDir.TenantIdDefault)
 		{
-			var dirPath = Path.Combine(Repo.RootDir, tenantId);
-			return Directory.CreateDirectory(dirPath);
-		}
-		public static string GetFilePath(string serviceClientName, string tenantId = Repo.TenantIdDflt)
-		{
-			var dir = GetFolderPath(tenantId);
+			var dir = TenantDir.ClientSub(tenantId);
 			return Path.Combine(dir.FullName, $"{serviceClientName}.{FormDefExtension}");
 		}
-		public static List<JObject> GetAllFormDefinitions(string tenantId = Repo.TenantIdDflt)
+		public static List<JObject> GetAllFormDefinitions(string tenantId = TenantDir.TenantIdDefault)
 		{
-			var dir = GetFolderPath(tenantId);
+			var dir = TenantDir.ClientSub(tenantId);
 			var list = new List<JObject>();
 			foreach (var file in dir.EnumerateFiles($"*.{FormDefExtension}"))
 			{
@@ -31,18 +26,18 @@ namespace hase.DevLib.Framework.Repository.Client
 			}
 			return list;
 		}
-		public static JObject GetFormDefinition(string serviceClientName, string tenantId = Repo.TenantIdDflt)
+		public static JObject GetFormDefinition(string serviceClientName, string tenantId = TenantDir.TenantIdDefault)
 		{
 			var filePath = GetFilePath(serviceClientName, tenantId);
 			var txt = File.ReadAllText(filePath);
 			return JObject.Parse(txt);
 
 		}
-		public static void SaveFormDefinition(string serviceClientName, JObject formDef, string tenantId = Repo.TenantIdDflt)
+		public static void SaveFormDefinition(string serviceClientName, JObject formDef, string tenantId = TenantDir.TenantIdDefault)
 		{
 			File.WriteAllText(GetFilePath(serviceClientName, tenantId), formDef.ToString());
 		}
-		public static void DeleteFormDefinition(string serviceClientName, string tenantId = Repo.TenantIdDflt)
+		public static void DeleteFormDefinition(string serviceClientName, string tenantId = TenantDir.TenantIdDefault)
 		{
 			File.Delete(GetFilePath(serviceClientName, tenantId));
 		}
