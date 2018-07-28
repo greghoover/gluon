@@ -9,11 +9,15 @@ namespace hase.DevLib.Framework.Repository.Service
 	{
 		public static IEnumerable<FolderSpec> GetAllFolders(string tenantId = TenantDir.TenantIdDefault)
 		{
+			var dir = TenantDir.ServiceSub(tenantId);
+			return GetAllFolders(dir);
+		}
+		public static IEnumerable<FolderSpec> GetAllFolders(DirectoryInfo baseDir)
+		{
 			var folders = new List<FolderSpec>();
-			var baseDir = TenantDir.ServiceSub(tenantId);
 			foreach (var dir in baseDir.EnumerateDirectories())
 			{
-				var serviceFolder = GetFolder(dir); //, dir.Name);
+				var serviceFolder = GetFolder(dir);
 				folders.Add(serviceFolder);
 			}
 			return folders;

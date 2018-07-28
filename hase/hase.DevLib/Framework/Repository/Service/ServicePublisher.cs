@@ -14,17 +14,18 @@ namespace hase.DevLib.Framework.Repository.Service
 		/// </summary>
 		/// <param name="folderPath">The root folder path to publish.</param>
 		/// <param name="altFolderName">Specify to make different from actual folder name.</param>
-		public static void PublishLocal(string folderPath, string altFolderName = null)
+		public static FolderSpec PublishLocal(string folderPath, string altFolderName = null)
 		{
 			var folderSpec = ServiceRepo.GetFolder(new DirectoryInfo(folderPath), altFolderName);
 			ServiceRepo.SaveFolder(folderSpec);
+			return folderSpec;
 		}
 		/// <summary>
 		/// Publish to via a web api call.
 		/// </summary>
 		/// <param name="folderPath">The root folder path to publish.</param>
 		/// <param name="altFolderName">Specify to make different from actual folder name.</param>
-		public static async Task PublishRemote(string baseUri, string folderPath, string altFolderName = null)
+		public static async Task<FolderSpec> PublishRemote(string baseUri, string folderPath, string altFolderName = null)
 		{
 			if (!baseUri.EndsWith(@"/"))
 				baseUri += @"/";
@@ -41,10 +42,11 @@ namespace hase.DevLib.Framework.Repository.Service
 				var content = new StringContent(s1);
 				content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
 				var response = await client.PostAsync(requestUri, content);
+
 				//response.EnsureSuccessStatusCode();
 				var s2 = await response.Content.ReadAsStringAsync();
-				var fred = JsonConvert.DeserializeObject<FolderSpec>(s2);
-				//return response;
+				var posted = JsonConvert.DeserializeObject<FolderSpec>(s2);
+				return posted;
 			}
 
 		}
