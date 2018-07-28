@@ -25,7 +25,7 @@ namespace hase.Web.Controllers
 
 		// POST api/servicedefs
 		[HttpPost]
-		public IActionResult CreateDocument([FromBody] FolderSpec serviceFolder)
+		public IActionResult Post([FromBody] FolderSpec serviceFolder)
 		{
 			ServiceRepo.SaveFolder(serviceFolder);
 			return new ObjectResult(serviceFolder);

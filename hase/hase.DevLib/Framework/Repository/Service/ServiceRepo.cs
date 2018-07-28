@@ -9,22 +9,38 @@ namespace hase.DevLib.Framework.Repository.Service
 	{
 		public static IEnumerable<FolderSpec> GetAllFolders(string tenantId = TenantDir.TenantIdDefault)
 		{
-			var serviceFolders = new List<FolderSpec>();
-			var dir = TenantDir.ServiceSub(tenantId);
-			foreach (var serviceDir in dir.EnumerateDirectories())
+			var folders = new List<FolderSpec>();
+			var baseDir = TenantDir.ServiceSub(tenantId);
+			foreach (var dir in baseDir.EnumerateDirectories())
 			{
-				var serviceFolder = GetFolder(serviceDir.Name, serviceDir);
-				serviceFolders.Add(serviceFolder);
+				var serviceFolder = GetFolder(dir); //, dir.Name);
+				folders.Add(serviceFolder);
 			}
-			return serviceFolders;
+			return folders;
 		}
-		public static FolderSpec GetFolder(string serviceName, string tenantId = TenantDir.TenantIdDefault)
+		/// /// <summary>
+		/// Use to retrieve a service folder from a repository.
+		/// </summary>
+		/// <param name="folderName">The name used when it was published.</param>
+		/// <param name="tenantId"></param>
+		/// <returns></returns>
+		public static FolderSpec GetFolder(string folderName, string tenantId = TenantDir.TenantIdDefault)
 		{
-			var dir = TenantDir.ServiceSub(tenantId, serviceName);
-			return GetFolder(serviceName, dir);
+			var dir = TenantDir.ServiceSub(tenantId, folderName);
+			return GetFolder(dir); //, folderName);
 		}
-		public static FolderSpec GetFolder(string serviceName, DirectoryInfo dir)
+		/// <summary>
+		/// Use to publish a service folder to a repository, or when the full folder path is known.
+		/// </summary>
+		/// <param name="dir">The root folder to publish.</param>
+		/// <param name="altFolderName">Specify to make different from actual folder name.</param>
+		/// <returns></returns>
+		public static FolderSpec GetFolder(DirectoryInfo dir, string altFolderName = null)
 		{
+			var folderName = altFolderName;
+			if (string.IsNullOrWhiteSpace(folderName))
+				folderName = dir.Name;
+
 			var files = new List<FileSpec>();
 
 			foreach (var file in dir.EnumerateFiles())
@@ -33,14 +49,14 @@ namespace hase.DevLib.Framework.Repository.Service
 				files.Add(new FileSpec
 				{
 					FileName = file.Name,
-					RelativeSubFolder = new string[] { serviceName },
+					RelativeSubFolder = new string[] { folderName }, // Currently only supports 1 level deep.
 					Content = fileBytes
 				});
 			}
 
 			return new FolderSpec
 			{
-				FolderName = serviceName,
+				FolderName = folderName,
 				Files = files
 			};
 		}
