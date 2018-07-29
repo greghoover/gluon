@@ -10,8 +10,7 @@ namespace hase.DevLib.Tests
 {
 	public class ServicePublishing_Remote : IClassFixture<SignalrRelayFixture>
 	{
-		//string baseUri = null;
-		string baseUri = @"http://172.27.211.17:5000";
+		static string baseUri = null;
 		public ServicePublishing_Remote(SignalrRelayFixture signalrRelayFixture)
 		{
 			if (signalrRelayFixture.Relay == null)
@@ -19,7 +18,7 @@ namespace hase.DevLib.Tests
 				var signalrHubCfg = new SignalrRelayHubConfig().GetConfigSection(nameof(ServicePublishing_Remote));
 				signalrRelayFixture.StartRelayServer(signalrHubCfg);
 
-				//baseUri = signalrRelayFixture?.GetBaseUri(signalrHubCfg?.HubUrl[0])?.ToString();
+				baseUri = signalrRelayFixture?.GetBaseUri(signalrHubCfg?.HubUrl[0])?.ToString();
 			}
 		}
 

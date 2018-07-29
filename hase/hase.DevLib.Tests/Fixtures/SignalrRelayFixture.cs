@@ -32,7 +32,7 @@ namespace hase.DevLib.Tests.Fixtures
 				var urls = signalrHubCfg.HubUrl.Select(x => (new Uri(x.GetLeftPart(UriPartial.Authority))).ToString()).ToArray();
 
 				Console.WriteLine("Building SignalR relay server.");
-				Relay = Startup.BuildWebHost(urls);
+				Relay = Startup.BuildWebHost(new string[] { string.Empty }, urls);
 
 				Console.WriteLine("Starting SignalR relay server.");
 				await Relay.StartAsync();

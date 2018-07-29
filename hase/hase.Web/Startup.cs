@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using hase.DevLib.Framework.Relay.Hub;
 using hase.Relays.Signalr.Server;
+using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -16,6 +18,29 @@ namespace hase.Web
 {
 	public class Startup
 	{
+		public static IWebHost BuildWebHost(string[] args, string[] urls = null)
+		{
+			var builder = WebHost.CreateDefaultBuilder(args);
+			if (urls == null)
+				urls = GetUrlsFromConfig();
+			if (urls != null && urls.Length > 0)
+				builder.UseUrls(urls);
+			builder.UseStartup<Startup>();
+			return builder.Build();
+		}
+		public static string[] GetUrlsFromConfig()
+		{
+			Console.WriteLine("Getting Configuration");
+			var hostCfg = new RelayHubConfig().GetConfigSection();
+			var hubCfg = hostCfg.GetConfigRoot().GetSection(hostCfg.HubConfigSection);
+
+			var signalrHubCfg = hubCfg.Get<SignalrRelayHubConfig>();
+			var urls = signalrHubCfg?.HubUrl?.Select(x => (new Uri(x.GetLeftPart(UriPartial.Authority)))?.ToString())?.ToArray();
+			return urls;
+		}
+
+		public static void BuildAndRunWebHost(string[] args) =>
+			BuildWebHost(args).Run();
 		public Startup(IConfiguration configuration)
 		{
 			Configuration = configuration;

@@ -17,7 +17,9 @@ namespace hase.Web
 		{
 			//sr.StartupFromWebProject.CreateAndRunWebHostBuilder(args);
 			//sr.Startup.BuildAndRunWebHost(args);
-			CreateWebHostBuilder(args).Build().Run();
+
+			//CreateWebHostBuilder(args).Build().Run();
+			Startup.BuildAndRunWebHost(args);
 		}
 
 		public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>

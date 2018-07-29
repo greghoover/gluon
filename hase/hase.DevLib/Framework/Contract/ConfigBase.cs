@@ -81,7 +81,7 @@ namespace hase.DevLib.Framework.Contract
 							{"ServiceProxy:ProxyTypeName", "SignalrRelayProxy"},
 							{"ServiceProxy:ProxyConfigSection", "SignalrRelayProxy"},
 							{"ServiceProxy:ServiceTypeNames", "FileSystemQuery"},
-							{"SignalrRelayProxy:HubUrl", "http://192.168.1.14:5000/route"},
+							{"SignalrRelayProxy:HubUrl", "http://192.168.1.16:5000/route"},
 						};
 						cb.AddInMemoryCollection(dict);
 						_configRoot = cb.Build();
