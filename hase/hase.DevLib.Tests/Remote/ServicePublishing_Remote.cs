@@ -1,17 +1,27 @@
 ﻿using hase.AppServices.Calculator.Service;
 using hase.AppServices.FileSystemQuery.Service;
-using hase.DevLib.Framework.Repository.Contract;
 using hase.DevLib.Framework.Repository.Service;
-using hase.DevLib.Framework.Utility;
+using hase.DevLib.Tests.Fixtures;
+using hase.Relays.Signalr.Server;
 using System;
-using System.IO;
 using Xunit;
 
 namespace hase.DevLib.Tests
 {
-	public class ServicePublishing_Remote
+	public class ServicePublishing_Remote : IClassFixture<SignalrRelayFixture>
 	{
-		static string baseUri = @"http://172.27.211.17:5000";
+		//string baseUri = null;
+		string baseUri = @"http://172.27.211.17:5000";
+		public ServicePublishing_Remote(SignalrRelayFixture signalrRelayFixture)
+		{
+			if (signalrRelayFixture.Relay == null)
+			{
+				var signalrHubCfg = new SignalrRelayHubConfig().GetConfigSection(nameof(ServicePublishing_Remote));
+				signalrRelayFixture.StartRelayServer(signalrHubCfg);
+
+				//baseUri = signalrRelayFixture?.GetBaseUri(signalrHubCfg?.HubUrl[0])?.ToString();
+			}
+		}
 
 		[Fact]
 		public async void CalculatorService_RetrieveRemote()

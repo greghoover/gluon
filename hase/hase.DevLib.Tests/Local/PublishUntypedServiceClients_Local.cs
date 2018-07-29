@@ -9,7 +9,7 @@ using Xunit;
 
 namespace hase.DevLib.Tests
 {
-	public class PublishUntypedServiceClients
+	public class PublishUntypedServiceClients_Local
 	{
 		[Fact]
 		public void PublishCalculator()

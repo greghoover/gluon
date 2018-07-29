@@ -11,6 +11,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include=".unused\Calculator_NamedPipeRelayTests.cs" />
+    <Compile Include=".unused\FileSystemQuery_NamedPipeRelayTests.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.8.0" />
     <PackageReference Include="xunit" Version="2.4.0-rc.2.build4045" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.4.0-rc.2.build4045">

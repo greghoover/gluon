@@ -1,11 +1,8 @@
 ﻿using hase.DevLib.Framework.Relay.Hub;
 //using hase.DevLib.Framework.Relay.NamedPipe;
-using hase.Relays.Signalr.Client;
 using hase.Relays.Signalr.Server;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
 using System;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace hase.RelayHub.ConsoleHost
@@ -24,9 +21,8 @@ namespace hase.RelayHub.ConsoleHost
 			{
 				case nameof(SignalrRelayHub):
 					Console.WriteLine("Building SignalR relay server.");
-					var signalrHubCfg = hubCfg.Get<SignalrRelayHubConfig>();
-					var urls = signalrHubCfg.HubUrl.Select(x => (new Uri(x.GetLeftPart(UriPartial.Authority))).ToString()).ToArray();
-					var relay = Startup.BuildWebHost(urls);
+					var urls = Startup.GetUrlsFromConfig();
+					var relay = Startup.BuildWebHost(args, urls);
 
 					Console.WriteLine("Starting SignalR relay server.");
 					await relay.StartAsync();

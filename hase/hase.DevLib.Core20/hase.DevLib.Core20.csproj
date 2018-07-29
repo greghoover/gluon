@@ -19,6 +19,7 @@
 
   <ItemGroup>
     <Compile Include="Framework\Relay\Signalr\Startup.cs" />
+    <Compile Include="Framework\Relay\Signalr\StartupFromWebProject.cs" />
   </ItemGroup>
 
   <ItemGroup>

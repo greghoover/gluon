@@ -7,6 +7,7 @@ using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using sr = hase.Relays.Signalr.Server;
 
 namespace hase.Web
 {
@@ -14,6 +15,8 @@ namespace hase.Web
 	{
 		public static void Main(string[] args)
 		{
+			//sr.StartupFromWebProject.CreateAndRunWebHostBuilder(args);
+			//sr.Startup.BuildAndRunWebHost(args);
 			CreateWebHostBuilder(args).Build().Run();
 		}
 
@@ -22,3 +25,4 @@ namespace hase.Web
 				.UseStartup<Startup>();
 	}
 }
+

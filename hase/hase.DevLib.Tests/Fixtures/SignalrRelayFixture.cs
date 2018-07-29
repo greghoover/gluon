@@ -18,7 +18,7 @@ namespace hase.DevLib.Tests.Fixtures
 			Task.Run(() => StopRelayServer()).Wait();
 		}
 
-		private Uri GetBaseUri(Uri url)
+		public Uri GetBaseUri(Uri url)
 		{
 			return new Uri($"{url.GetLeftPart(UriPartial.Authority)}");
 		}

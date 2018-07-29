@@ -22,7 +22,14 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\hase.DevLib.Core20\hase.DevLib.Core20.csproj" />
     <ProjectReference Include="..\hase.Relays.Signalr.Server\hase.Relays.Signalr.Server.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="appsettings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
 </Project>
