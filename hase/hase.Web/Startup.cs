@@ -22,10 +22,7 @@ namespace hase.Web
 	{
 		public static IWebHost BuildWebHost(string[] args, string[] urls = null)
 		{
-            var directory = Directory.GetCurrentDirectory();
             var builder = WebHost.CreateDefaultBuilder(args);
-            //builder.UseContentRoot(directory);
-            //builder.UseWebRoot(Path.Combine(directory, "wwwroot", "client", "hase-hub", "build"));
 
             if (urls == null)
 				urls = GetUrlsFromConfig();
@@ -83,19 +80,22 @@ namespace hase.Web
 
             app.UseStaticFiles(); // For the wwwroot folder
 
-            app.UseStaticFiles(new StaticFileOptions
-            {
-                FileProvider = new PhysicalFileProvider(
-                    Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "client", "hase-hub", "build")),
-                RequestPath = ""
-            });
+            //app.UseStaticFiles(new StaticFileOptions
+            //{
+            //    FileProvider = new PhysicalFileProvider(
+            //        Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "client", "hase-hub", "build")),
+            //    RequestPath = ""
+            //});
 
-            app.UseDirectoryBrowser(new DirectoryBrowserOptions
-            {
-                FileProvider = new PhysicalFileProvider(
-                    Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "client", "hase-hub", "build")),
-                RequestPath = ""
-            });
+            app.UseDefaultFiles("");
+
+            //app.UseDirectoryBrowser(new DirectoryBrowserOptions
+            //{
+            //    FileProvider = new PhysicalFileProvider(
+            //        Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "client", "hase-hub", "build")),
+            //    RequestPath = ""
+            //});
+
             //app.UseHttpsRedirection();
             app.UseMvc();
 
