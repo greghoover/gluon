@@ -20,7 +20,7 @@ namespace hase.ClientUI.XFApp
 			var isOsx = RuntimeInformation.IsOSPlatform(OSPlatform.OSX);
 			var isIos = RuntimeInformation.IsOSPlatform(OSPlatform.Create("IOS"));
 			if (isOsx || isIos)
-				AddClientTabs(GetFormDefinitions(@"http://192.168.1.16:5000"));
+				AddClientTabs(GetFormDefinitions(@"http://192.168.1.22:5000"));
 			else
 				AddClientTabs(GetFormDefinitions(@"http://172.27.211.17:5000"));
 		}

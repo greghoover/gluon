@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using hase.DevLib.Framework.Relay.Hub;
@@ -11,6 +12,7 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
@@ -20,8 +22,12 @@ namespace hase.Web
 	{
 		public static IWebHost BuildWebHost(string[] args, string[] urls = null)
 		{
-			var builder = WebHost.CreateDefaultBuilder(args);
-			if (urls == null)
+            var directory = Directory.GetCurrentDirectory();
+            var builder = WebHost.CreateDefaultBuilder(args);
+            //builder.UseContentRoot(directory);
+            //builder.UseWebRoot(Path.Combine(directory, "wwwroot", "client", "hase-hub", "build"));
+
+            if (urls == null)
 				urls = GetUrlsFromConfig();
 			if (urls != null && urls.Length > 0)
 				builder.UseUrls(urls);
@@ -75,8 +81,23 @@ namespace hase.Web
 				app.UseHsts();
 			}
 
-			//app.UseHttpsRedirection();
-			app.UseMvc();
+            app.UseStaticFiles(); // For the wwwroot folder
+
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                FileProvider = new PhysicalFileProvider(
+                    Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "client", "hase-hub", "build")),
+                RequestPath = ""
+            });
+
+            app.UseDirectoryBrowser(new DirectoryBrowserOptions
+            {
+                FileProvider = new PhysicalFileProvider(
+                    Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "client", "hase-hub", "build")),
+                RequestPath = ""
+            });
+            //app.UseHttpsRedirection();
+            app.UseMvc();
 
 			app.UseCors("AllowCors");
 			app.UseWebSockets();
