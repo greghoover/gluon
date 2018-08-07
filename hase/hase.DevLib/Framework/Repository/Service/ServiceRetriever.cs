@@ -26,7 +26,8 @@ namespace hase.DevLib.Framework.Repository.Service
 				client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
 				var response = await client.GetAsync(requestUri);
-				//response.EnsureSuccessStatusCode();
+				response.EnsureSuccessStatusCode();
+
 				var s2 = await response.Content.ReadAsStringAsync();
 				var folder = JsonConvert.DeserializeObject<FolderSpec>(s2);
 				return folder;

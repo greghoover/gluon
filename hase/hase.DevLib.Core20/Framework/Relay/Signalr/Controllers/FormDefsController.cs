@@ -3,9 +3,9 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 
-namespace hase.Web.Controllers
+namespace hase.Relays.Signalr.Server.Controllers
 {
-	[Route("api/values")] // backward compat for now
+    [Route("api/values")] // backward compat for now
 	[Route("api/[controller]")]
 	[ApiController]
 	public class FormDefsController : ControllerBase

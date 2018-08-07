@@ -2,7 +2,7 @@
 using hase.DevLib.Framework.Repository.Service;
 using Microsoft.AspNetCore.Mvc;
 
-namespace hase.Web.Controllers
+namespace hase.Relays.Signalr.Server.Controllers
 {
 	[Route("api/[controller]")]
 	[ApiController]

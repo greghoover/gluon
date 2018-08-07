@@ -8,16 +8,15 @@ using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Linq;
 
+
 namespace hase.Relays.Signalr.Server
 {
-	/// <summary>
-	/// Startup Class
-	/// </summary>
 	public class Startup
 	{
 		public static IWebHost BuildWebHost(string[] args, string[] urls = null)
 		{
 			var builder = WebHost.CreateDefaultBuilder(args);
+
 			if (urls == null)
 				urls = GetUrlsFromConfig();
 			if (urls != null && urls.Length > 0)
@@ -38,23 +37,14 @@ namespace hase.Relays.Signalr.Server
 
 		public static void BuildAndRunWebHost(string[] args) =>
 			BuildWebHost(args).Run();
-
-		/// <summary>
-		/// Initializes a new instance of the <see cref="Startup"/> class.
-		/// </summary>
-		public Startup(IConfiguration cfg)
+		public Startup(IConfiguration configuration)
 		{
-			Configuration = cfg;
+			Configuration = configuration;
 		}
 
-		/// <summary>
-		/// Gets the configuration.
-		/// </summary>
 		public IConfiguration Configuration { get; }
 
-		/// <summary>
-		/// Configures the services.
-		/// </summary>
+		// This method gets called by the runtime. Use this method to add services to the container.
 		public void ConfigureServices(IServiceCollection services)
 		{
 			services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
@@ -69,9 +59,7 @@ namespace hase.Relays.Signalr.Server
 			services.AddSignalR();
 		}
 
-		/// <summary>
-		/// Configures the specified application.
-		/// </summary>
+		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
 		public void Configure(IApplicationBuilder app, IHostingEnvironment env)
 		{
 			if (env.IsDevelopment())
@@ -82,6 +70,24 @@ namespace hase.Relays.Signalr.Server
 			{
 				app.UseHsts();
 			}
+
+			app.UseStaticFiles(); // For the wwwroot folder
+
+			//app.UseStaticFiles(new StaticFileOptions
+			//{
+			//    FileProvider = new PhysicalFileProvider(
+			//        Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "client", "hase-hub", "build")),
+			//    RequestPath = ""
+			//});
+
+			app.UseDefaultFiles("");
+
+			//app.UseDirectoryBrowser(new DirectoryBrowserOptions
+			//{
+			//    FileProvider = new PhysicalFileProvider(
+			//        Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "client", "hase-hub", "build")),
+			//    RequestPath = ""
+			//});
 
 			//app.UseHttpsRedirection();
 			app.UseMvc();

@@ -14,10 +14,12 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.1" />
     <PackageReference Include="Newtonsoft.Json.Bson" Version="1.0.1" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\hase.DevLib.Core20\hase.DevLib.Core20.csproj" />
     <ProjectReference Include="..\hase.Relays.Signalr.Server\hase.Relays.Signalr.Server.csproj" />
   </ItemGroup>
 
@@ -28,7 +30,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot\client\" />
+    <Folder Include="Controllers\" />
   </ItemGroup>
 
 </Project>

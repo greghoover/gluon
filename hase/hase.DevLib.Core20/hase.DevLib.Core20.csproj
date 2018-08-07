@@ -18,8 +18,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Include="Framework\Relay\Signalr\Controllers\FilesController.cs" />
+    <Compile Include="Framework\Relay\Signalr\Controllers\FormDefsController.cs" />
+    <Compile Include="Framework\Relay\Signalr\Controllers\ServiceDefsController.cs" />
     <Compile Include="Framework\Relay\Signalr\Startup.cs" />
-    <Compile Include="Framework\Relay\Signalr\StartupFromWebProject.cs" />
   </ItemGroup>
 
   <ItemGroup>

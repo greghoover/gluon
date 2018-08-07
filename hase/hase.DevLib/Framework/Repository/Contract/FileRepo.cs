@@ -1,9 +1,17 @@
-﻿using System.IO;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
 
 namespace hase.DevLib.Framework.Repository.Contract
 {
 	public static class FileRepo
 	{
+		public static IEnumerable<FileSpec> GetAllFiles()
+		{
+			// todo: implement for real;
+			//return new List<FileSpec>();
+			throw new NotImplementedException();
+		}
 		public static FileSpec GetFile(string fileName, string tenantId = TenantDir.TenantIdDefault, params string[] subs)
 		{
 			var filePath = TenantDir.ServiceSub(tenantId, subs).FullName;

@@ -41,9 +41,10 @@ namespace hase.DevLib.Framework.Repository.Service
 				var s1 = JsonConvert.SerializeObject(folderSpec);
 				var content = new StringContent(s1);
 				content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-				var response = await client.PostAsync(requestUri, content);
 
-				//response.EnsureSuccessStatusCode();
+				var response = await client.PostAsync(requestUri, content);
+				response.EnsureSuccessStatusCode();
+
 				var s2 = await response.Content.ReadAsStringAsync();
 				var posted = JsonConvert.DeserializeObject<FolderSpec>(s2);
 				return posted;

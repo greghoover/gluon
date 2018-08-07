@@ -16,38 +16,8 @@ namespace hase.DevLib.Tests
 			if (signalrRelayFixture.Relay == null)
 			{
 				var signalrHubCfg = new SignalrRelayHubConfig().GetConfigSection(nameof(ServicePublishing_Remote));
-				signalrRelayFixture.StartRelayServer(signalrHubCfg);
-
-				baseUri = signalrRelayFixture?.GetBaseUri(signalrHubCfg?.HubUrl[0])?.ToString();
-			}
-		}
-
-		[Fact]
-		public async void CalculatorService_RetrieveRemote()
-		{
-			try
-			{
-				var serviceName = nameof(CalculatorService);
-				var folder = await ServiceRetriever.RetrieveRemote(baseUri, serviceName);
-				Xunit.Assert.True(true);
-			}
-			catch (Exception ex)
-			{
-				Xunit.Assert.True(false);
-			}
-		}
-		[Fact]
-		public async void FileSystemQueryService_RetrieveRemote()
-		{
-			try
-			{
-				var serviceName = nameof(FileSystemQueryService);
-				var folder = await ServiceRetriever.RetrieveRemote(baseUri, serviceName);
-				Xunit.Assert.True(true);
-			}
-			catch (Exception ex)
-			{
-				Xunit.Assert.True(false);
+                baseUri = signalrRelayFixture?.GetBaseUri(signalrHubCfg?.HubUrl[0])?.ToString();
+                signalrRelayFixture.StartRelayServer(signalrHubCfg);
 			}
 		}
 
@@ -76,6 +46,67 @@ namespace hase.DevLib.Tests
 				var folderPath = @"C:\Users\greg\Source\Repos\gluon\hase\hase.AppServices.FileSystemQuery\bin\Debug\netstandard2.0";
 
 				await ServicePublisher.PublishRemote(baseUri, folderPath, serviceName);
+				Xunit.Assert.True(true);
+			}
+			catch (Exception ex)
+			{
+				Xunit.Assert.True(false);
+			}
+		}
+		[Fact]
+		public async void ServiceAppConsoleHost_PublishRemote()
+		{
+			try
+			{
+				var serviceName = "ServiceAppConsoleHost";
+				var folderPath = @"C:\Users\greg\Source\Repos\gluon\hase\hase.ServiceApp.ConsoleHost\bin\Debug\netcoreapp2.1";
+
+				await ServicePublisher.PublishRemote(baseUri, folderPath, serviceName);
+				Xunit.Assert.True(true);
+			}
+			catch (Exception ex)
+			{
+				Xunit.Assert.True(false);
+			}
+		}
+
+		[Fact]
+		public async void CalculatorService_RetrieveRemote()
+		{
+			try
+			{
+				var serviceName = nameof(CalculatorService);
+				await ServiceRetriever.RetrieveRemote(baseUri, serviceName);
+				Xunit.Assert.True(true);
+			}
+			catch (Exception ex)
+			{
+				Xunit.Assert.True(false);
+			}
+		}
+		[Fact]
+		public async void FileSystemQueryService_RetrieveRemote()
+		{
+			try
+			{
+				var serviceName = nameof(FileSystemQueryService);
+				await ServiceRetriever.RetrieveRemote(baseUri, serviceName);
+				Xunit.Assert.True(true);
+			}
+			catch (Exception ex)
+			{
+				Xunit.Assert.True(false);
+			}
+		}
+		// hase.ServiceApp.ConsoleHost
+		[Fact]
+		public async void ServiceAppConsoleHost_RetrieveRemote()
+		{
+			try
+			{
+				var serviceName = "ServiceAppConsoleHost";
+				await ServiceRetriever.RetrieveRemote(baseUri, serviceName);
+				
 				Xunit.Assert.True(true);
 			}
 			catch (Exception ex)
