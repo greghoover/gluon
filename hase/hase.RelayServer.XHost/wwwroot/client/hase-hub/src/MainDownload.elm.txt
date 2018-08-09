@@ -1,0 +1,38 @@
+﻿module Main exposing (..)
+
+import Html exposing (Attribute, Html, a, beginnerProgram, button, div, text, textarea)
+import Html.Attributes exposing (..)
+import Html.Events exposing (onInput)
+import Http exposing (encodeUri)
+
+
+main =
+    beginnerProgram { model = "", view = view, update = update }
+
+
+type Msg
+    = NewContent String
+
+
+update (NewContent content) oldContent =
+    content
+
+
+view content =
+    div []
+        [ textarea
+            [ placeholder "Text to download ...."
+            , onInput NewContent
+            , rows 10
+            , cols 30
+            ]
+            []
+        , div []
+            [ a
+                [ type_ "button"
+                , href <| "data:text/plain;charset=utf-8," ++ encodeUri content
+                , downloadAs "demo.txt"
+                ]
+                [ button [] [ text "Download" ] ]
+            ]
+        ]
