@@ -20,7 +20,8 @@
     <PackageReference Include="Microsoft.Extensions.Http" Version="2.1.1" />
     <PackageReference Include="Microsoft.Rest.ClientRuntime" Version="2.3.11" />
     <PackageReference Include="Newtonsoft.Json.Bson" Version="1.0.1" />
-    <PackageReference Include="protobuf-net" Version="2.3.14-alpha1" />
+    <PackageReference Include="protobuf-net" Version="3.0.0-alpha.3" />
+    <PackageReference Include="Xamarin.Essentials" Version="0.9.1-preview" />
   </ItemGroup>
 
 </Project>

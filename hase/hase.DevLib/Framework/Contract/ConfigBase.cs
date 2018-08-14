@@ -1,10 +1,13 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using hase.DevLib.Framework.Utility;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Primitives;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Reflection;
 using System.Runtime.InteropServices;
+using Xamarin.Essentials;
 
 namespace hase.DevLib.Framework.Contract
 {
@@ -52,38 +55,56 @@ namespace hase.DevLib.Framework.Contract
 					var isIos = RuntimeInformation.IsOSPlatform(OSPlatform.Create("IOS"));
 					var isAndroid = RuntimeInformation.IsOSPlatform(OSPlatform.Create("ANDROID"));
 
+					var fn = "appsettings.json";
+
 					if (isWindows)
 					{
-						cb.AddJsonFile("appsettings.json");
+						var asm = Assembly.GetEntryAssembly();
+						var fileDir = string.Empty;
+						if (asm.FullName.Contains(".UWP"))
+							fileDir = @"C:\Users\greg\AppData\Local\Packages\45067d15-d739-49ea-b463-0315aa7c99ff_z8snkv6en0h58\LocalState"; // FileSystem.AppDataDirectory;
+						var filePath = Path.Combine(fileDir, fn);
+
+						//cb.AddJsonFile("appsettings.json");
+						cb.AddJsonFile(filePath);
 						//cb.AddCommandLine(args);
 						_configRoot = cb.Build();
 						//var subs = Directory.GetDirectories(cd);
 					}
 					else if (isLinux || isAndroid)
 					{
+						var fileDir = @"/data/user/0/com.companyname.hase.ClientUI.XFApp/files"; // FileSystem.AppDataDirectory;
+						var filePath = Path.Combine(fileDir, fn);
+
 						// todo: 06/28/18 gph. Read configuration from device.
-						var dict = new Dictionary<string, string>
-						{
-							{"ServiceProxy:ProxyTypeName", "SignalrRelayProxy"},
-							{"ServiceProxy:ProxyConfigSection", "SignalrRelayProxy"},
-							{"ServiceProxy:ServiceTypeNames", "FileSystemQuery"},
-							{"SignalrRelayProxy:HubUrl", "http://172.27.211.17:5000/route"},
-						};
-						cb.AddInMemoryCollection(dict);
-						//cb.AddJsonFile(Environment.GetFolderPath(Environment.SpecialFolder.Personal) + @"/appsettings.json");
+						//var dict = new Dictionary<string, string>
+						//{
+						//	{"ServiceProxy:ProxyTypeName", "SignalrRelayProxy"},
+						//	{"ServiceProxy:ProxyConfigSection", "SignalrRelayProxy"},
+						//	{"ServiceProxy:ServiceTypeNames", "FileSystemQuery"},
+						//	{"SignalrRelayProxy:HubUrl", "http://172.27.211.17:5000/route"},
+						//};
+						//cb.AddInMemoryCollection(dict);
+
+						cb.AddJsonFile(new AltFileProvider(), filePath, optional: false, reloadOnChange: false);
 						_configRoot = cb.Build();
 					}
 					else //if (isOsx || isIos)
 					{
+						var fileDir = "uh, not sure yet"; // FileSystem.AppDataDirectory;
+						var filePath = Path.Combine(fileDir, fn);
+
 						// todo: 07/06/18 gph. Read configuration from device.
-						var dict = new Dictionary<string, string>
-						{
-							{"ServiceProxy:ProxyTypeName", "SignalrRelayProxy"},
-							{"ServiceProxy:ProxyConfigSection", "SignalrRelayProxy"},
-							{"ServiceProxy:ServiceTypeNames", "FileSystemQuery"},
-							{"SignalrRelayProxy:HubUrl", "http://192.168.1.125:5000/route"},
-						};
-						cb.AddInMemoryCollection(dict);
+						//                  var dict = new Dictionary<string, string>
+						//{
+						//	{"ServiceProxy:ProxyTypeName", "SignalrRelayProxy"},
+						//	{"ServiceProxy:ProxyConfigSection", "SignalrRelayProxy"},
+						//	{"ServiceProxy:ServiceTypeNames", "FileSystemQuery"},
+						//	{"SignalrRelayProxy:HubUrl", "http://192.168.1.125:5000/route"},
+						//};
+						//cb.AddInMemoryCollection(dict);
+
+						cb.AddJsonFile(new AltFileProvider(), filePath, optional: false, reloadOnChange: false);
 						_configRoot = cb.Build();
 					}
 				}
