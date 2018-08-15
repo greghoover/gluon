@@ -3,9 +3,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Primitives;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
-using System.Reflection;
 using System.Runtime.InteropServices;
 using Xamarin.Essentials;
 
@@ -36,7 +34,6 @@ namespace hase.DevLib.Framework.Contract
 		private IConfigurationRoot _configRoot { get; set; }
 		public IConfigurationRoot GetConfigRoot()
 		{
-			//Debugger.Break();
 			if (_configRoot == null)
 			{
 				try
@@ -44,39 +41,38 @@ namespace hase.DevLib.Framework.Contract
 					// todo: 06/25/18 gph. Pass in a configuration Action parameter instead of hard-coding the buider.
 					Console.WriteLine("Building Configuration");
 					var cb = new ConfigurationBuilder();
-					var cd = Directory.GetCurrentDirectory();
-					//cb.SetBasePath(cd);
 
-					var osDesc = RuntimeInformation.OSDescription;
-					var fwDesc = RuntimeInformation.FrameworkDescription;
-					var isLinux = RuntimeInformation.IsOSPlatform(OSPlatform.Linux);
-					var isOsx = RuntimeInformation.IsOSPlatform(OSPlatform.OSX);
+					var fw = RuntimeInformation.FrameworkDescription;
+					var os = RuntimeInformation.OSDescription;
+					var osArch = RuntimeInformation.OSArchitecture;
+					var procArch = RuntimeInformation.ProcessArchitecture;
+
 					var isWindows = RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
-					var isIos = RuntimeInformation.IsOSPlatform(OSPlatform.Create("IOS"));
+					var isUwp = os == "Microsoft Windows"; // e.g. 'Microsoft Windows 10.0.17134' for Win10 desktop
+					var isLinux = RuntimeInformation.IsOSPlatform(OSPlatform.Linux);
 					var isAndroid = RuntimeInformation.IsOSPlatform(OSPlatform.Create("ANDROID"));
+					var isOsx = RuntimeInformation.IsOSPlatform(OSPlatform.OSX);
+					var isIos = RuntimeInformation.IsOSPlatform(OSPlatform.Create("IOS"));
 
-					var fn = "appsettings.json";
+
+					var fileName = "appsettings.json";
+					var fileDir = string.Empty; // The default for Windows. Override for Xamarin apps.
+					try { fileDir = FileSystem.AppDataDirectory; } catch { }
+					// for UWP:
+					//fileDir = @"C:\Users\greg\AppData\Local\Packages\45067d15-d739-49ea-b463-0315aa7c99ff_z8snkv6en0h58\LocalState";
+					// for Android:
+					//fileDir = @"/data/user/0/com.companyname.hase.ClientUI.XFApp/files";
+					// for iOS:
+					//fileDir = @"???";
+					var filePath = Path.Combine(fileDir, fileName);
 
 					if (isWindows)
 					{
-						var asm = Assembly.GetEntryAssembly();
-						var fileDir = string.Empty;
-						if (asm.FullName.Contains(".UWP"))
-							fileDir = @"C:\Users\greg\AppData\Local\Packages\45067d15-d739-49ea-b463-0315aa7c99ff_z8snkv6en0h58\LocalState"; // FileSystem.AppDataDirectory;
-						var filePath = Path.Combine(fileDir, fn);
-
-						//cb.AddJsonFile("appsettings.json");
-						cb.AddJsonFile(filePath);
+						cb.AddJsonFile(filePath); // UWP allows to read from specific areas of the file system.
 						//cb.AddCommandLine(args);
-						_configRoot = cb.Build();
-						//var subs = Directory.GetDirectories(cd);
 					}
 					else if (isLinux || isAndroid)
 					{
-						var fileDir = @"/data/user/0/com.companyname.hase.ClientUI.XFApp/files"; // FileSystem.AppDataDirectory;
-						var filePath = Path.Combine(fileDir, fn);
-
-						// todo: 06/28/18 gph. Read configuration from device.
 						//var dict = new Dictionary<string, string>
 						//{
 						//	{"ServiceProxy:ProxyTypeName", "SignalrRelayProxy"},
@@ -87,15 +83,10 @@ namespace hase.DevLib.Framework.Contract
 						//cb.AddInMemoryCollection(dict);
 
 						cb.AddJsonFile(new AltFileProvider(), filePath, optional: false, reloadOnChange: false);
-						_configRoot = cb.Build();
 					}
 					else //if (isOsx || isIos)
 					{
-						var fileDir = "uh, not sure yet"; // FileSystem.AppDataDirectory;
-						var filePath = Path.Combine(fileDir, fn);
-
-						// todo: 07/06/18 gph. Read configuration from device.
-						//                  var dict = new Dictionary<string, string>
+						//var dict = new Dictionary<string, string>
 						//{
 						//	{"ServiceProxy:ProxyTypeName", "SignalrRelayProxy"},
 						//	{"ServiceProxy:ProxyConfigSection", "SignalrRelayProxy"},
@@ -105,8 +96,8 @@ namespace hase.DevLib.Framework.Contract
 						//cb.AddInMemoryCollection(dict);
 
 						cb.AddJsonFile(new AltFileProvider(), filePath, optional: false, reloadOnChange: false);
-						_configRoot = cb.Build();
 					}
+					_configRoot = cb.Build();
 				}
 				catch (Exception ex)
 				{
