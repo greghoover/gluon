@@ -4,7 +4,6 @@ using Microsoft.Extensions.Primitives;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Runtime.InteropServices;
 using Xamarin.Essentials;
 
 namespace hase.DevLib.Framework.Contract
@@ -42,19 +41,6 @@ namespace hase.DevLib.Framework.Contract
 					Console.WriteLine("Building Configuration");
 					var cb = new ConfigurationBuilder();
 
-					var fw = RuntimeInformation.FrameworkDescription;
-					var os = RuntimeInformation.OSDescription;
-					var osArch = RuntimeInformation.OSArchitecture;
-					var procArch = RuntimeInformation.ProcessArchitecture;
-
-					var isWindows = RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
-					var isUwp = os == "Microsoft Windows"; // e.g. 'Microsoft Windows 10.0.17134' for Win10 desktop
-					var isLinux = RuntimeInformation.IsOSPlatform(OSPlatform.Linux);
-					var isAndroid = RuntimeInformation.IsOSPlatform(OSPlatform.Create("ANDROID"));
-					var isOsx = RuntimeInformation.IsOSPlatform(OSPlatform.OSX);
-					var isIos = RuntimeInformation.IsOSPlatform(OSPlatform.Create("IOS"));
-
-
 					var fileName = "appsettings.json";
 					var fileDir = string.Empty; // The default for Windows. Override for Xamarin apps.
 					try { fileDir = FileSystem.AppDataDirectory; } catch { }
@@ -66,37 +52,7 @@ namespace hase.DevLib.Framework.Contract
 					//fileDir = @"???";
 					var filePath = Path.Combine(fileDir, fileName);
 
-					if (isWindows)
-					{
-						cb.AddJsonFile(filePath); // UWP allows to read from specific areas of the file system.
-						//cb.AddCommandLine(args);
-					}
-					else if (isLinux || isAndroid)
-					{
-						//var dict = new Dictionary<string, string>
-						//{
-						//	{"ServiceProxy:ProxyTypeName", "SignalrRelayProxy"},
-						//	{"ServiceProxy:ProxyConfigSection", "SignalrRelayProxy"},
-						//	{"ServiceProxy:ServiceTypeNames", "FileSystemQuery"},
-						//	{"SignalrRelayProxy:HubUrl", "http://172.27.211.17:5000/route"},
-						//};
-						//cb.AddInMemoryCollection(dict);
-
-						cb.AddJsonFile(new AltFileProvider(), filePath, optional: false, reloadOnChange: false);
-					}
-					else //if (isOsx || isIos)
-					{
-						//var dict = new Dictionary<string, string>
-						//{
-						//	{"ServiceProxy:ProxyTypeName", "SignalrRelayProxy"},
-						//	{"ServiceProxy:ProxyConfigSection", "SignalrRelayProxy"},
-						//	{"ServiceProxy:ServiceTypeNames", "FileSystemQuery"},
-						//	{"SignalrRelayProxy:HubUrl", "http://192.168.1.125:5000/route"},
-						//};
-						//cb.AddInMemoryCollection(dict);
-
-						cb.AddJsonFile(new AltFileProvider(), filePath, optional: false, reloadOnChange: false);
-					}
+					cb.AddJsonFile(new AltFileProvider(), filePath, optional: false, reloadOnChange: false);
 					_configRoot = cb.Build();
 				}
 				catch (Exception ex)
