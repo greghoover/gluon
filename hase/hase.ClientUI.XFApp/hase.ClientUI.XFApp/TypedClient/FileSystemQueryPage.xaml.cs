@@ -1,5 +1,6 @@
-﻿//using hase.AppServices.FileSystemQuery.Client;
-//using hase.AppServices.FileSystemQuery.Contract;
+﻿using hase.AppServices.FileSystemQuery.Client;
+using hase.AppServices.FileSystemQuery.Contract;
+using hase.DevLib.Framework.Relay.Proxy;
 using hase.Relays.Signalr.Client;
 using System;
 using Xamarin.Forms;
@@ -25,21 +26,23 @@ namespace hase.ClientUI.XFApp
 		{
 			try
 			{
-				//var fsq = default(FileSystemQuery);
+				var client = default(FileSystemQuery);
 				switch (this.ServiceLocationPicker.SelectedItem.ToString().ToLower())
 				{
 					case "local":
-						//fsq = new FileSystemQuery();
+						client = new FileSystemQuery();
 						break;
 					case "remote":
-						//fsq = new FileSystemQuery(typeof(SignalrRelayProxy<FileSystemQueryRequest, FileSystemQueryResponse>));
+						var hostCfg = new RelayProxyConfig().GetConfigSection();
+						var proxyCfg = hostCfg.GetConfigRoot().GetSection(hostCfg.ProxyConfigSection);
+						client = new FileSystemQuery(typeof(SignalrRelayProxy<FileSystemQueryRequest, FileSystemQueryResponse>), proxyCfg);
 						break;
 					default:
 						throw new ApplicationException("Service location must be either Local or Remote.");
 				}
 				var folderPath = this.PathEntry.Text;
-				//var result = fsq.DoesDirectoryExist(folderPath);
-				//this.ResultLabel.Text = $"Folder path [{folderPath}] {((result ?? false) ? "exists" : "does not exist")}.";
+				var result = client.DoesDirectoryExist(folderPath);
+				this.ResultLabel.Text = $"Folder path [{folderPath}] {((result ?? false) ? "exists" : "does not exist")}.";
 			}
 			catch (Exception ex)
 			{
@@ -47,9 +50,6 @@ namespace hase.ClientUI.XFApp
 				if (ex.InnerException != null)
 					txt += Environment.NewLine + ex.InnerException.Message;
 				this.ResultLabel.Text = txt;
-			}
-			finally
-			{
 			}
 		}
 	}

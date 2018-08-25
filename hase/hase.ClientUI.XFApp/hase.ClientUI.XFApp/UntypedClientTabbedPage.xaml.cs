@@ -1,7 +1,11 @@
-﻿using hase.DevLib.Framework.Repository.Client;
+﻿using hase.DevLib.Framework.Relay.Proxy;
+using hase.DevLib.Framework.Repository.Client;
 using hase.DevLib.Framework.Repository.Contract;
+using hase.Relays.Signalr.Client;
+using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Runtime.InteropServices;
@@ -11,18 +15,24 @@ using Xamarin.Forms.Xaml;
 namespace hase.ClientUI.XFApp
 {
 	[XamlCompilation(XamlCompilationOptions.Compile)]
-	public partial class GenericServiceClientTabbedPage : TabbedPage
+	public partial class UntypedClientTabbedPage : TabbedPage
 	{
-		public GenericServiceClientTabbedPage()
+		public UntypedClientTabbedPage()
 		{
 			InitializeComponent();
 
-			var isOsx = RuntimeInformation.IsOSPlatform(OSPlatform.OSX);
-			var isIos = RuntimeInformation.IsOSPlatform(OSPlatform.Create("IOS"));
-			if (isOsx || isIos)
-				AddClientTabs(GetFormDefinitions(@"http://192.168.1.125:5000"));
-			else
-				AddClientTabs(GetFormDefinitions(@"http://172.27.211.17:5000"));
+			// todo: 8/25/18 gph. Use separate config for formdef repo.
+			// This suffices for now, assuming we are using a signalr relay proxy.
+			var hostCfg = new RelayProxyConfig().GetConfigSection();
+			var proxyCfg = hostCfg.GetConfigRoot().GetSection(hostCfg.ProxyConfigSection);
+			var signalrCfg = proxyCfg.Get<SignalrRelayProxyConfig>();
+			var baseUri = signalrCfg.HubUrl.GetLeftPart(System.UriPartial.Authority);
+
+			AddClientTabs(GetFormDefinitions(baseUri));
+		}
+		public IEnumerable<InputFormDef> GetFormDefinitions(Uri baseUri)
+		{
+			return GetFormDefinitions(baseUri.ToString());
 		}
 		public IEnumerable<InputFormDef> GetFormDefinitions(string baseUri)
 		{
@@ -49,7 +59,7 @@ namespace hase.ClientUI.XFApp
 		}
 		void AddGenericClientTab(InputFormDef formDef)
 		{
-			var contentPage = new GenericServiceClientContentPage();
+			var contentPage = new UntypedClientContentPage();
 			contentPage.InitializeComponent(formDef);
 
 			this.Children.Add(new NavigationPage(contentPage)

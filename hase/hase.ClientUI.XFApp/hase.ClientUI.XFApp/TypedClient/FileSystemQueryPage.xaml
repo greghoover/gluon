@@ -1,23 +1,20 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="hase.ClientUI.XFApp.CalculatorPage">
+             x:Class="hase.ClientUI.XFApp.FileSystemQueryPage">
     <ContentPage.Content>
         <StackLayout>
             <Button x:Name="ResetButton" Text="Reset" Clicked="ResetButton_Clicked"/>
             <Picker x:Name="ServiceLocationPicker" Title="Service location:">
                 <Picker.ItemsSource>
                     <x:Array Type="{x:Type x:String}">
-                        <x:String>Local</x:String>
                         <x:String>Remote</x:String>
+                        <x:String>Local</x:String>
                     </x:Array>
                 </Picker.ItemsSource>
             </Picker>
-            <Label Text="Add Two Numbers"/>
-            <Label Text="First Number:"/>
-            <Entry x:Name="FirstNumber" Text="1"/>
-            <Label Text="Second Number:"/>
-            <Entry x:Name="SecondNumber" Text="2"/>
+            <Label Text="Path:"/>
+            <Entry x:Name="PathEntry" Text="c:\"/>
             <Button x:Name="SubmitButton" Text="Submit" Clicked="SubmitButton_Clicked"/>
             <Label x:Name="ResultLabel"/>
         </StackLayout>

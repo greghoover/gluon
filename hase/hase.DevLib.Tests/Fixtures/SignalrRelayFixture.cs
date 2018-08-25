@@ -27,18 +27,18 @@ namespace hase.DevLib.Tests.Fixtures
 			if (Relay != null)
 				return; // has been started already
 
-            try
-            {
-                var urls = signalrHubCfg.HubUrl.Select(x => (new Uri(x.GetLeftPart(UriPartial.Authority))).ToString()).ToArray();
+			try
+			{
+				var urls = signalrHubCfg.HubUrl.Select(x => (new Uri(x.GetLeftPart(UriPartial.Authority))).ToString()).ToArray();
 
-                Console.WriteLine("Building SignalR relay server.");
-                Relay = Startup.BuildWebHost(new string[] { string.Empty }, urls);
+				Console.WriteLine("Building SignalR relay server.");
+				Relay = Startup.BuildWebHost(new string[] { string.Empty }, urls);
 
-                Console.WriteLine("Starting SignalR relay server.");
-                await Relay.StartAsync();
-                Console.WriteLine("SignalR relay server started.");
-            }
-            catch (Exception ex) { }
+				Console.WriteLine("Starting SignalR relay server.");
+				await Relay.StartAsync();
+				Console.WriteLine("SignalR relay server started.");
+			}
+			catch { }
 		}
 		async void StopRelayServer()
 		{

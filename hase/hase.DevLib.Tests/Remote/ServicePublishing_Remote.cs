@@ -16,8 +16,8 @@ namespace hase.DevLib.Tests
 			if (signalrRelayFixture.Relay == null)
 			{
 				var signalrHubCfg = new SignalrRelayHubConfig().GetConfigSection(nameof(ServicePublishing_Remote));
-                baseUri = signalrRelayFixture?.GetBaseUri(signalrHubCfg?.HubUrl[0])?.ToString();
-                signalrRelayFixture.StartRelayServer(signalrHubCfg);
+				baseUri = signalrRelayFixture?.GetBaseUri(signalrHubCfg?.HubUrl[0])?.ToString();
+				signalrRelayFixture.StartRelayServer(signalrHubCfg);
 			}
 		}
 
@@ -32,7 +32,7 @@ namespace hase.DevLib.Tests
 				await ServicePublisher.PublishRemote(baseUri, folderPath, serviceName);
 				Xunit.Assert.True(true);
 			}
-			catch (Exception ex)
+			catch
 			{
 				Xunit.Assert.True(false);
 			}
@@ -48,7 +48,7 @@ namespace hase.DevLib.Tests
 				await ServicePublisher.PublishRemote(baseUri, folderPath, serviceName);
 				Xunit.Assert.True(true);
 			}
-			catch (Exception ex)
+			catch
 			{
 				Xunit.Assert.True(false);
 			}
@@ -64,7 +64,7 @@ namespace hase.DevLib.Tests
 				await ServicePublisher.PublishRemote(baseUri, folderPath, serviceName);
 				Xunit.Assert.True(true);
 			}
-			catch (Exception ex)
+			catch
 			{
 				Xunit.Assert.True(false);
 			}
@@ -79,7 +79,7 @@ namespace hase.DevLib.Tests
 				await ServiceRetriever.RetrieveRemote(baseUri, serviceName);
 				Xunit.Assert.True(true);
 			}
-			catch (Exception ex)
+			catch
 			{
 				Xunit.Assert.True(false);
 			}
@@ -93,7 +93,7 @@ namespace hase.DevLib.Tests
 				await ServiceRetriever.RetrieveRemote(baseUri, serviceName);
 				Xunit.Assert.True(true);
 			}
-			catch (Exception ex)
+			catch
 			{
 				Xunit.Assert.True(false);
 			}
@@ -109,7 +109,7 @@ namespace hase.DevLib.Tests
 				
 				Xunit.Assert.True(true);
 			}
-			catch (Exception ex)
+			catch
 			{
 				Xunit.Assert.True(false);
 			}

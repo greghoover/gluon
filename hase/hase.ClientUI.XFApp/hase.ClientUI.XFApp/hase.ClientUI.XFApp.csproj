@@ -11,6 +11,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="MainPage.xaml.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Remove="MainPage.xaml" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Content Include="appsettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -26,5 +34,14 @@
     <ProjectReference Include="..\..\hase.AppServices.FileSystemQuery\hase.AppServices.FileSystemQuery.csproj" />
     <ProjectReference Include="..\..\hase.Relays.Local\hase.Relays.Local.csproj" />
     <ProjectReference Include="..\..\hase.Relays.Signalr.Client\hase.Relays.Signalr.Client.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="UntypedClientTabbedPage.xaml.cs">
+      <DependentUpon>UntypedClientTabbedPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="TypedClient\TypedClientTabbedPage.xaml.cs">
+      <DependentUpon>TypedClientTabbedPage.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
 </Project>

@@ -2,7 +2,7 @@
 <TabbedPage xmlns="http://xamarin.com/schemas/2014/forms"
             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
             xmlns:local="clr-namespace:hase.ClientUI.XFApp"
-            x:Class="hase.ClientUI.XFApp.ServiceClientsTabbedPage">
+            x:Class="hase.ClientUI.XFApp.TypedClientTabbedPage">
 
     <local:FileSystemQueryPage Title="File System Query" />
     <local:CalculatorPage Title="Calculator" />

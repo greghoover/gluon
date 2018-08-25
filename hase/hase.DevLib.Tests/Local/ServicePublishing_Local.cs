@@ -19,7 +19,7 @@ namespace hase.DevLib.Tests
 				ServicePublisher.PublishLocal(folderPath, serviceName);
 				Xunit.Assert.True(true);
 			}
-			catch (Exception ex)
+			catch
 			{
 				Xunit.Assert.True(false);
 			}
@@ -35,7 +35,7 @@ namespace hase.DevLib.Tests
 				ServicePublisher.PublishLocal(folderPath, serviceName);
 				Xunit.Assert.True(true);
 			}
-			catch (Exception ex)
+			catch
 			{
 				Xunit.Assert.True(false);
 			}
@@ -51,7 +51,7 @@ namespace hase.DevLib.Tests
 				ServicePublisher.PublishLocal(folderPath, serviceName);
 				Xunit.Assert.True(true);
 			}
-			catch (Exception ex)
+			catch
 			{
 				Xunit.Assert.True(false);
 			}
@@ -66,7 +66,7 @@ namespace hase.DevLib.Tests
 				var folder = ServiceRetriever.RetrieveLocal(serviceName);
 				Xunit.Assert.True(true);
 			}
-			catch (Exception ex)
+			catch
 			{
 				Xunit.Assert.True(false);
 			}
@@ -80,7 +80,7 @@ namespace hase.DevLib.Tests
 				var folder = ServiceRetriever.RetrieveLocal(serviceName);
 				Xunit.Assert.True(true);
 			}
-			catch (Exception ex)
+			catch
 			{
 				Xunit.Assert.True(false);
 			}
@@ -94,7 +94,7 @@ namespace hase.DevLib.Tests
 				var folder = ServiceRetriever.RetrieveLocal(serviceName);
 				Xunit.Assert.True(true);
 			}
-			catch (Exception ex)
+			catch
 			{
 				Xunit.Assert.True(false);
 			}

@@ -17,7 +17,7 @@ using static hase.DevLib.Framework.Client.ClientUtil;
 
 namespace hase.ClientUI.XFApp
 {
-	public class GenericServiceClientContentPage : ContentPage
+	public class UntypedClientContentPage : ContentPage
 	{
 		bool CanRunLocally = false;
 		Button resetButton;
@@ -33,7 +33,7 @@ namespace hase.ClientUI.XFApp
 		RelayProxyConfig hostConfig { get; set; }
 		IConfigurationSection proxyConfig { get; set; }
 
-		public GenericServiceClientContentPage()
+		public UntypedClientContentPage()
 		{
 			var osDesc = RuntimeInformation.OSDescription;
 			var fwDesc = RuntimeInformation.FrameworkDescription;

@@ -23,7 +23,7 @@ namespace hase.DevLib.Tests
 
 				Xunit.Assert.True(true);
 			}
-			catch (Exception ex)
+			catch
 			{
 				Xunit.Assert.True(false);
 			}
@@ -41,7 +41,7 @@ namespace hase.DevLib.Tests
 
 				Xunit.Assert.True(true);
 			}
-			catch (Exception ex)
+			catch
 			{
 				Xunit.Assert.True(false);
 			}

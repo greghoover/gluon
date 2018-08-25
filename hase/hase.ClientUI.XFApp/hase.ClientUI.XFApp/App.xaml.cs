@@ -111,14 +111,7 @@ namespace hase.ClientUI.XFApp
 					var proveIt = File.ReadAllText(filePath);
 				}
 			}
-			catch (Exception ex) { }
-
-			//try
-			//{
-			//    File.WriteAllText(path, content);
-			//    var fil = File.ReadAllText(path);
-			//}
-			//catch (Exception ex) { }
+			catch { }
 
 			//try
 			//{
@@ -131,10 +124,10 @@ namespace hase.ClientUI.XFApp
 			//		text = reader.ReadToEnd();
 			//	}
 			//}
-			//catch (Exception ex) { }
+			//catch { }
 
-			//MainPage = new ServiceClientsTabbedPage();
-			MainPage = new GenericServiceClientTabbedPage();
+			//MainPage = new TypedClientTabbedPage();
+			MainPage = new UntypedClientTabbedPage();
 		}
 
 		protected override void OnStart()
