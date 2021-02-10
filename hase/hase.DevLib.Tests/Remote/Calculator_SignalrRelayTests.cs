@@ -20,7 +20,7 @@ namespace hase.DevLib.Tests
 		}
 
 		[Fact]
-		public void VerifyAddTwoNumbers_ClientApi_SignalrRelay()
+		public void Calculator_Add_ClientApi_SignalrRelay()
 		{
 			var hostCfg = new RelayProxyConfig().GetConfigSection(nameof(Calculator));
 			var proxyCfg = hostCfg.GetConfigRoot().GetSection(hostCfg.ProxyConfigSection);
@@ -30,7 +30,7 @@ namespace hase.DevLib.Tests
 			Xunit.Assert.True(result == 15);
 		}
 		[Fact]
-		public async void VerifyAddTwoNumbers_ServiceApi_SignalrRelay()
+		public async void Calculator_Add_ServiceApi_SignalrRelay()
 		{
 			var hostCfg = new RelayProxyConfig().GetConfigSection(nameof(Calculator));
 			var proxyCfg = hostCfg.GetConfigRoot().GetSection(hostCfg.ProxyConfigSection);

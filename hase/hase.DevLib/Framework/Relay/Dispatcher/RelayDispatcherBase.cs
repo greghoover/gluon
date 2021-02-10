@@ -139,7 +139,10 @@ namespace hase.DevLib.Framework.Relay.Dispatcher
 					//var asmPath = Path.Combine(ServiceAssemblyRootPath, asmName, "1.0.0-rc01", "lib", "netstandard2.0");
 					asmFile = Path.Combine(asmPath, $"{assemblyName}.dll");
 				}
-				asm = Assembly.LoadFrom(asmFile);
+				//asm = Assembly.LoadFrom(asmFile);
+				// This could work, will have to see.
+				asm = System.Runtime.Loader.AssemblyLoadContext.Default.LoadFromAssemblyPath(asmFile);
+				// The real / better solution is probably here instead: https://www.nuget.org/packages/McMaster.NETCore.Plugins/1.4.0-beta.41 
 			}
 			catch (Exception ex)
 			{
